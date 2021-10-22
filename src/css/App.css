@@ -1,0 +1,71 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-size: 24px;
+}
+
+.app {
+  width: 100vw;
+  height: 100vh;
+  border: 10px solid #ffb743;
+}
+
+.background {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.bg-gris {
+  z-index: -1000;
+  background-color: #515860;
+  clip-path: polygon(0 100%, 0 15%, 50% 10%, 100% 15%, 100% 100%);
+}
+
+.bg-orange {
+  z-index: -2000;
+  background-color: #ffb743;
+  clip-path: polygon(0 100%, 0 14%, 50% 9%, 100% 14%, 100% 100%);
+}
+
+header {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  margin: 0.2em;
+  height: 15%;
+}
+
+.company-logo {
+  transform: scale(70%);
+  position: relative;
+  top: -0.5em;
+  left: -2em;
+}
+
+.horloge {
+  color: #515860;
+  font-family: sans-serif;
+  text-transform: capitalize;
+  align-self: center;
+  position: relative;
+  top: -0.5em;
+  right: 1em;
+}
+
+.horloge-day {
+  font-size: 40px;
+}
+
+.horloge-hour {
+  font-size: 80px;
+  text-align: center;
+  margin-top: -10px;
+}
+
+main {
+  margin: 0 20%;
+}
