@@ -1,9 +1,10 @@
 import "./css/App.css";
 import React from "react";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { HashRouter as Router, Switch, Route } from "react-router-dom";
 import HomePage from "./js/pages/HomePage";
 import AdminWorkersPage from "./js/pages/AdminWorkersPage";
 import HeaderComponent from "./js/components/HeaderComponent";
+import PointagePage from "./js/pages/PointagePage";
 
 function App() {
   return (
@@ -14,6 +15,8 @@ function App() {
         <HeaderComponent />
         <Switch>
           <Route path="/admin/workers" component={AdminWorkersPage} />
+          <Route path="/pointage" component={PointagePage}/>
+          {/* <Route path="/commandes" /> */}
           <Route path="/" component={HomePage} />
         </Switch>
       </Router>

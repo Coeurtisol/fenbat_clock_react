@@ -69,3 +69,26 @@ header {
 main {
   margin: 0 20%;
 }
+
+.worker-container{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5%;
+  row-gap: 20px;
+}
+
+.worker {
+  width: 30%;
+  padding: 1em;
+  border-radius: 0.5em;
+  background-color: white;
+  text-align: center;
+}
+
+.absent {
+  background-color: #EB0F0F;
+}
+
+.present {
+  background-color: #00FF5D;
+}

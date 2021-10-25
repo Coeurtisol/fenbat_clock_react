@@ -16,6 +16,11 @@ async function deleteOne(id) {
   return response.data;
 }
 
-const WORKERS_API = { findAll, create, deleteOne }
+async function findAllByDay(date) {
+  const response = await axios.get(WORKERS_API_URL + "/workSessions/" + date)
+  return response.data;
+}
+
+const WORKERS_API = { findAll, create, deleteOne, findAllByDay }
 
 export default WORKERS_API;
