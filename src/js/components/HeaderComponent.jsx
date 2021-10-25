@@ -6,8 +6,10 @@ import NavbarComponent from "./NavbarComponent";
 const HeaderComponent = () => {
   return (
     <header>
-      {/* <ImgComponent className="company-logo" src="../images/logo-fenbat.jpg" /> */}
-      <ImgComponent className="company-logo" src="../images/logo-fenbat-transparent.png" />
+      <ImgComponent
+        className="company-logo"
+        src="../images/logo-fenbat-transparent.png"
+      />
       <NavbarComponent />
       <HorlogeComponent />
     </header>

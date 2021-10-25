@@ -4,10 +4,10 @@ import { Link } from "react-router-dom";
 const HomePage = () => {
   return (
     <main>
-      <ul>
-          <li><Link to="/pointage">Pointage</Link></li>
-          <li><Link to="/commandes">Commandes</Link></li>
-      </ul>
+      <div className="menu-container">
+        <Link to="/pointage">Pointage</Link>
+        <Link to="/commandes">Commandes</Link>
+      </div>
     </main>
   );
 };
