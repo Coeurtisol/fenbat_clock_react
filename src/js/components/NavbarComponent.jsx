@@ -9,6 +9,9 @@ const NavbarComponent = () => {
           <Link to="/">/</Link>
         </li>
         <li>
+          <Link to="/accueil">/accueil</Link>
+        </li>
+        <li>
           <Link to="/admin/workers">/admin/workers</Link>
         </li>
       </ul>
