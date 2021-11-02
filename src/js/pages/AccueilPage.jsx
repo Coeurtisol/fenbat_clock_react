@@ -1,14 +1,14 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import WORKERS_API from "../services/workersAPI";
+import USERS_API from "../services/usersAPI";
 
 const AccueilPage = () => {
   const [workers, setWorkers] = useState([]);
 
   const fetchData = async () => {
     try {
-      const data = await WORKERS_API.findAll();
+      const data = await USERS_API.findAll();
       console.log("success fetch", data);
       setWorkers(data);
     } catch (error) {

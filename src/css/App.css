@@ -126,6 +126,26 @@ main {
   background-color: #00ff5d;
 }
 
-.conges{
+.conges {
   background-color: rgb(0, 162, 255);
+}
+
+/* LOGIN */
+.keypad_container {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-gap: 1em;
+}
+
+.keypad_input {
+  grid-column: 1/5;
+  background-color: white;
+  font-size: 2em;
+  padding: 1em;
+  text-align: center;
+}
+
+.keypad_num {
+  font-size: 2em;
+  padding: 1em;
 }

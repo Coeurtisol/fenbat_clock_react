@@ -1,42 +1,45 @@
 import React, { useEffect, useState } from "react";
-import WORKERS_API from "../services/workersAPI";
+import USERS_API from "../services/usersAPI";
 
 const AdminWorkersPage = () => {
-  const [workers, setWorkers] = useState([]);
-  const [newWorker, setNewWorker] = useState({
+  const [users, setUsers] = useState([]);
+  const [newUser, setNewUser] = useState({
     firstname: "",
     lastname: "",
     accessCode: "",
   });
 
-  const fetchWorkers = async () => {
+  // FETCH
+  const fetchUsers = async () => {
     try {
-      const workers = await WORKERS_API.findAll();
-      console.log("success fetch", workers);
-      setWorkers(workers);
+      const users = await USERS_API.findAll();
+      console.log("success fetch", users);
+      setUsers(users);
     } catch (error) {
       console.log("erreur fetch", error);
     }
   };
 
   useEffect(() => {
-    fetchWorkers();
+    fetchUsers();
   }, []);
 
+  // FUNCTIONS
   const handlechange = ({ target }) => {
     const { name, value } = target;
     if (name === "accessCode" && value.length > 4) {
       return;
     }
-    setNewWorker({ ...newWorker, [name]: value });
+    setNewUser({ ...newUser, [name]: value });
   };
 
+  // CREATE
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await WORKERS_API.create(newWorker);
+      const response = await USERS_API.create(newUser);
       console.log("success submit", response);
-      setNewWorker({
+      setNewUser({
         firstname: "",
         lastname: "",
         accessCode: "",
@@ -44,23 +47,25 @@ const AdminWorkersPage = () => {
     } catch (error) {
       console.log("erreur submit", error);
     }
-    fetchWorkers();
+    fetchUsers();
   };
 
+  // DELETE
   const handleDelete = async (id) => {
     try {
-      const response = await WORKERS_API.deleteOne(id);
+      const response = await USERS_API.deleteOne(id);
       console.log("success delete", response);
     } catch (error) {
       console.log("erreur delete", error);
     }
-    fetchWorkers();
+    fetchUsers();
   };
 
+  // TEMPLATE
   return (
     <main>
       <h1>Liste des employés :</h1>
-      {workers.length === 0 ? (
+      {users.length === 0 ? (
         <p>Aucun employé n'est enregistré pour le moment</p>
       ) : (
         <table>
@@ -69,16 +74,14 @@ const AdminWorkersPage = () => {
               <th>Id</th>
               <th>Prénom</th>
               <th>Nom</th>
-              <th>Code d'accèss</th>
             </tr>
           </thead>
           <tbody>
-            {workers.map((w) => (
+            {users.map((w) => (
               <tr key={w.id}>
                 <td>{w.id}</td>
                 <td>{w.firstname}</td>
                 <td>{w.lastname}</td>
-                <td>{w.accessCode}</td>
                 <td>
                   <button onClick={() => handleDelete(w.id)}>Supprimer</button>
                 </td>
@@ -94,7 +97,7 @@ const AdminWorkersPage = () => {
         <input
           type="text"
           name="firstname"
-          value={newWorker.firstname}
+          value={newUser.firstname}
           onChange={handlechange}
           minLength="2"
           required
@@ -104,7 +107,7 @@ const AdminWorkersPage = () => {
         <input
           type="text"
           name="lastname"
-          value={newWorker.lastname}
+          value={newUser.lastname}
           onChange={handlechange}
           minLength="2"
           required
@@ -114,7 +117,7 @@ const AdminWorkersPage = () => {
         <input
           type="number"
           name="accessCode"
-          value={newWorker.accessCode}
+          value={newUser.accessCode}
           onChange={handlechange}
           minLength="4"
           required

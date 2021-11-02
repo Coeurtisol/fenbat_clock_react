@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
-import WORKERS_API from "../services/workersAPI";
-import WORKSESSIONS_API from "../services/workSessionsAPI";
+import USERS_API from "../services/usersAPI";
+import POINTAGES_API from "../services/pointagesAPI";
 
 const PointagePage = () => {
   const [workersWorkSessions, setWorkersWorkSessions] = useState([]);
@@ -9,7 +9,7 @@ const PointagePage = () => {
   const fetchData = async () => {
     const date = new Date().toISOString().split("T")[0];
     try {
-      const data = await WORKERS_API.findAllByDay(date);
+      const data = await USERS_API.findAllByDay(date);
       console.log("success fetch", data);
       setWorkersWorkSessions(data);
     } catch (error) {
@@ -18,9 +18,11 @@ const PointagePage = () => {
   };
 
   const handleStartSession = async (workerId) => {
-    const sessionStart = new Date();
     try {
-      const data = await WORKSESSIONS_API.create({ workerId, sessionStart });
+      const data = await POINTAGES_API.create({
+        workerId,
+        pointageDebut: new Date(),
+      });
       console.log("success startSession", data);
     } catch (error) {
       console.log("erreur startSession", error);
@@ -33,9 +35,9 @@ const PointagePage = () => {
       (ws) => ws.sessionEnd == null
     );
     try {
-      const data = await WORKSESSIONS_API.update({
+      const data = await POINTAGES_API.update({
         id: workSessionId[0].id,
-        sessionEnd: new Date(),
+        pointageFin: new Date(),
       });
       console.log("success endSession", data);
     } catch (error) {
@@ -53,7 +55,8 @@ const PointagePage = () => {
       {workersWorkSessions
         .sort((a, b) => {
           return a.firstname.localeCompare(b.firstname);
-        }).map((worker) => (
+        })
+        .map((worker) => (
           <div
             key={worker.id}
             className={
