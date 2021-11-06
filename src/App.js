@@ -14,6 +14,7 @@ import HeaderComponent from "./js/components/HeaderComponent";
 import PointagePage from "./js/pages/PointagePage";
 import AccueilPage from "./js/pages/AccueilPage";
 import LoginPage from "./js/pages/LoginPage";
+import CommandePage from "./js/pages/CommandePage";
 
 function App() {
   return (
@@ -34,7 +35,7 @@ function App() {
           {/* <Route path="/pointage" component={PointagePage}/> */}
           <Route path="/accueil" component={AccueilPage}/>
           <Route path="/connexion" component={LoginPage}/>
-          {/* <Route path="/commandes" /> */}
+          <Route path="/commandes" component={CommandePage}/>
           <Route path="/" component={HomePage} />
         </Switch>
       </Router>

@@ -4,7 +4,7 @@ import ENTITES_API from "../../services/entitesAPI";
 import TYPESAFFAIRE_API from "../../services/typesAffaireAPI";
 import SECTEURSAFFAIRE_API from "../../services/secteursAffaireAPI";
 // import ETATSAFFAIRE_API from "../../services/etatsAffaireAPI";
-import { Table, Form, Button } from "react-bootstrap";
+import { Table, Form, Button, Nav } from "react-bootstrap";
 
 const AdminAffairesPage = () => {
   const [affaires, setAffaires] = useState([]);
@@ -93,7 +93,7 @@ const AdminAffairesPage = () => {
     //   console.log('Veuillez remplir tout les champs');
     //   return
     // }
-    console.log(Object.values(newAffaire).every(v => v === ''));
+    console.log(Object.values(newAffaire).every((v) => v === ""));
     // try {
     //   const response = await AFFAIRES_API.create(newAffaire);
     //   console.log("success submit", response);
@@ -192,6 +192,11 @@ const AdminAffairesPage = () => {
         </Form.Group>
         <Form.Group className="mb-3">
           <Form.Label>Type</Form.Label>
+          {/* <Nav.Link href="#/admin/typesAffaire">
+            <Button variant="primary" type="button" size="sm">
+              Gérer les types
+            </Button>
+          </Nav.Link> */}
           <Form.Select name="typeAffaireId" onChange={handlechange}>
             <option>Selectionnez le type d'affaire</option>
             {typesAffaire.map((t) => (
