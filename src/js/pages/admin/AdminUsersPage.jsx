@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import USERS_API from "../services/usersAPI";
+import USERS_API from "../../services/usersAPI";
 
-const AdminWorkersPage = () => {
+const AdminUsersPage = () => {
   const [users, setUsers] = useState([]);
   const [newUser, setNewUser] = useState({
     firstname: "",
@@ -64,9 +64,9 @@ const AdminWorkersPage = () => {
   // TEMPLATE
   return (
     <main>
-      <h1>Liste des employés :</h1>
+      <h1>Liste des utilisateurs :</h1>
       {users.length === 0 ? (
-        <p>Aucun employé n'est enregistré pour le moment</p>
+        <p>Aucun utilisateur n'est enregistré pour le moment</p>
       ) : (
         <table>
           <thead>
@@ -91,7 +91,7 @@ const AdminWorkersPage = () => {
         </table>
       )}
       <br />
-      <h1>Ajouter un employé :</h1>
+      <h1>Ajouter un utilisateur :</h1>
       <form onSubmit={handleSubmit}>
         <label>Prénom : </label>
         <input
@@ -129,4 +129,4 @@ const AdminWorkersPage = () => {
   );
 };
 
-export default AdminWorkersPage;
+export default AdminUsersPage;

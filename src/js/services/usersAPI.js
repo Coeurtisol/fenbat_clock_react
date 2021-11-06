@@ -7,20 +7,25 @@ async function findAll() {
 }
 
 async function create(user) {
-  const response = await axios.post(USERS_API_URL, user)
+  const response = await axios.post(USERS_API_URL, user);
+  return response.data;
+}
+
+async function update(id, user) {
+  const response = await axios.put(USERS_API_URL + "/" + id, user);
   return response.data;
 }
 
 async function deleteOne(id) {
-  const response = await axios.delete(USERS_API_URL + "/" + id)
+  const response = await axios.delete(USERS_API_URL + "/" + id);
   return response.data;
 }
 
-async function findAllByDay(date) {
-  const response = await axios.get(USERS_API_URL + "/pointages/" + date)
-  return response.data;
-}
+// async function findAllByDay(date) {
+//   const response = await axios.get(USERS_API_URL + "/pointages/" + date)
+//   return response.data;
+// }
 
-const USERS_API = { findAll, create, deleteOne, findAllByDay };
+const USERS_API = { findAll, create, update, deleteOne };
 
 export default USERS_API;

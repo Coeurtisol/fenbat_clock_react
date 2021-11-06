@@ -4,13 +4,13 @@ import { Link } from "react-router-dom";
 import USERS_API from "../services/usersAPI";
 
 const AccueilPage = () => {
-  const [workers, setWorkers] = useState([]);
+  const [users, setUsers] = useState([]);
 
   const fetchData = async () => {
     try {
       const data = await USERS_API.findAll();
       console.log("success fetch", data);
-      setWorkers(data);
+      setUsers(data);
     } catch (error) {
       console.log("erreur fetch", error);
     }
@@ -21,22 +21,22 @@ const AccueilPage = () => {
   }, []);
 
   return (
-    <main className="worker-container">
-      {workers
+    <main className="user-container">
+      {users
         .sort((a, b) => {
           return a.firstname.localeCompare(b.firstname);
         })
-        .map((worker) => (
+        .map((user) => (
           <Link
-            key={worker.id}
-            className="worker"
+            key={user.id}
+            className="user"
             to={{
               pathname: "/connexion",
-              state: worker.id,
+              state: user.id,
             }}
           >
             <p>
-              {worker.firstname} {worker.lastname}
+              {user.firstname} {user.lastname}
             </p>
           </Link>
         ))}

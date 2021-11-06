@@ -31,8 +31,8 @@ const HorlogeComponent = () => {
 
   return (
     <div className="horloge">
-      <div className="horloge-day">{dateTime.date}</div>
-      <div className="horloge-hour">{dateTime.hour}</div>
+      <h2 className="horloge-day m-0">{dateTime.date}</h2>
+      <h1 className="horloge-hour m-0">{dateTime.hour}</h1>
     </div>
   );
 };

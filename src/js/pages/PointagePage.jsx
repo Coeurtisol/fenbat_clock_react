@@ -4,23 +4,23 @@ import USERS_API from "../services/usersAPI";
 import POINTAGES_API from "../services/pointagesAPI";
 
 const PointagePage = () => {
-  const [workersWorkSessions, setWorkersWorkSessions] = useState([]);
+  const [usersWorkSessions, setUsersWorkSessions] = useState([]);
 
   const fetchData = async () => {
     const date = new Date().toISOString().split("T")[0];
     try {
       const data = await USERS_API.findAllByDay(date);
       console.log("success fetch", data);
-      setWorkersWorkSessions(data);
+      setUsersWorkSessions(data);
     } catch (error) {
       console.log("erreur fetch", error);
     }
   };
 
-  const handleStartSession = async (workerId) => {
+  const handleStartSession = async (userId) => {
     try {
       const data = await POINTAGES_API.create({
-        workerId,
+        userId,
         pointageDebut: new Date(),
       });
       console.log("success startSession", data);
@@ -30,8 +30,8 @@ const PointagePage = () => {
     fetchData();
   };
 
-  const handleEndSession = async (worker) => {
-    const workSessionId = worker.workSessions.filter(
+  const handleEndSession = async (user) => {
+    const workSessionId = user.workSessions.filter(
       (ws) => ws.sessionEnd == null
     );
     try {
@@ -51,32 +51,32 @@ const PointagePage = () => {
   }, []);
 
   return (
-    <main className="worker-container">
-      {workersWorkSessions
+    <main className="user-container">
+      {usersWorkSessions
         .sort((a, b) => {
           return a.firstname.localeCompare(b.firstname);
         })
-        .map((worker) => (
+        .map((user) => (
           <div
-            key={worker.id}
+            key={user.id}
             className={
-              "worker " +
-              (worker.workSessions.filter(
+              "user " +
+              (user.workSessions.filter(
                 (workSession) => workSession.sessionEnd == null
               ).length === 0
                 ? "absent"
                 : "present")
             }
             onClick={
-              worker.workSessions.filter(
+              user.workSessions.filter(
                 (workSession) => workSession.sessionEnd == null
               ).length === 0
-                ? () => handleStartSession(worker.id)
-                : () => handleEndSession(worker)
+                ? () => handleStartSession(user.id)
+                : () => handleEndSession(user)
             }
           >
             <p className="m-0">
-              {worker.firstname} {worker.lastname}
+              {user.firstname} {user.lastname}
             </p>
           </div>
         ))}
