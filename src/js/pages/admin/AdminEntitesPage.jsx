@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from "react";
 import ENTITES_API from "../../services/entitesAPI";
-import { Table, Form, Button } from "react-bootstrap";
+import { Table } from "react-bootstrap";
+import EntiteModal from "../../components/modals/EntiteModal";
 
 const AdminEntitesPage = () => {
   const [entites, setEntites] = useState([]);
-  const [newEntite, setNewEntite] = useState({
-    name: "",
-  });
 
   // FETCH
   const fetchEntites = async () => {
@@ -23,93 +21,34 @@ const AdminEntitesPage = () => {
     fetchEntites();
   }, []);
 
-  // FUNCTIONS
-  const handlechange = ({ target }) => {
-    console.log(newEntite);
-    const { name, value } = target;
-    setNewEntite({ [name]: value });
-  };
-
-  // CREATE
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await ENTITES_API.create(newEntite);
-      console.log("success submit", response);
-      setNewEntite({
-        name: "",
-      });
-    } catch (error) {
-      console.log("erreur submit", error);
-    }
-    fetchEntites();
-  };
-
-  // DELETE
-  const handleDelete = async (id) => {
-    try {
-      const response = await ENTITES_API.deleteOne(id);
-      console.log("success delete", response);
-    } catch (error) {
-      console.log("erreur delete", error);
-    }
-    fetchEntites();
-  };
-
   // TEMPLATE
   return (
-    <main>
-      <h1>Liste des entités :</h1>
+    <main className="admin-form">
+      <h1 className="text-center">Entités</h1>
       {entites.length === 0 ? (
         <p>Aucune entité n'est enregistrée pour le moment</p>
       ) : (
         <Table className="bt-0" variant="light" striped bordered hover>
           <thead>
-            <tr>
-              <th>Nom de l'entité</th>
+            <tr className="align-middle">
+              <th className="text-center">Nom de l'entité</th>
+              <th className="text-center w-auto">
+                <EntiteModal fetchEntites={fetchEntites} />
+              </th>
             </tr>
           </thead>
           <tbody>
-            {entites.map((m) => (
-              <tr key={m.id}>
-                <td>{m.name}</td>
-                <td style={{ width: "1px" }}>
-                  <Button variant="primary" type="submit" disabled size="sm">
-                    Modifier
-                  </Button>
-                </td>
-                <td style={{ width: "1px" }}>
-                  <Button
-                    variant="danger"
-                    type="submit"
-                    onClick={() => handleDelete(m.id)}
-                    size="sm"
-                  >
-                    Supprimer
-                  </Button>
+            {entites.map((e) => (
+              <tr key={e.id}>
+                <td>{e.name}</td>
+                <td style={{ width: "1px" }} className="text-center">
+                  <EntiteModal fetchEntites={fetchEntites} entite={e} />
                 </td>
               </tr>
             ))}
           </tbody>
         </Table>
       )}
-      <h1>Ajouter une entité :</h1>
-      <Form onSubmit={handleSubmit}>
-        <Form.Group className="mb-3">
-          <Form.Label>Nom</Form.Label>
-          <Form.Control
-            type="text"
-            name="name"
-            placeholder="Nom de l'entité"
-            value={newEntite.name}
-            onChange={handlechange}
-            required
-          />
-        </Form.Group>
-        <Button variant="primary" type="submit">
-          Envoyer
-        </Button>
-      </Form>
     </main>
   );
 };

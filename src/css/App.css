@@ -2,7 +2,6 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-size: 24px;
 }
 
 .app {
@@ -44,7 +43,6 @@ header {
   padding-right: 1em;
   height: 15vh;
   background-color: white;
-  /* border-bottom: 0.5em solid #ffe2b4; */
   border-bottom: 0.5em solid #ffb743;
 }
 
@@ -59,16 +57,11 @@ header {
   text-transform: capitalize;
   align-self: center;
   position: relative;
-}
-
-.horloge-day {
-  font-size: 40px;
+  /* margin-right: 1em; */
 }
 
 .horloge-hour {
-  font-size: 80px;
   text-align: center;
-  /* margin-top: -10px; */
 }
 
 /* MAIN */
@@ -161,3 +154,10 @@ main {
   color: #ffe2b4;
 }
 
+/* MODALS */
+.modal-header{
+  background-color: #515860;
+}
+.modal-header .h4{
+  color: #ffe2b4;
+}

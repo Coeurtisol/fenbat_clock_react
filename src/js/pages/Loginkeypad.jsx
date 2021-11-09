@@ -1,12 +1,13 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import AuthContext from "../contexts/AuthContext";
 import AUTH_API from "../services/authAPI";
 
-const LoginPage = ({ location, history }) => {
+const Loginkeypad = ({ location, history }) => {
+  const { setIsAuthenticated } = useContext(AuthContext);
   const id = location.state;
   if (!id) {
-    history.replace("/");
+    history.replace("/loginuserlist");
   }
 
   const [numbers, setNumbers] = useState([]);
@@ -53,7 +54,10 @@ const LoginPage = ({ location, history }) => {
   const login = async (credentials) => {
     try {
       const data = await AUTH_API.login(credentials);
+      // await AUTH_API.login(credentials);
+      setIsAuthenticated(true);
       console.log("success login", data);
+      history.replace("/");
     } catch (error) {
       console.log("erreur login", error);
     }
@@ -83,4 +87,4 @@ const LoginPage = ({ location, history }) => {
   );
 };
 
-export default LoginPage;
+export default Loginkeypad;

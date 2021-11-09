@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import USERS_API from "../services/usersAPI";
 
-const AccueilPage = () => {
+const Loginuserlist = () => {
   const [users, setUsers] = useState([]);
 
   const fetchData = async () => {
@@ -31,17 +31,17 @@ const AccueilPage = () => {
             key={user.id}
             className="user"
             to={{
-              pathname: "/connexion",
+              pathname: "/loginkeypad",
               state: user.id,
             }}
           >
-            <p>
+            <div>
               {user.firstname} {user.lastname}
-            </p>
+            </div>
           </Link>
         ))}
     </main>
   );
 };
 
-export default AccueilPage;
+export default Loginuserlist;

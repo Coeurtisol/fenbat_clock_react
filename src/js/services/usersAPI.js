@@ -1,6 +1,11 @@
 import axios from "axios";
 import { USERS_API_URL } from "../configs/api_links";
 
+async function findOne(id) {
+  const response = await axios.get(USERS_API_URL + "/" + id);
+  return response.data;
+}
+
 async function findAll() {
   const response = await axios.get(USERS_API_URL);
   return response.data;
@@ -26,6 +31,6 @@ async function deleteOne(id) {
 //   return response.data;
 // }
 
-const USERS_API = { findAll, create, update, deleteOne };
+const USERS_API = { findOne, findAll, create, update, deleteOne };
 
 export default USERS_API;

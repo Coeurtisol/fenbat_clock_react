@@ -3,14 +3,14 @@ import ImgComponent from "./ImgComponent";
 import HorlogeComponent from "./HorlogeComponent";
 import NavbarComponent from "./NavbarComponent";
 
-const HeaderComponent = () => {
+const HeaderComponent = (props) => {
   return (
     <header>
       <ImgComponent
         className="company-logo"
         src="../images/logo-fenbat-transparent.png"
       />
-      <NavbarComponent />
+      <NavbarComponent props={props} />
       <HorlogeComponent />
     </header>
   );
