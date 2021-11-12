@@ -23,7 +23,7 @@ const AdminTypesAffaireComponent = () => {
 
   // TEMPLATE
   return (
-    <div className="admin-form col-xl-5 col-12">
+    <div className="color-text col-xl-5 col-12">
       <h1 className="text-center">Types</h1>
       {typesAffaire.length === 0 ? (
         <p>Aucune type n'est enregistré pour le moment</p>

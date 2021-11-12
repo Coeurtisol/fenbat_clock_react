@@ -140,7 +140,7 @@ const UserModal = ({ fetchAffaires, affaire }) => {
         {affaire ? "Editer" : "Nouvelle affaire"}
       </Button>
       <Modal
-        size="xl"
+        size="lg"
         aria-labelledby="contained-modal-title-vcenter"
         centered
         show={showModal}

@@ -23,7 +23,7 @@ const AdminMotifsAbsencePage = () => {
 
   // TEMPLATE
   return (
-    <main className="admin-form">
+    <main className="color-text">
       <h1 className="text-center">Motifs d'absence</h1>
       {motifsAbsence.length === 0 ? (
         <p>Aucun motif d'absence n'est enregistré pour le moment</p>

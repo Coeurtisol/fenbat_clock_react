@@ -87,7 +87,7 @@ const SecteurAffaireModal = ({ fetchSecteursAffaire, secteurAffaire }) => {
         {secteurAffaire ? "Editer" : "Nouveau secteur"}
       </Button>
       <Modal
-        size="xl"
+        size="lg"
         aria-labelledby="contained-modal-title-vcenter"
         centered
         show={showModal}

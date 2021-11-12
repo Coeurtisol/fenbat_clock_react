@@ -23,7 +23,7 @@ const AdminUsersPage = () => {
 
   // TEMPLATE
   return (
-    <main className="admin-form">
+    <main className="color-text">
       <h1 className="text-center">Utilisateurs</h1>
       {users.length === 0 ? (
         <p>Aucun utilisateur n'est enregistré pour le moment</p>

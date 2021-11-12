@@ -23,7 +23,7 @@ const AdminEntitesPage = () => {
 
   // TEMPLATE
   return (
-    <main className="admin-form">
+    <main className="color-text">
       <h1 className="text-center">Entités</h1>
       {entites.length === 0 ? (
         <p>Aucune entité n'est enregistrée pour le moment</p>

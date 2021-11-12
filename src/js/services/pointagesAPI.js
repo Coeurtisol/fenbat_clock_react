@@ -1,12 +1,12 @@
 import axios from "axios";
 import { POINTAGES_API_URL } from "../configs/api_links";
 
-async function create({ userId, pointageDebut }) {
-  return await axios.post(POINTAGES_API_URL, { userId, pointageDebut });
+async function create( pointages ) {
+  return await axios.post(POINTAGES_API_URL, pointages );
 }
 
-async function update({ id, pointageFin }) {
-  return await axios.put(POINTAGES_API_URL + "/" + id, { pointageFin });
+async function update({ id, pointages }) {
+  return await axios.put(POINTAGES_API_URL + "/" + id,  pointages );
 }
 
 const POINTAGES_API = { create, update };

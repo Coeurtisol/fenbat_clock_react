@@ -26,19 +26,19 @@ const AdminAffairesPage = () => {
 
   // TEMPLATE
   return (
-    <main className="admin-form">
+    <main className="color-text">
       <h1 className="text-center">Affaires</h1>
       {affaires.length === 0 ? (
         <p>Aucune affaire n'est enregistrée pour le moment</p>
       ) : (
         <Table className="bt-0" variant="light" striped bordered hover>
           <thead>
-            <tr>
-              <th>Affaire</th>
-              <th>Entité</th>
-              <th>Type</th>
-              <th>Secteur</th>
-              <th>Etat</th>
+            <tr className="align-middle">
+              <th className="text-center">Affaire</th>
+              <th className="text-center">Entité</th>
+              <th className="text-center">Type</th>
+              <th className="text-center">Secteur</th>
+              <th className="text-center">Etat</th>
               <th className="text-center w-auto">
                 <AffaireModal fetchAffaires={fetchAffaires} />
               </th>

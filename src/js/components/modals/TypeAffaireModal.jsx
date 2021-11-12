@@ -87,7 +87,7 @@ const TypeAffaireModal = ({ fetchTypesAffaire, typeAffaire }) => {
         {typeAffaire ? "Editer" : "Nouveau type"}
       </Button>
       <Modal
-        size="xl"
+        size="lg"
         aria-labelledby="contained-modal-title-vcenter"
         centered
         show={showModal}

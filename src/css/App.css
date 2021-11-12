@@ -6,7 +6,7 @@
 
 .app {
   background-color: #515860;
-  width: 100vw;
+  width: 100%;
   min-height: 100vh;
   padding-bottom: 3em;
 }
@@ -60,6 +60,7 @@ header {
   /* margin-right: 1em; */
 }
 
+.horloge-day,
 .horloge-hour {
   text-align: center;
 }
@@ -82,14 +83,20 @@ main {
 
 .menu-container a {
   background-color: #ffb743;
-  color: #515860;
   min-width: 40%;
   padding: 1.5em 1em;
   border-radius: 0.5em;
-  font-size: 60px;
+  /* font-size: 60px; */
   font-family: sans-serif;
   text-align: center;
   text-decoration: none;
+}
+
+.menu-container h1 {
+  color: #515860;
+}
+.menu-container a:hover h1 {
+  color: white;
 }
 
 /* POINTAGE */
@@ -144,20 +151,25 @@ main {
 }
 
 /* ADMIN FORM */
-.admin-form h1,
-.admin-form label,
-.admin-form p {
+.color-text h1,
+.color-text label,
+.color-text p {
   color: white;
 }
 
-.admin-form h1{
+.color-text h1 {
   color: #ffe2b4;
 }
 
 /* MODALS */
-.modal-header{
+.modal-header {
   background-color: #515860;
 }
-.modal-header .h4{
+.modal-header .h4 {
   color: #ffe2b4;
+}
+
+/* FORMS */
+.selected-option {
+  background-color: #ffe2b4;
 }

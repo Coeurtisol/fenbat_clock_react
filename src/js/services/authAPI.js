@@ -36,6 +36,14 @@ function isAuthenticated() {
   return false;
 }
 
+function getId() {
+  if (isAuthenticated()) {
+    const token = getToken();
+    const jwtData = parseJwt(token);
+    return jwtData.id;
+  }
+}
+
 function getRole() {
   if (isAuthenticated()) {
     const token = getToken();
@@ -44,6 +52,30 @@ function getRole() {
   }
 }
 
-const AUTH_API = { login, logout, isAuthenticated, getRole };
+function getEntite() {
+  if (isAuthenticated()) {
+    const token = getToken();
+    const jwtData = parseJwt(token);
+    return jwtData.entite ? jwtData.entite.name : null;
+  }
+}
+
+function getFullName() {
+  if (isAuthenticated()) {
+    const token = getToken();
+    const jwtData = parseJwt(token);
+    return `${jwtData.firstname} ${jwtData.lastname}`;
+  }
+}
+
+const AUTH_API = {
+  login,
+  logout,
+  isAuthenticated,
+  getId,
+  getRole,
+  getEntite,
+  getFullName,
+};
 
 export default AUTH_API;

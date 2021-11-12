@@ -84,7 +84,7 @@ const MotifAbsenceModal = ({ fetchMotifsAbsence, motifAbsence }) => {
         {motifAbsence ? "Editer" : "Nouveau motif d'absence"}
       </Button>
       <Modal
-        size="xl"
+        size="lg"
         aria-labelledby="contained-modal-title-vcenter"
         centered
         show={showModal}
