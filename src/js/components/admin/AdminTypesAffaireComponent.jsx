@@ -32,9 +32,7 @@ const AdminTypesAffaireComponent = () => {
           <thead>
             <tr className="align-middle">
               <th className="text-center">Nom du type</th>
-              <th className="text-center w-auto">
-                <TypeAffaireModal fetchTypesAffaire={fetchTypesAffaire} />
-              </th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -52,6 +50,7 @@ const AdminTypesAffaireComponent = () => {
           </tbody>
         </Table>
       )}
+      <TypeAffaireModal fetchTypesAffaire={fetchTypesAffaire} />
     </div>
   );
 };

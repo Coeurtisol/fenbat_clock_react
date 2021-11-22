@@ -32,9 +32,7 @@ const AdminSecteursAffaireComponent = () => {
           <thead>
             <tr className="align-middle">
               <th className="text-center">Nom du secteur</th>
-              <th className="text-center w-auto">
-                <SecteurAffaireModal fetchSecteursAffaire={fetchSecteursAffaire} />
-              </th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -42,13 +40,17 @@ const AdminSecteursAffaireComponent = () => {
               <tr key={e.id}>
                 <td>{e.name}</td>
                 <td style={{ width: "1px" }} className="text-center">
-                  <SecteurAffaireModal fetchSecteursAffaire={fetchSecteursAffaire} secteurAffaire={e} />
+                  <SecteurAffaireModal
+                    fetchSecteursAffaire={fetchSecteursAffaire}
+                    secteurAffaire={e}
+                  />
                 </td>
               </tr>
             ))}
           </tbody>
         </Table>
       )}
+      <SecteurAffaireModal fetchSecteursAffaire={fetchSecteursAffaire} />
     </div>
   );
 };

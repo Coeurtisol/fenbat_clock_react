@@ -8,80 +8,21 @@ import MOTIFSABSENCE_API from "../services/motifsAbsenceAPI";
 import PointageAffaireModal from "../components/modals/PointageAffaireModal";
 import PointageHourModal from "../components/modals/PointageHourModal";
 import PointageMotifAbsenceModal from "../components/modals/PointageMotifAbsenceModal";
+import { fakePointages1, fakePointages2 } from "../fakeSemaine.js";
 
 const PointagePage = () => {
   const [affaires, setAffaires] = useState([]);
   const [motifsAbsence, setMotifsAbsence] = useState([]);
+  const [defaultMotif, setDefaultMotif] = useState("");
+  const [defaultAffaire, setDefaultAffaire] = useState("");
   const [entites, setEntites] = useState([]);
   const [search, setSearch] = useState({
     semaine: "",
     entite: AUTH_API.getEntite() || "",
   });
-  const [pointages, setPointages] = useState([
-    {
-      day: "Lun 04-10",
-      amValue: 4,
-      pmValue: 3,
-      amAffaire: "Tison",
-      pmAffaire: "Tison",
-      amMotif: "",
-      pmMotif: "",
-    },
-    {
-      day: "Mar 05-10",
-      amValue: 3,
-      pmValue: 3,
-      amAffaire: "",
-      pmAffaire: "",
-      amMotif: "Formation",
-      pmMotif: "Formation",
-    },
-    {
-      day: "Mer 06-10",
-      amValue: 4.5,
-      pmValue: 2.5,
-      amAffaire: "Tison",
-      pmAffaire: "Malice",
-      amMotif: "",
-      pmMotif: "",
-    },
-    {
-      day: "Jeu 07-10",
-      amValue: 5,
-      pmValue: 2,
-      amAffaire: "Tison",
-      pmAffaire: "Malice",
-      amMotif: "",
-      pmMotif: "",
-    },
-    {
-      day: "Ven 08-10",
-      amValue: 4,
-      pmValue: 0,
-      amAffaire: "Tison",
-      pmAffaire: "",
-      amMotif: "",
-      pmMotif: "",
-    },
-    {
-      day: "Sam 09-10",
-      amValue: 0,
-      pmValue: 0,
-      amAffaire: "",
-      pmAffaire: "",
-      amMotif: "",
-      pmMotif: "",
-    },
-    {
-      day: "Dim 10-10",
-      amValue: 0,
-      pmValue: 0,
-      amAffaire: "",
-      pmAffaire: "",
-      amMotif: "",
-      pmMotif: "",
-    },
-  ]);
+  const [pointages, setPointages] = useState(fakePointages1);
+
+  console.log(fakePointages2);
 
   // ######################################### FETCH FUNCTIONS
   const fetchEntites = async () => {
@@ -350,7 +291,10 @@ const PointagePage = () => {
                 <Col>
                   <Form.Select
                     name="entite"
-                    onChange={handleChangeSearch}
+                    onChange={(e) => {
+                      handleChangeSearch(e);
+                      setDefaultAffaire("");
+                    }}
                     value={search.entite}
                   >
                     {!search.entite && <option>Selectionnez l'entité</option>}
@@ -372,10 +316,15 @@ const PointagePage = () => {
                 <Form.Label column>Affaire par défaut</Form.Label>
                 <Col>
                   <Form.Select
-                    onChange={(e) => handleChangeDefault(e.target)}
+                    onChange={(e) => {
+                      handleChangeDefault(e.target);
+                      setDefaultAffaire(e.target.value);
+                    }}
                     name="Affaire"
                   >
-                    <option>Selectionnez l'affaire par défaut</option>
+                    {!defaultAffaire && (
+                      <option>Selectionnez l'affaire par défaut</option>
+                    )}
                     {filteredAffaires.map((a) => (
                       <option key={a.id} value={a.name}>
                         {a.name}
@@ -388,10 +337,17 @@ const PointagePage = () => {
                 <Form.Label column>Motif d'absence par défaut</Form.Label>
                 <Col>
                   <Form.Select
-                    onChange={(e) => handleChangeDefault(e.target)}
+                    onChange={(e) => {
+                      handleChangeDefault(e.target);
+                      setDefaultMotif(e.target.value);
+                    }}
                     name="Motif"
                   >
-                    <option>Selectionnez le motif d'absence par défaut</option>
+                    {!defaultMotif && (
+                      <option>
+                        Selectionnez le motif d'absence par défaut
+                      </option>
+                    )}
                     <option value="">Ne pas saisir de motif d'absence</option>
                     {motifsAbsence.map((m) => (
                       <option key={m.id} value={m.name}>

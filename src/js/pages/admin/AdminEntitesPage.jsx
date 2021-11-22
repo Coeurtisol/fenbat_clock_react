@@ -32,9 +32,7 @@ const AdminEntitesPage = () => {
           <thead>
             <tr className="align-middle">
               <th className="text-center">Nom de l'entité</th>
-              <th className="text-center w-auto">
-                <EntiteModal fetchEntites={fetchEntites} />
-              </th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -49,6 +47,7 @@ const AdminEntitesPage = () => {
           </tbody>
         </Table>
       )}
+      <EntiteModal fetchEntites={fetchEntites} />
     </main>
   );
 };

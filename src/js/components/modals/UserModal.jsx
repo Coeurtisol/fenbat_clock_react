@@ -175,7 +175,11 @@ const UserModal = ({ fetchUsers, userId }) => {
               <Form.Control
                 type="number"
                 name="accessCode"
-                placeholder={`Code d'accès de l'utilisateur${userId && " (laisser vide pour ne pas modifier le code d'accès)"}`}
+                placeholder={`Code d'accès de l'utilisateur${
+                  userId
+                    ? " (laisser vide pour ne pas modifier le code d'accès)"
+                    : ""
+                }`}
                 value={newUser.accessCode}
                 onChange={handlechange}
                 required={userId ? false : true}

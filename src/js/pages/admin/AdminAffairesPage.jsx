@@ -31,34 +31,35 @@ const AdminAffairesPage = () => {
       {affaires.length === 0 ? (
         <p>Aucune affaire n'est enregistrée pour le moment</p>
       ) : (
-        <Table className="bt-0" variant="light" striped bordered hover>
-          <thead>
-            <tr className="align-middle">
-              <th className="text-center">Affaire</th>
-              <th className="text-center">Entité</th>
-              <th className="text-center">Type</th>
-              <th className="text-center">Secteur</th>
-              <th className="text-center">Etat</th>
-              <th className="text-center w-auto">
-                <AffaireModal fetchAffaires={fetchAffaires} />
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {affaires.map((a) => (
-              <tr key={a.id}>
-                <td>{a.name}</td>
-                <td>{a.entite.name}</td>
-                <td>{a.typeAffaire.name}</td>
-                <td>{a.secteurAffaire.name}</td>
-                <td>{a.etat}</td>
-                <td style={{ width: "1px" }} className="text-center">
-                  <AffaireModal fetchAffaires={fetchAffaires} affaire={a} />
-                </td>
+        <>
+          <Table className="bt-0" variant="light" striped bordered hover>
+            <thead>
+              <tr className="align-middle">
+                <th className="text-center">Affaire</th>
+                <th className="text-center">Entité</th>
+                <th className="text-center">Type</th>
+                <th className="text-center">Secteur</th>
+                <th className="text-center">Etat</th>
+                <th></th>
               </tr>
-            ))}
-          </tbody>
-        </Table>
+            </thead>
+            <tbody>
+              {affaires.map((a) => (
+                <tr key={a.id}>
+                  <td>{a.name}</td>
+                  <td>{a.entite.name}</td>
+                  <td>{a.typeAffaire.name}</td>
+                  <td>{a.secteurAffaire.name}</td>
+                  <td>{a.etat}</td>
+                  <td style={{ width: "1px" }} className="text-center">
+                    <AffaireModal fetchAffaires={fetchAffaires} affaire={a} />
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+          <AffaireModal fetchAffaires={fetchAffaires} />
+        </>
       )}
       <div className="d-flex flex-wrap justify-content-evenly">
         <AdminSecteursAffaireComponent />

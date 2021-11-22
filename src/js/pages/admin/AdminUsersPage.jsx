@@ -34,9 +34,7 @@ const AdminUsersPage = () => {
               <th className="text-center">Nom Prénom</th>
               <th className="text-center">Rôle</th>
               <th className="text-center">Entité</th>
-              <th className="text-center w-auto">
-                <UserModal fetchUsers={fetchUsers} />
-              </th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -55,6 +53,7 @@ const AdminUsersPage = () => {
           </tbody>
         </Table>
       )}
+      <UserModal fetchUsers={fetchUsers} />
     </main>
   );
 };

@@ -32,9 +32,7 @@ const AdminMotifsAbsencePage = () => {
           <thead>
             <tr className="align-middle">
               <th className="text-center">Nom du motif d'absence</th>
-              <th className="text-center w-auto">
-                <MotifAbsenceModal fetchMotifsAbsence={fetchMotifsAbsence} />
-              </th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -52,6 +50,7 @@ const AdminMotifsAbsencePage = () => {
           </tbody>
         </Table>
       )}
+      <MotifAbsenceModal fetchMotifsAbsence={fetchMotifsAbsence} />
     </main>
   );
 };
