@@ -49,14 +49,14 @@ const PointageAffaireModal = ({
         Modifier
       </Button>
       <Modal
-        size="lg"
+        size="sm"
         aria-labelledby="contained-modal-title-vcenter"
         centered
         show={showModal}
         onHide={handleShowModal}
       >
         <Modal.Header closeButton>
-          <Modal.Title>Changer le nombre d'heure</Modal.Title>
+          <Modal.Title>Nombre d'heure</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form onSubmit={handleSubmit}>
