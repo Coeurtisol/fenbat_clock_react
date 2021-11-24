@@ -78,8 +78,8 @@ const PointageAffaireModal = ({
           <Form onSubmit={handleSubmit}>
             <div className="d-flex flex-wrap justify-content-between">
               <Form.Group className="mb-3 col-xl-5 col-12">
-                <Form.Label>Entité</Form.Label>
-                <Form.Select
+                <Form.Label>Entités</Form.Label>
+                {/* <Form.Select
                   name="entiteId"
                   onChange={(e) => setEntiteChoice(e.target.value)}
                   value={entiteChoice}
@@ -96,8 +96,8 @@ const PointageAffaireModal = ({
                       {e.name}
                     </option>
                   ))}
-                </Form.Select>
-                {/* {entites.map((e) => (
+                </Form.Select> */}
+                {entites.map((e) => (
                   <Form.Check
                     onChange={(e) => setEntiteChoice(e.target.value)}
                     type="radio"
@@ -105,8 +105,9 @@ const PointageAffaireModal = ({
                     key={e.id}
                     label={e.name}
                     value={e.name}
+                    checked={e.name == entiteChoice}
                   />
-                ))} */}
+                ))}
               </Form.Group>
               <div className="mb-3 col-xl-5 col-12">
                 <Form.Group>
@@ -115,18 +116,20 @@ const PointageAffaireModal = ({
                     <Form.Select
                       name="typeAffaireId"
                       onChange={(e) => setAffaireChoice(e.target.value)}
-                      value={affaireChoice}
+                      value={affaireChoice || ""}
                     >
-                      {/* {!affaireChoice && (
+                      {!affaireChoice && (
                         <option>Selectionnez l'affaire</option>
-                      )} */}
-                      <option>Selectionnez l'affaire</option>
+                      )}
+                      {affaireChoice && (
+                        <option value="0">Ne pas selectionner d'affaire</option>
+                      )}
                       {filteredAffaires.map((a) => (
                         <option
                           key={a.id}
-                          value={a.name}
+                          value={a.id}
                           className={
-                            a.name == affaireChoice ? "selected-option" : null
+                            a.id == affaireChoice ? "selected-option" : null
                           }
                         >
                           {a.name}
@@ -148,7 +151,6 @@ const PointageAffaireModal = ({
                   <Button
                     variant="primary"
                     type="submit"
-                    // disabled={affaireChoice == 0}
                   >
                     Valider
                   </Button>

@@ -8,7 +8,7 @@ import MOTIFSABSENCE_API from "../services/motifsAbsenceAPI";
 import PointageAffaireModal from "../components/modals/PointageAffaireModal";
 import PointageHourModal from "../components/modals/PointageHourModal";
 import PointageMotifAbsenceModal from "../components/modals/PointageMotifAbsenceModal";
-import { fakePointages1, fakePointages2 } from "../fakeSemaine.js";
+import { fakePointages2 } from "../fakeSemaine.js";
 
 const PointagePage = () => {
   const [affaires, setAffaires] = useState([]);
@@ -20,9 +20,7 @@ const PointagePage = () => {
     semaine: "",
     entite: AUTH_API.getEntite() || "",
   });
-  const [pointages, setPointages] = useState(fakePointages1);
-
-  console.log(fakePointages2);
+  const [pointages, setPointages] = useState(fakePointages2);
 
   // ######################################### FETCH FUNCTIONS
   const fetchEntites = async () => {
@@ -76,16 +74,9 @@ const PointagePage = () => {
   };
 
   const handleChangeDefault = ({ name, value }) => {
-    const amName = "am" + name;
-    const pmName = "pm" + name;
-    // console.log(amName);
-    // console.log(pmName);
-    // console.log(value);
-
     let copyPointages = [...pointages];
     for (const pointage of copyPointages) {
-      pointage[amName] = value;
-      pointage[pmName] = value;
+      pointage[name] = value;
     }
     setPointages(copyPointages);
   };
@@ -96,25 +87,47 @@ const PointagePage = () => {
   );
 
   // ######################################### GESTION SEMAINES
+  const formatDateSelect = (date) => {
+    let day = date.getDate();
+    day = day < 10 ? `0${day}` : day;
+    let month = date.getMonth() + 1;
+    month = month < 10 ? `0${month}` : month;
+    return `${day}-${month}`;
+  };
+
   let semaineOptions = [];
   const weeksNumber = DATE_API.getWeekNumber();
   for (let i = 1; i <= weeksNumber; i++) {
+    const weekDays = DATE_API.getWeekDays(i);
+    const firstDay = formatDateSelect(weekDays[0]);
+    const lastDay = formatDateSelect(weekDays[weekDays.length - 1]);
     semaineOptions.push(
       <option
         key={i}
         value={i}
         className={i == search.semaine ? "selected-option" : null}
-      >{`(Semaine: ${i})`}</option>
+      >{`(Semaine: ${i}) : ${firstDay} -> ${lastDay}`}</option>
     );
   }
 
   // ######################################### GENERATION TABLEAU
   // Ligne nom du jour
+  const dateOptions = {
+    weekday: "short",
+    day: "2-digit",
+    month: "2-digit",
+  };
+  const FormatDateColumn = (dateObject) => {
+    const date = dateObject.toLocaleDateString("fr-FR", dateOptions);
+    return date;
+  };
+
   let nameDayLine = [];
-  for (let i = 0; i < pointages.length; i++) {
+  for (let i = 0; i < pointages.length; i += 2) {
+    const formatedDateColumn = FormatDateColumn(pointages[i].date);
     nameDayLine.push(
       <th colSpan="2" key={i} className="text-center">
-        {pointages && pointages[i].day}
+        {formatedDateColumn}
       </th>
     );
   }
@@ -123,8 +136,9 @@ const PointagePage = () => {
   for (let i = 0; i < pointages.length; i++) {
     momentDayLine.push(
       <React.Fragment key={i}>
-        <td className="text-center">A.M</td>
-        <td className="text-center">P.M</td>
+        <td className="text-center">
+          {pointages && pointages[i].moment ? "P.M" : "A.M"}
+        </td>
       </React.Fragment>
     );
   }
@@ -133,8 +147,7 @@ const PointagePage = () => {
   for (let i = 0; i < pointages.length; i++) {
     valueLine.push(
       <React.Fragment key={i}>
-        <td className="text-center">{pointages[i].amValue}</td>
-        <td className="text-center">{pointages[i].pmValue}</td>
+        <td className="text-center">{pointages[i].value}</td>
       </React.Fragment>
     );
   }
@@ -148,17 +161,8 @@ const PointagePage = () => {
             pointages={pointages}
             setPointages={setPointages}
             index={i}
-            name="amValue"
-            value={pointages[i].amValue}
-          />
-        </td>
-        <td className="text-center">
-          <PointageHourModal
-            pointages={pointages}
-            setPointages={setPointages}
-            index={i}
-            name="pmValue"
-            value={pointages[i].pmValue}
+            name="value"
+            value={pointages[i].value}
           />
         </td>
       </React.Fragment>
@@ -169,8 +173,12 @@ const PointagePage = () => {
   for (let i = 0; i < pointages.length; i++) {
     affaireLine.push(
       <React.Fragment key={i}>
-        <td className="text-center">{pointages[i].amAffaire}</td>
-        <td className="text-center">{pointages[i].pmAffaire}</td>
+        <td className="text-center">
+          {pointages[i].affaireId > 0
+            ? affaires.length != 0 &&
+              affaires.find((a) => a.id == pointages[i].affaireId).name
+            : null}
+        </td>
       </React.Fragment>
     );
   }
@@ -181,24 +189,13 @@ const PointagePage = () => {
       <React.Fragment key={i}>
         <td className="text-center">
           <PointageAffaireModal
-            affaire={pointages[i].amAffaire}
+            affaire={pointages[i].affaireId}
             entite={search.entite}
             entites={entites}
             pointages={pointages}
             setPointages={setPointages}
             index={i}
-            name="amAffaire"
-          />
-        </td>
-        <td className="text-center">
-          <PointageAffaireModal
-            affaire={pointages[i].pmAffaire}
-            entite={search.entite}
-            entites={entites}
-            pointages={pointages}
-            setPointages={setPointages}
-            index={i}
-            name="pmAffaire"
+            name="affaireId"
           />
         </td>
       </React.Fragment>
@@ -206,20 +203,20 @@ const PointagePage = () => {
   }
   // ligne des montants totaux
   let valueTotalLine = [];
-  for (let i = 0; i < pointages.length; i++) {
+  for (let i = 0; i < pointages.length; i += 2) {
     valueTotalLine.push(
       <td colSpan="2" key={i} className="text-center">
-        {pointages[i].amValue + pointages[i].pmValue}
+        {pointages[i].value + pointages[i + 1].value}
       </td>
     );
   }
   // ligne des paniers
   let panierLine = [];
-  for (let i = 0; i < pointages.length; i++) {
+  for (let i = 0; i < pointages.length; i += 2) {
     panierLine.push(
       <td colSpan="2" key={i} className="text-center">
-        {pointages[i].amValue > 4 ||
-        (pointages[i].amValue && pointages[i].pmValue)
+        {pointages[i].value > 4 ||
+        (pointages[i].value && pointages[i + 1].value)
           ? 1
           : 0}
       </td>
@@ -230,8 +227,13 @@ const PointagePage = () => {
   for (let i = 0; i < pointages.length; i++) {
     motifLine.push(
       <React.Fragment key={i}>
-        <td className="text-center">{pointages[i].amMotif}</td>
-        <td className="text-center">{pointages[i].pmMotif}</td>
+        <td className="text-center">
+          {pointages[i].motifAbsenceId > 0
+            ? motifsAbsence.length != 0 &&
+              motifsAbsence.find((m) => m.id == pointages[i].motifAbsenceId)
+                .name
+            : null}
+        </td>
       </React.Fragment>
     );
   }
@@ -242,20 +244,11 @@ const PointagePage = () => {
       <React.Fragment key={i}>
         <td className="text-center">
           <PointageMotifAbsenceModal
-            motif={pointages[i].amMotif}
+            motif={pointages[i].motifAbsenceId}
             pointages={pointages}
             setPointages={setPointages}
             index={i}
-            name="amMotif"
-          />
-        </td>
-        <td className="text-center">
-          <PointageMotifAbsenceModal
-            motif={pointages[i].pmMotif}
-            pointages={pointages}
-            setPointages={setPointages}
-            index={i}
-            name="pmMotif"
+            name="motifAbsenceId"
           />
         </td>
       </React.Fragment>
@@ -320,13 +313,14 @@ const PointagePage = () => {
                       handleChangeDefault(e.target);
                       setDefaultAffaire(e.target.value);
                     }}
-                    name="Affaire"
+                    name="affaireId"
                   >
                     {!defaultAffaire && (
                       <option>Selectionnez l'affaire par défaut</option>
                     )}
+                    <option value="0">Retirer l'affaire par défaut</option>
                     {filteredAffaires.map((a) => (
-                      <option key={a.id} value={a.name}>
+                      <option key={a.id} value={a.id}>
                         {a.name}
                       </option>
                     ))}
@@ -341,16 +335,16 @@ const PointagePage = () => {
                       handleChangeDefault(e.target);
                       setDefaultMotif(e.target.value);
                     }}
-                    name="Motif"
+                    name="motifAbsenceId"
                   >
                     {!defaultMotif && (
                       <option>
                         Selectionnez le motif d'absence par défaut
                       </option>
                     )}
-                    <option value="">Ne pas saisir de motif d'absence</option>
+                    <option value="0">Retirer le motif d'absence</option>
                     {motifsAbsence.map((m) => (
-                      <option key={m.id} value={m.name}>
+                      <option key={m.id} value={m.id}>
                         {m.name}
                       </option>
                     ))}
