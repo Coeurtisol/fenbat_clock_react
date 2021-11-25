@@ -37,7 +37,7 @@ const AdminAffairesPage = () => {
               <tr className="align-middle">
                 <th className="text-center">Affaire</th>
                 <th className="text-center">Entité</th>
-                <th className="text-center">Type</th>
+                <th className="text-center">Corps d'état</th>
                 <th className="text-center">Secteur</th>
                 <th className="text-center">Etat</th>
                 <th></th>

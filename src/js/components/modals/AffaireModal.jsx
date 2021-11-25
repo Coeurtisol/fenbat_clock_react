@@ -180,13 +180,13 @@ const UserModal = ({ fetchAffaires, affaire }) => {
               </Form.Select>
             </Form.Group>
             <Form.Group className="mb-3">
-              <Form.Label>Type</Form.Label>
+              <Form.Label>Corps d'état</Form.Label>
               <Form.Select
                 name="typeAffaireId"
                 onChange={handlechange}
                 value={newAffaire.typeAffaireId}
               >
-                <option>Selectionnez le type d'affaire</option>
+                <option>Selectionnez le corps d'état de l'affaire</option>
                 {typesAffaire.map((t) => (
                   <option key={t.id} value={t.id}>
                     {t.name}

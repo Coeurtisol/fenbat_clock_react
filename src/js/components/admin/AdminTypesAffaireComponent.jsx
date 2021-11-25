@@ -24,14 +24,14 @@ const AdminTypesAffaireComponent = () => {
   // TEMPLATE
   return (
     <div className="color-text col-xl-5 col-12">
-      <h1 className="text-center">Types</h1>
+      <h1 className="text-center">Corps d'état</h1>
       {typesAffaire.length === 0 ? (
-        <p>Aucune type n'est enregistré pour le moment</p>
+        <p>Aucune corps d'état n'est enregistré pour le moment</p>
       ) : (
         <Table className="bt-0" variant="light" striped bordered hover>
           <thead>
             <tr className="align-middle">
-              <th className="text-center">Nom du type</th>
+              <th className="text-center">Nom du corps d'état</th>
               <th></th>
             </tr>
           </thead>

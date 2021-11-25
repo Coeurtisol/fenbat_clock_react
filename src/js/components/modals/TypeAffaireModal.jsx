@@ -84,7 +84,7 @@ const TypeAffaireModal = ({ fetchTypesAffaire, typeAffaire }) => {
         type="button"
         onClick={handleShowTypeAffaireModal}
       >
-        {typeAffaire ? "Editer" : "Nouveau type"}
+        {typeAffaire ? "Editer" : "Nouveau corps d'état"}
       </Button>
       <Modal
         size="lg"
@@ -96,8 +96,8 @@ const TypeAffaireModal = ({ fetchTypesAffaire, typeAffaire }) => {
         <Modal.Header closeButton>
           <Modal.Title>
             {typeAffaire
-              ? `Modification du type : ${typeAffaire.name}`
-              : "Nouveau type"}
+              ? `Modification du corps d'état : ${typeAffaire.name}`
+              : "Nouveau corps d'état"}
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
