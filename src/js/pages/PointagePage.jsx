@@ -252,7 +252,7 @@ const PointagePage = () => {
   for (let i = 0; i < pointages.length; i += 2) {
     panierLine.push(
       <td colSpan="2" key={i} className="text-center">
-        {pointages[i].valeur > 4 ||
+        {pointages[i].valeur > 5 ||
         (pointages[i].valeur && pointages[i + 1].valeur)
           ? 1
           : 0}
