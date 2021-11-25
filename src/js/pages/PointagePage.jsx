@@ -8,21 +8,37 @@ import MOTIFSABSENCE_API from "../services/motifsAbsenceAPI";
 import PointageAffaireModal from "../components/modals/PointageAffaireModal";
 import PointageHourModal from "../components/modals/PointageHourModal";
 import PointageMotifAbsenceModal from "../components/modals/PointageMotifAbsenceModal";
-import { fakePointages2 } from "../fakeSemaine.js";
+// import { fakePointages2 } from "../fakeSemaine.js";
+import SEMAINES_API from "../services/semainesAPI";
 
 const PointagePage = () => {
+  const [year, setYear] = useState(new Date().getFullYear());
+  const [week, setWeek] = useState(DATE_API.getWeekNumber(new Date()));
+  const [semaine, setSemaine] = useState();
   const [affaires, setAffaires] = useState([]);
   const [motifsAbsence, setMotifsAbsence] = useState([]);
   const [defaultMotif, setDefaultMotif] = useState("");
   const [defaultAffaire, setDefaultAffaire] = useState("");
   const [entites, setEntites] = useState([]);
   const [search, setSearch] = useState({
-    semaine: "",
     entite: AUTH_API.getEntite() || "",
   });
-  const [pointages, setPointages] = useState(fakePointages2);
+  const [pointages, setPointages] = useState([]);
 
   // ######################################### FETCH FUNCTIONS
+  const fetchSemaine = async () => {
+    try {
+      console.log(year, week, AUTH_API.getId());
+      const response = await SEMAINES_API.findOne(year, week, AUTH_API.getId());
+      const data = response.data;
+      console.log("success fetch semaine", data);
+      setSemaine(data);
+      setPointages(data.pointages);
+    } catch (error) {
+      console.log("erreur fetch", error);
+    }
+  };
+
   const fetchEntites = async () => {
     try {
       const entites = await ENTITES_API.findAll();
@@ -54,13 +70,14 @@ const PointagePage = () => {
   };
 
   useEffect(() => {
+    fetchSemaine();
     fetchEntites();
     fetchAffaires();
     fetchMotifsAbsence();
-    setSearch({
-      ...search,
-      semaine: DATE_API.getWeekNumber(new Date()),
-    });
+    // setSearch({
+    //   ...search,
+    //   semaine: DATE_API.getWeekNumber(new Date()),
+    // });
   }, []);
 
   // ######################################### HANDLE FUNCTIONS
@@ -79,6 +96,26 @@ const PointagePage = () => {
       pointage[name] = value;
     }
     setPointages(copyPointages);
+  };
+
+  const handleSubmitSave = async ({ target }) => {
+    const updatedSemaine = { ...semaine };
+    updatedSemaine.pointages = pointages;
+    updatedSemaine.etatSemaineId = target.name
+      ? +target.name
+      : semaine.etatSemaine.id;
+    delete updatedSemaine.etatSemaine;
+    console.log("updated semaine", updatedSemaine);
+    try {
+      const response = await SEMAINES_API.update(
+        updatedSemaine.id,
+        updatedSemaine
+      );
+      console.log("success update", response);
+    } catch (error) {
+      console.log("erreur update", error);
+    }
+    fetchSemaine();
   };
 
   // ######################################### FILTRAGE AFFAIRES
@@ -105,8 +142,8 @@ const PointagePage = () => {
       <option
         key={i}
         value={i}
-        className={i == search.semaine ? "selected-option" : null}
-      >{`(Semaine: ${i}) : ${firstDay} -> ${lastDay}`}</option>
+        className={i == week ? "selected-option" : null}
+      >{`(S: ${i}) : ${firstDay} -> ${lastDay}`}</option>
     );
   }
 
@@ -118,7 +155,7 @@ const PointagePage = () => {
     month: "2-digit",
   };
   const FormatDateColumn = (dateObject) => {
-    const date = dateObject.toLocaleDateString("fr-FR", dateOptions);
+    const date = new Date(dateObject).toLocaleDateString("fr-FR", dateOptions);
     return date;
   };
 
@@ -147,7 +184,7 @@ const PointagePage = () => {
   for (let i = 0; i < pointages.length; i++) {
     valueLine.push(
       <React.Fragment key={i}>
-        <td className="text-center">{pointages[i].value}</td>
+        <td className="text-center">{pointages[i].valeur}</td>
       </React.Fragment>
     );
   }
@@ -161,8 +198,8 @@ const PointagePage = () => {
             pointages={pointages}
             setPointages={setPointages}
             index={i}
-            name="value"
-            value={pointages[i].value}
+            name="valeur"
+            value={pointages[i].valeur}
           />
         </td>
       </React.Fragment>
@@ -206,7 +243,7 @@ const PointagePage = () => {
   for (let i = 0; i < pointages.length; i += 2) {
     valueTotalLine.push(
       <td colSpan="2" key={i} className="text-center">
-        {pointages[i].value + pointages[i + 1].value}
+        {pointages[i].valeur + pointages[i + 1].valeur}
       </td>
     );
   }
@@ -215,8 +252,8 @@ const PointagePage = () => {
   for (let i = 0; i < pointages.length; i += 2) {
     panierLine.push(
       <td colSpan="2" key={i} className="text-center">
-        {pointages[i].value > 4 ||
-        (pointages[i].value && pointages[i + 1].value)
+        {pointages[i].valeur > 4 ||
+        (pointages[i].valeur && pointages[i + 1].valeur)
           ? 1
           : 0}
       </td>
@@ -258,7 +295,7 @@ const PointagePage = () => {
   // ######################################### TEMPLATE
   return (
     <>
-      <div className="container color-text">
+      <div className="container-fluid color-text">
         <h1 className="text-center my-4">{AUTH_API.getFullName()}</h1>
         <div>
           {/* <div className="container d-flex flex-wrap justify-content-evenly"> */}
@@ -269,12 +306,10 @@ const PointagePage = () => {
                 <Col>
                   <Form.Select
                     name="semaine"
-                    onChange={handleChangeSearch}
-                    value={search.semaine}
+                    onChange={(e) => setWeek(e.target.value)}
+                    value={week}
                   >
-                    {!search.semaine && (
-                      <option>Selectionnez la semaine</option>
-                    )}
+                    {!week && <option>Selectionnez la semaine</option>}
                     {semaineOptions}
                   </Form.Select>
                 </Col>
@@ -376,7 +411,7 @@ const PointagePage = () => {
               {momentDayLine}
             </tr>
             <tr className="align-middle">
-              <th>Heures travaillées</th>
+              <th>Heures</th>
               {valueLine}
             </tr>
             <tr className="align-middle">
@@ -410,6 +445,25 @@ const PointagePage = () => {
           </tbody>
         </Table>
         {/* <div id="FILTER"></div> */}
+      </div>
+      <div className="container-fluid d-flex justify-content-end mt-3">
+        <Button
+          className="mx-3"
+          variant="primary"
+          onClick={handleSubmitSave}
+          type="button"
+        >
+          Sauvegarder
+        </Button>
+        <Button
+          className="mx-3"
+          variant="success"
+          name="2"
+          onClick={handleSubmitSave}
+          type="button"
+        >
+          Envoyer pour validation
+        </Button>
       </div>
     </>
   );
