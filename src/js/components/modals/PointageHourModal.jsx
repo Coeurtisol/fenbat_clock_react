@@ -16,9 +16,9 @@ const PointageAffaireModal = ({
     setShowModal(!showModal);
     if (!showModal) {
       setHours(Math.trunc(value));
-      console.log(Math.trunc(value));
+      // console.log(Math.trunc(value));
       setMinutes(value - Math.trunc(value));
-      console.log(value - Math.trunc(value));
+      // console.log(value - Math.trunc(value));
     }
   };
 
@@ -97,9 +97,21 @@ const PointageAffaireModal = ({
                 <option value="0.75">.75 (45 minutes)</option>
               </Form.Select>
             </Form.Group>
-            <Button variant="primary" type="submit">
-              Valider
-            </Button>
+            <div className="d-flex justify-content-between">
+              <Button variant="primary" type="submit">
+                Valider
+              </Button>
+              <Button
+                variant="primary"
+                onClick={() => {
+                  setHours(0);
+                  setMinutes(0);
+                }}
+                type="submit"
+              >
+                Remise à zéro
+              </Button>
+            </div>
           </Form>
         </Modal.Body>
       </Modal>
