@@ -8,7 +8,7 @@
   background-color: #515860;
   width: 100%;
   min-height: 100vh;
-  padding-bottom: 3em;
+  /* padding-bottom: 3em; */
 }
 
 /* BACKGROUND */
@@ -41,14 +41,18 @@ header {
   display: flex;
   justify-content: space-between;
   padding-right: 1em;
-  height: 15vh;
+  /* height: 15vh; */
   background-color: white;
   border-bottom: 0.5em solid #ffb743;
 }
 
 .company-logo {
-  transform: scale(70%);
+  width: 200px;
+  /* height: 150px; */
   position: relative;
+}
+.company-logo img {
+  width: 100%;
 }
 
 .horloge {
@@ -151,13 +155,15 @@ main {
 }
 
 /* ADMIN FORM */
-.color-text h1,
 .color-text label,
 .color-text p {
   color: white;
 }
 
-.color-text h1 {
+.color-text h1,
+.color-text h2,
+.color-text h3,
+.color-text h4 {
   color: #ffe2b4;
 }
 

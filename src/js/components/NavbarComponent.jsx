@@ -15,7 +15,8 @@ const NavbarComponent = ({ props }) => {
   return (
     <Navbar expand="lg">
       <Container>
-        <Navbar.Collapse id="basic-navbar-nav">
+        <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+        <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="me-auto">
             <Nav.Link href="#/">Accueil</Nav.Link>
             <NavDropdown

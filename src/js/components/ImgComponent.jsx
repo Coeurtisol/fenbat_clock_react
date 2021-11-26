@@ -1,7 +1,7 @@
 import React from "react";
 
 const ImgComponent = ({ src, alt, className, style }) => {
-  return <img className={className} src={src} alt={alt} style={style} />;
+  return <div className={className}><img src={src} alt={alt} style={style} /></div>;
 };
 
 export default ImgComponent;
