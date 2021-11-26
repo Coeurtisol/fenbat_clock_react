@@ -1,17 +1,13 @@
 import React, { useState } from "react";
 import { Form, Button, Modal } from "react-bootstrap";
 
-const PointageAffaireModal = ({
-  pointages,
-  setPointages,
-  index,
-  name,
-  value,
-}) => {
+const PointageAffaireModal = ({ semaine, setSemaine, index, name }) => {
   const [showModal, setShowModal] = useState(false);
   const [hours, setHours] = useState(0);
   const [minutes, setMinutes] = useState(0);
+  const value = semaine.pointages[index].valeur;
 
+  // ################################## HANDLE FUNCTIONS
   const handleShowModal = () => {
     setShowModal(!showModal);
     if (!showModal) {
@@ -29,15 +25,15 @@ const PointageAffaireModal = ({
     // console.log(hours);
     // console.log(minutes);
     // console.log(newValue);
-    let copyPointages = [...pointages];
+    let copyPointages = [...semaine.pointages];
     let copyPointage = { ...copyPointages[index] };
     copyPointage[name] = newValue;
     copyPointages[index] = copyPointage;
-    setPointages(copyPointages);
+    setSemaine({ ...semaine, pointages: copyPointages });
     handleShowModal();
   };
 
-  // TEMPLATE
+  // ################################################ TEMPLATE
   return (
     <>
       <Button

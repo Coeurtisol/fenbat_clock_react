@@ -1,60 +1,44 @@
 import React, { useState } from "react";
 import { Form, Button, Modal } from "react-bootstrap";
-import AFFAIRES_API from "../../services/affairesAPI";
 
 const PointageAffaireModal = ({
-  affaire,
+  affaires,
+  semaine,
+  setSemaine,
   entite,
   entites,
-  pointages,
-  setPointages,
   index,
   name,
 }) => {
   const [showModal, setShowModal] = useState(false);
-  const [affaires, setAffaires] = useState([]);
   const [entiteChoice, setEntiteChoice] = useState(0);
   const [affaireChoice, setAffaireChoice] = useState(0);
 
-  // FETCH
-  const fetchAffaires = async () => {
-    try {
-      const affaires = await AFFAIRES_API.findAll();
-      console.log("success fetch", affaires);
-      setAffaires(affaires);
-    } catch (error) {
-      console.log("erreur fetch", error);
-    }
-  };
-
+  // ########################################### HANDLE FUNCTIONS
   const handleShowModal = () => {
     setShowModal(!showModal);
     if (!showModal) {
-      fetchAffaires();
       setEntiteChoice(entite);
-      setAffaireChoice(affaire);
+      setAffaireChoice(semaine.pointages[index].affaireId);
     }
   };
-
+  
   const handleSubmit = (e) => {
     e.preventDefault();
-    // console.log(entite);
-    // console.log(entiteChoice);
-    // console.log(affaireChoice);
-    let copyPointages = [...pointages];
+    let copyPointages = [...semaine.pointages];
     let copyPointage = { ...copyPointages[index] };
     copyPointage[name] = affaireChoice;
     copyPointages[index] = copyPointage;
-    setPointages(copyPointages);
+    setSemaine({ ...semaine, pointages: copyPointages });
     handleShowModal();
   };
-
+  
   const filteredAffaires = affaires.filter(
     (a) => a.etat == "En cours" && entiteChoice && a.entite.name == entiteChoice
-  );
-
-  // TEMPLATE
-  return (
+    );
+    
+    // ############################################ TEMPLATE
+    return (
     <>
       <Button
         size="sm"
@@ -72,7 +56,7 @@ const PointageAffaireModal = ({
         onHide={handleShowModal}
       >
         <Modal.Header closeButton>
-          <Modal.Title>Changer l'affaire</Modal.Title>
+          <Modal.Title>Affaire</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form onSubmit={handleSubmit}>
@@ -148,10 +132,7 @@ const PointageAffaireModal = ({
                       ? `Affaire selectionnée : ${affaireChoice}`
                       : "Aucune affaire selectionnée"}
                   </p>
-                  <Button
-                    variant="primary"
-                    type="submit"
-                  >
+                  <Button variant="primary" type="submit">
                     Valider
                   </Button>
                 </div>

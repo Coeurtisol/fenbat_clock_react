@@ -1,18 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { Col, Form, Row, Table, Button } from "react-bootstrap";
+import { Col, Form, Row } from "react-bootstrap";
 import ENTITES_API from "../services/entitesAPI";
 import AUTH_API from "../services/authAPI";
 import DATE_API from "../services/datesAPI";
 import AFFAIRES_API from "../services/affairesAPI";
 import MOTIFSABSENCE_API from "../services/motifsAbsenceAPI";
-import PointageAffaireModal from "../components/modals/PointageAffaireModal";
-import PointageHourModal from "../components/modals/PointageHourModal";
-import PointageMotifAbsenceModal from "../components/modals/PointageMotifAbsenceModal";
 import SEMAINES_API from "../services/semainesAPI";
+import PointageTableau from "../components/PointageTableau";
 
 const PointagePage = ({ history, match }) => {
   const { year, week } = match.params;
-  const [semaine, setSemaine] = useState();
+  const [semaine, setSemaine] = useState({ pointages: [] });
   const [affaires, setAffaires] = useState([]);
   const [motifsAbsence, setMotifsAbsence] = useState([]);
   const [defaultMotif, setDefaultMotif] = useState("");
@@ -21,7 +19,6 @@ const PointagePage = ({ history, match }) => {
   const [search, setSearch] = useState({
     entite: AUTH_API.getEntite() || "",
   });
-  const [pointages, setPointages] = useState([]);
 
   // ######################################### FETCH FUNCTIONS
   const fetchSemaine = async () => {
@@ -31,7 +28,6 @@ const PointagePage = ({ history, match }) => {
       const data = response.data;
       console.log("success fetch semaine", data);
       setSemaine(data);
-      setPointages(data.pointages);
     } catch (error) {
       console.log("erreur fetch", error);
     }
@@ -94,31 +90,11 @@ const PointagePage = ({ history, match }) => {
   };
 
   const handleChangeDefault = ({ name, value }) => {
-    let copyPointages = [...pointages];
+    let copyPointages = [...semaine.pointages];
     for (const pointage of copyPointages) {
       pointage[name] = value;
     }
-    setPointages(copyPointages);
-  };
-
-  const handleSubmitSave = async ({ target }) => {
-    const updatedSemaine = { ...semaine };
-    updatedSemaine.pointages = pointages;
-    updatedSemaine.etatSemaineId = target.name
-      ? +target.name
-      : semaine.etatSemaine.id;
-    delete updatedSemaine.etatSemaine;
-    console.log("updated semaine", updatedSemaine);
-    try {
-      const response = await SEMAINES_API.update(
-        updatedSemaine.id,
-        updatedSemaine
-      );
-      console.log("success update", response);
-    } catch (error) {
-      console.log("erreur update", error);
-    }
-    fetchSemaine();
+    setSemaine({ ...semaine, pointages: copyPointages });
   };
 
   // ######################################### FILTRAGE AFFAIRES
@@ -147,151 +123,6 @@ const PointagePage = ({ history, match }) => {
         value={i}
         className={i == week ? "selected-option" : null}
       >{`(S: ${i}) : ${firstDay} -> ${lastDay}`}</option>
-    );
-  }
-
-  // ######################################### GENERATION TABLEAU
-  // Ligne nom du jour
-  const dateOptions = {
-    weekday: "short",
-    day: "2-digit",
-    month: "2-digit",
-  };
-  const FormatDateColumn = (dateObject) => {
-    const date = new Date(dateObject).toLocaleDateString("fr-FR", dateOptions);
-    return date;
-  };
-
-  let nameDayLine = [];
-  for (let i = 0; i < pointages.length; i += 2) {
-    const formatedDateColumn = FormatDateColumn(pointages[i].date);
-    nameDayLine.push(
-      <th colSpan="2" key={i} className="text-center">
-        {formatedDateColumn}
-      </th>
-    );
-  }
-  // ligne AM / PM
-  let momentDayLine = [];
-  for (let i = 0; i < pointages.length; i++) {
-    momentDayLine.push(
-      <React.Fragment key={i}>
-        <td className="text-center">
-          {pointages && pointages[i].moment ? "P.M" : "A.M"}
-        </td>
-      </React.Fragment>
-    );
-  }
-  // ligne des valeurs (heures)
-  let valueLine = [];
-  for (let i = 0; i < pointages.length; i++) {
-    valueLine.push(
-      <React.Fragment key={i}>
-        <td className="text-center">{pointages[i].valeur}</td>
-      </React.Fragment>
-    );
-  }
-  // ligne des bouttons valeurs
-  let btnValeurLine = [];
-  for (let i = 0; i < pointages.length; i++) {
-    btnValeurLine.push(
-      <React.Fragment key={i}>
-        <td className="text-center">
-          <PointageHourModal
-            pointages={pointages}
-            setPointages={setPointages}
-            index={i}
-            name="valeur"
-            value={pointages[i].valeur}
-          />
-        </td>
-      </React.Fragment>
-    );
-  }
-  // ligne des affaires
-  let affaireLine = [];
-  for (let i = 0; i < pointages.length; i++) {
-    affaireLine.push(
-      <React.Fragment key={i}>
-        <td className="text-center">
-          {pointages[i].affaireId > 0
-            ? affaires.length != 0 &&
-              affaires.find((a) => a.id == pointages[i].affaireId).name
-            : null}
-        </td>
-      </React.Fragment>
-    );
-  }
-  // ligne des bouttons affaires
-  let btnAffaireLine = [];
-  for (let i = 0; i < pointages.length; i++) {
-    btnAffaireLine.push(
-      <React.Fragment key={i}>
-        <td className="text-center">
-          <PointageAffaireModal
-            affaire={pointages[i].affaireId}
-            entite={search.entite}
-            entites={entites}
-            pointages={pointages}
-            setPointages={setPointages}
-            index={i}
-            name="affaireId"
-          />
-        </td>
-      </React.Fragment>
-    );
-  }
-  // ligne des montants totaux
-  let valueTotalLine = [];
-  for (let i = 0; i < pointages.length; i += 2) {
-    valueTotalLine.push(
-      <td colSpan="2" key={i} className="text-center">
-        {pointages[i].valeur + pointages[i + 1].valeur}
-      </td>
-    );
-  }
-  // ligne des paniers
-  let panierLine = [];
-  for (let i = 0; i < pointages.length; i += 2) {
-    panierLine.push(
-      <td colSpan="2" key={i} className="text-center">
-        {pointages[i].valeur > 5 ||
-        (pointages[i].valeur && pointages[i + 1].valeur)
-          ? 1
-          : 0}
-      </td>
-    );
-  }
-  // ligne des motifs
-  let motifLine = [];
-  for (let i = 0; i < pointages.length; i++) {
-    motifLine.push(
-      <React.Fragment key={i}>
-        <td className="text-center">
-          {pointages[i].motifAbsenceId > 0
-            ? motifsAbsence.length != 0 &&
-              motifsAbsence.find((m) => m.id == pointages[i].motifAbsenceId)
-                .name
-            : null}
-        </td>
-      </React.Fragment>
-    );
-  }
-  // ligne des bouttons motifs
-  let btnMotifLine = [];
-  for (let i = 0; i < pointages.length; i++) {
-    btnMotifLine.push(
-      <React.Fragment key={i}>
-        <td className="text-center">
-          <PointageMotifAbsenceModal
-            motif={pointages[i].motifAbsenceId}
-            pointages={pointages}
-            setPointages={setPointages}
-            index={i}
-            name="motifAbsenceId"
-          />
-        </td>
-      </React.Fragment>
     );
   }
 
@@ -395,84 +226,16 @@ const PointagePage = ({ history, match }) => {
           </div>
         </div>
       </div>
-      <div className="container-fluid color-text">
-        <h4 className="text-center mb-2">
-          {`Semaine ${week} : ${semaine && semaine.etatSemaine.name}`}
-        </h4>
-        <Table
-          className="bt-0"
-          variant="light"
-          striped
-          bordered
-          hover
-          responsive
-        >
-          <thead>
-            <tr className="align-middle">
-              <th></th>
-              {nameDayLine}
-            </tr>
-          </thead>
-          <tbody>
-            <tr className="align-middle">
-              <th></th>
-              {momentDayLine}
-            </tr>
-            <tr className="align-middle">
-              <th>Heures</th>
-              {valueLine}
-            </tr>
-            <tr className="align-middle">
-              <th></th>
-              {btnValeurLine}
-            </tr>
-            <tr className="align-middle">
-              <th>Affaire</th>
-              {affaireLine}
-            </tr>
-            <tr className="align-middle">
-              <th></th>
-              {btnAffaireLine}
-            </tr>
-            <tr className="align-middle">
-              <th>Total Heures</th>
-              {valueTotalLine}
-            </tr>
-            <tr className="align-middle">
-              <th>Panier</th>
-              {panierLine}
-            </tr>
-            <tr className="align-middle">
-              <th>Autre</th>
-              {motifLine}
-            </tr>
-            <tr className="align-middle">
-              <th></th>
-              {btnMotifLine}
-            </tr>
-          </tbody>
-        </Table>
-        {/* <div id="FILTER"></div> */}
-      </div>
-      <div className="container-fluid d-flex justify-content-end mt-3">
-        <Button
-          className="mx-3"
-          variant="primary"
-          onClick={handleSubmitSave}
-          type="button"
-        >
-          Sauvegarder
-        </Button>
-        <Button
-          className="mx-3"
-          variant="success"
-          name="2"
-          onClick={handleSubmitSave}
-          type="button"
-        >
-          Envoyer pour validation
-        </Button>
-      </div>
+      <PointageTableau
+        semaine={semaine}
+        setSemaine={setSemaine}
+        fetchSemaine={fetchSemaine}
+        entites={entites}
+        affaires={affaires}
+        motifsAbsence={motifsAbsence}
+        search={search}
+        week={week}
+      />
     </>
   );
 };

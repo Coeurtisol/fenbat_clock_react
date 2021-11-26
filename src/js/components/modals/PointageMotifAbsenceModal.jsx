@@ -1,50 +1,35 @@
 import React, { useState } from "react";
 import { Form, Button, Modal } from "react-bootstrap";
-import MOTIFSABSENCE_API from "../../services/motifsAbsenceAPI";
 
 const PointageMotifAbsenceModal = ({
-  motif,
-  pointages,
-  setPointages,
+  motifsAbsence,
+  semaine,
+  setSemaine,
   index,
   name,
 }) => {
   const [showModal, setShowModal] = useState(false);
-  const [motifsAbsence, setMotifsAbsence] = useState([]);
   const [motifChoice, setMotifChoice] = useState(0);
 
-  // FETCH
-  const fetchMotifsAbsence = async () => {
-    try {
-      const motifsAbsence = await MOTIFSABSENCE_API.findAll();
-      console.log("success fetch", motifsAbsence);
-      setMotifsAbsence(motifsAbsence);
-    } catch (error) {
-      console.log("erreur fetch", error);
-    }
-  };
-
+  // ################################## HANDLE FUNCTIONS
   const handleShowModal = () => {
     setShowModal(!showModal);
     if (!showModal) {
-      fetchMotifsAbsence();
-      setMotifChoice(motif);
+      setMotifChoice(semaine.pointages[index].motifAbsenceId);
     }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // console.log(motif);
-    // console.log(motifChoice);
-    let copyPointages = [...pointages];
+    let copyPointages = [...semaine.pointages];
     let copyPointage = { ...copyPointages[index] };
     copyPointage[name] = motifChoice;
     copyPointages[index] = copyPointage;
-    setPointages(copyPointages);
+    setSemaine({...semaine,pointages:copyPointages});
     handleShowModal();
   };
 
-  // TEMPLATE
+  // ############################################ TEMPLATE
   return (
     <>
       <Button
@@ -63,7 +48,7 @@ const PointageMotifAbsenceModal = ({
         onHide={handleShowModal}
       >
         <Modal.Header closeButton>
-          <Modal.Title>Changer le motif d'absence</Modal.Title>
+          <Modal.Title>Autre</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form onSubmit={handleSubmit}>
