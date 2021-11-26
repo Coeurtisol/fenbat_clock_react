@@ -9,7 +9,7 @@ const HeaderComponent = (props) => {
   return (
     <header>
       <ImgComponent
-        className="company-logo"
+        className="company-logo m-1"
         src="../images/logo-fenbat-transparent.png"
       />
       {isAuthenticated && <NavbarComponent props={props} />}
