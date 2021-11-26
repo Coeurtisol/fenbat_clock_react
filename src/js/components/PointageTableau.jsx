@@ -73,7 +73,9 @@ const PointageTableau = ({
   for (let i = 0; i < semaine.pointages.length; i++) {
     valueLine.push(
       <React.Fragment key={i}>
-        <td className="text-center">{semaine.pointages[i].valeur}</td>
+        <td className="text-center">
+          {semaine.pointages[i].valeur > 0 && semaine.pointages[i].valeur}
+        </td>
       </React.Fragment>
     );
   }
@@ -127,23 +129,33 @@ const PointageTableau = ({
     );
   }
   // ligne des montants totaux
+  let totalWeekValue = 0;
   let valueTotalLine = [];
   for (let i = 0; i < semaine.pointages.length; i += 2) {
+    const valueAm = semaine.pointages[i].valeur;
+    const valuePm = semaine.pointages[i + 1].valeur;
+    const valueDay = valueAm + valuePm;
+    totalWeekValue += valueDay;
     valueTotalLine.push(
       <td colSpan="2" key={i} className="text-center">
-        {semaine.pointages[i].valeur + semaine.pointages[i + 1].valeur}
+        {valueDay > 0 && valueDay}
       </td>
     );
   }
   // ligne des paniers
+  let totalWeekPanier = 0;
   let panierLine = [];
   for (let i = 0; i < semaine.pointages.length; i += 2) {
+    const panierAm = semaine.pointages[i].valeur;
+    const panierPm = semaine.pointages[i + 1].valeur;
+    let panierDay = 0;
+    if (panierAm >= 5 || (panierAm && panierPm)) {
+      panierDay = 1;
+    }
+    totalWeekPanier += panierDay;
     panierLine.push(
       <td colSpan="2" key={i} className="text-center">
-        {semaine.pointages[i].valeur > 5 ||
-        (semaine.pointages[i].valeur && semaine.pointages[i + 1].valeur)
-          ? 1
-          : 0}
+        {panierDay == 1 && 1}
       </td>
     );
   }
@@ -202,44 +214,58 @@ const PointageTableau = ({
             <tr className="align-middle">
               <th></th>
               {nameDayLine}
+              <th>Totaux</th>
             </tr>
           </thead>
           <tbody>
             <tr className="align-middle">
               <th></th>
               {momentDayLine}
+              <td></td>
             </tr>
             <tr className="align-middle">
               <th>Heures</th>
               {valueLine}
+              <td></td>
             </tr>
             <tr className="align-middle">
               <th></th>
               {btnValeurLine}
+              <td></td>
             </tr>
             <tr className="align-middle">
               <th>Affaire</th>
               {affaireLine}
+              <td></td>
             </tr>
             <tr className="align-middle">
               <th></th>
               {btnAffaireLine}
+              <td></td>
             </tr>
             <tr className="align-middle">
               <th>Total Heures</th>
               {valueTotalLine}
+              <td className="text-center">
+                {totalWeekValue > 0 && totalWeekValue}
+              </td>
             </tr>
             <tr className="align-middle">
               <th>Panier</th>
               {panierLine}
+              <td className="text-center">
+                {totalWeekPanier > 0 && totalWeekPanier}
+              </td>
             </tr>
             <tr className="align-middle">
               <th>Autre</th>
               {motifLine}
+              <td></td>
             </tr>
             <tr className="align-middle">
               <th></th>
               {btnMotifLine}
+              <td></td>
             </tr>
           </tbody>
         </Table>
