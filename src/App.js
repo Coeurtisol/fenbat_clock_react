@@ -57,7 +57,7 @@ function App() {
               path="/admin/motifsAbsence"
               component={AdminMotifsAbsencePage}
             />
-            <PrivateRoute path="/pointage" component={PointagePage} />
+            <PrivateRoute path="/pointage/:year/:week" component={PointagePage} />
             <PrivateRoute path="/commandes" component={CommandePage} />
             <PrivateRoute exact path="/" component={HomePage} />
 

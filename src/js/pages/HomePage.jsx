@@ -1,12 +1,16 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import DATE_API from "../services/datesAPI.js";
 
 const HomePage = () => {
-
   return (
     <main>
       <div className="menu-container">
-        <Link to="/pointage">
+        <Link
+          to={`/pointage/${new Date().getFullYear()}/${DATE_API.getWeekNumber(
+            new Date()
+          )}`}
+        >
           <h1>Pointages</h1>
         </Link>
         <Link to="/">

@@ -8,12 +8,10 @@ import MOTIFSABSENCE_API from "../services/motifsAbsenceAPI";
 import PointageAffaireModal from "../components/modals/PointageAffaireModal";
 import PointageHourModal from "../components/modals/PointageHourModal";
 import PointageMotifAbsenceModal from "../components/modals/PointageMotifAbsenceModal";
-// import { fakePointages2 } from "../fakeSemaine.js";
 import SEMAINES_API from "../services/semainesAPI";
 
-const PointagePage = () => {
-  const [year, setYear] = useState(new Date().getFullYear());
-  const [week, setWeek] = useState(DATE_API.getWeekNumber(new Date()));
+const PointagePage = ({ history, match }) => {
+  const { year, week } = match.params;
   const [semaine, setSemaine] = useState();
   const [affaires, setAffaires] = useState([]);
   const [motifsAbsence, setMotifsAbsence] = useState([]);
@@ -78,9 +76,14 @@ const PointagePage = () => {
     //   ...search,
     //   semaine: DATE_API.getWeekNumber(new Date()),
     // });
-  }, []);
+  }, [year, week]);
 
   // ######################################### HANDLE FUNCTIONS
+  const handleChangeDate = ({ target }) => {
+    const { name, value } = target;
+    setSearch({ ...search, [name]: value });
+  };
+
   const handleChangeSearch = ({ target }) => {
     const { name, value } = target;
     setSearch({ ...search, [name]: value });
@@ -306,7 +309,9 @@ const PointagePage = () => {
                 <Col>
                   <Form.Select
                     name="semaine"
-                    onChange={(e) => setWeek(e.target.value)}
+                    onChange={(e) =>
+                      history.replace(`/pointage/${year}/${e.target.value}`)
+                    }
                     value={week}
                   >
                     {!week && <option>Selectionnez la semaine</option>}
