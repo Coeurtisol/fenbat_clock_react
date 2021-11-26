@@ -299,10 +299,10 @@ const PointagePage = ({ history, match }) => {
   return (
     <>
       <div className="container-fluid color-text">
-        <h1 className="text-center my-4">{AUTH_API.getFullName()}</h1>
+        <h2 className="text-center my-2">{AUTH_API.getFullName()}</h2>
         <div>
           {/* <div className="container d-flex flex-wrap justify-content-evenly"> */}
-          <div id="SEARCH" className="mb-4">
+          <div id="SEARCH" className="my-2">
             <Form onSubmit={handleSubmitSearch} className="col-6 offset-3">
               <Form.Group as={Row} className="mb-3">
                 <Form.Label column>Semaine</Form.Label>
@@ -395,7 +395,10 @@ const PointagePage = ({ history, match }) => {
           </div>
         </div>
       </div>
-      <div className="container-fluid">
+      <div className="container-fluid color-text">
+        <h4 className="text-center mb-2">
+          {`Semaine ${week} : ${semaine && semaine.etatSemaine.name}`}
+        </h4>
         <Table
           className="bt-0"
           variant="light"
