@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import ENTITES_API from "../../services/entitesAPI";
 import TYPESAFFAIRE_API from "../../services/typesAffaireAPI";
 import SECTEURSAFFAIRE_API from "../../services/secteursAffaireAPI";
+import CLIENTSAFFAIRE_API from "../../services/clientsAffaireAPI";
 import AFFAIRES_API from "../../services/affairesAPI";
 import { Form, Button, Modal } from "react-bootstrap";
 
@@ -10,16 +11,18 @@ const UserModal = ({ fetchAffaires, affaire }) => {
   const [entites, setEntites] = useState([]);
   const [typesAffaire, setTypesAffaire] = useState([]);
   const [secteursAffaire, setSecteursAffaire] = useState([]);
+  const [clientsAffaire, setClientsAffaire] = useState([]);
   const etatsAffaire = ["En cours", "SAV", "Assurance", "Cloturé"];
   const [newAffaire, setNewAffaire] = useState({
     name: "",
     secteurAffaireId: "",
     typeAffaireId: "",
+    clientAffaireId: "",
     etat: "En cours",
     entiteId: "",
   });
 
-  // FETCH
+  // FETCH FUNCTIONS
   const fetchEntites = async () => {
     try {
       const entites = await ENTITES_API.findAll();
@@ -50,6 +53,17 @@ const UserModal = ({ fetchAffaires, affaire }) => {
     }
   };
 
+  const fetchClientsAffaire = async () => {
+    try {
+      const clientsAffaire = await CLIENTSAFFAIRE_API.findAll();
+      console.log("success fetch", clientsAffaire);
+      setClientsAffaire(clientsAffaire);
+    } catch (error) {
+      console.log("erreur fetch", error);
+    }
+  };
+
+  // HANDLE FUNCTIONS
   const handleShowUserModal = () => {
     setShowModal(!showModal);
     if (!showModal) {
@@ -59,6 +73,7 @@ const UserModal = ({ fetchAffaires, affaire }) => {
           name: affaire.name,
           secteurAffaireId: affaire.secteurAffaire.id,
           typeAffaireId: affaire.typeAffaire.id,
+          clientAffaireId: affaire.clientAffaire && affaire.clientAffaire.id,
           etat: affaire.etat,
           entiteId: affaire.entite.id,
         });
@@ -66,12 +81,12 @@ const UserModal = ({ fetchAffaires, affaire }) => {
       fetchEntites();
       fetchTypesAffaire();
       fetchSecteursAffaire();
+      fetchClientsAffaire();
     } else {
       fetchAffaires();
     }
   };
 
-  // FUNCTIONS
   const handlechange = ({ target }) => {
     const { name, value } = target;
     setNewAffaire({ ...newAffaire, [name]: value });
@@ -88,6 +103,7 @@ const UserModal = ({ fetchAffaires, affaire }) => {
         name: "",
         secteurAffaireId: "",
         typeAffaireId: "",
+        clientAffaireId: "",
         etat: "En cours",
         entiteId: "",
       });
@@ -108,6 +124,7 @@ const UserModal = ({ fetchAffaires, affaire }) => {
         name: "",
         secteurAffaireId: "",
         typeAffaireId: "",
+        clientAffaireId: "",
         etat: "En cours",
         entiteId: "",
       });
@@ -170,11 +187,30 @@ const UserModal = ({ fetchAffaires, affaire }) => {
                 name="entiteId"
                 onChange={handlechange}
                 value={newAffaire.entiteId}
+                required
               >
-                <option>Selectionnez l'entité</option>
+                {!newAffaire.entiteId && <option>Selectionnez l'entité</option>}
                 {entites.map((e) => (
                   <option key={e.id} value={e.id}>
                     {e.name}
+                  </option>
+                ))}
+              </Form.Select>
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label>Type de client</Form.Label>
+              <Form.Select
+                name="clientAffaireId"
+                onChange={handlechange}
+                value={newAffaire.clientAffaireId || ""}
+                required
+              >
+                {!newAffaire.clientAffaireId && (
+                  <option>Selectionnez le type de client de l'affaire</option>
+                )}
+                {clientsAffaire.map((c) => (
+                  <option key={c.id} value={c.id}>
+                    {c.name}
                   </option>
                 ))}
               </Form.Select>
@@ -185,8 +221,11 @@ const UserModal = ({ fetchAffaires, affaire }) => {
                 name="typeAffaireId"
                 onChange={handlechange}
                 value={newAffaire.typeAffaireId}
+                required
               >
-                <option>Selectionnez le corps d'état de l'affaire</option>
+                {!newAffaire.typeAffaireId && (
+                  <option>Selectionnez le corps d'état de l'affaire</option>
+                )}
                 {typesAffaire.map((t) => (
                   <option key={t.id} value={t.id}>
                     {t.name}
@@ -200,8 +239,11 @@ const UserModal = ({ fetchAffaires, affaire }) => {
                 name="secteurAffaireId"
                 onChange={handlechange}
                 value={newAffaire.secteurAffaireId}
+                required
               >
-                <option>Selectionnez le secteur de l'affaire</option>
+                {!newAffaire.secteurAffaireId && (
+                  <option>Selectionnez le secteur de l'affaire</option>
+                )}
                 {secteursAffaire.map((s) => (
                   <option key={s.id} value={s.id}>
                     {s.name}
@@ -216,6 +258,7 @@ const UserModal = ({ fetchAffaires, affaire }) => {
                   name="etat"
                   onChange={handlechange}
                   value={newAffaire.etat}
+                  required
                 >
                   {etatsAffaire.map((e, k) => (
                     <option key={k} value={e}>

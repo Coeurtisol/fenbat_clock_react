@@ -10,5 +10,6 @@ export const AFFAIRES_API_URL = API_URL + "affaires";
 export const ETATSAFFAIRE_API_URL = API_URL + "etatsAffaire";
 export const SECTEURSAFFAIRE_API_URL = API_URL + "secteursAffaire";
 export const TYPESAFFAIRE_API_URL = API_URL + "typesAffaire";
+export const CLIENTSAFFAIRE_API_URL = API_URL + "clientsAffaire";
 export const CATEGORIES_API_URL = API_URL + "categories";
 export const ARTICLES_API_URL = API_URL + "articles";

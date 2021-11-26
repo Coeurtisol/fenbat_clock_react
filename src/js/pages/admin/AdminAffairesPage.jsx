@@ -3,6 +3,7 @@ import AFFAIRES_API from "../../services/affairesAPI";
 import AffaireModal from "../../components/modals/AffaireModal";
 import AdminTypesAffaireComponent from "../../components/admin/AdminTypesAffaireComponent";
 import AdminSecteursAffaireComponent from "../../components/admin/AdminSecteursAffaireComponent";
+import AdminClientsAffaireComponent from "../../components/admin/AdminClientsAffaireComponent";
 // import ETATSAFFAIRE_API from "../../services/etatsAffaireAPI";
 import { Table } from "react-bootstrap";
 
@@ -36,9 +37,10 @@ const AdminAffairesPage = () => {
             <thead>
               <tr className="align-middle">
                 <th className="text-center">Affaire</th>
-                <th className="text-center">Entité</th>
-                <th className="text-center">Corps d'état</th>
+                <th className="text-center">Client</th>
                 <th className="text-center">Secteur</th>
+                <th className="text-center">Corps d'état</th>
+                <th className="text-center">Entité</th>
                 <th className="text-center">Etat</th>
                 <th></th>
               </tr>
@@ -47,9 +49,10 @@ const AdminAffairesPage = () => {
               {affaires.map((a) => (
                 <tr key={a.id}>
                   <td>{a.name}</td>
-                  <td>{a.entite.name}</td>
-                  <td>{a.typeAffaire.name}</td>
+                  <td>{a.clientAffaire && a.clientAffaire.name}</td>
                   <td>{a.secteurAffaire.name}</td>
+                  <td>{a.typeAffaire.name}</td>
+                  <td>{a.entite.name}</td>
                   <td>{a.etat}</td>
                   <td style={{ width: "1px" }} className="text-center">
                     <AffaireModal fetchAffaires={fetchAffaires} affaire={a} />
@@ -64,6 +67,9 @@ const AdminAffairesPage = () => {
       <div className="d-flex flex-wrap justify-content-evenly">
         <AdminSecteursAffaireComponent />
         <AdminTypesAffaireComponent />
+      </div>
+      <div className="d-flex flex-wrap justify-content-evenly">
+        <AdminClientsAffaireComponent />
       </div>
     </main>
   );

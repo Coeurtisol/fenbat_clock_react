@@ -31,7 +31,7 @@ const AdminUsersPage = () => {
         <Table className="bt-0" variant="light" striped bordered hover>
           <thead>
             <tr className="align-middle">
-              <th className="text-center">Nom Prénom</th>
+              <th className="text-center">Prénom Nom</th>
               <th className="text-center">Rôle</th>
               <th className="text-center">Entité</th>
               <th></th>

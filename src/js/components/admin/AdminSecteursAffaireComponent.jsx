@@ -26,7 +26,7 @@ const AdminSecteursAffaireComponent = () => {
     <div className="color-text col-xl-5 col-12">
       <h1 className="text-center">Secteurs</h1>
       {secteursAffaire.length === 0 ? (
-        <p>Aucune secteur n'est enregistré pour le moment</p>
+        <p>Aucun secteur n'est enregistré pour le moment</p>
       ) : (
         <Table className="bt-0" variant="light" striped bordered hover>
           <thead>
