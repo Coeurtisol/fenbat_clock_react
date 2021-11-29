@@ -92,7 +92,13 @@ const PointagePage = ({ history, match }) => {
   const handleChangeDefault = ({ name, value }) => {
     let copyPointages = [...semaine.pointages];
     for (const pointage of copyPointages) {
-      pointage[name] = value;
+      if (
+        // NE PAS MODIFIER SAMEDI ET DIMANCHE
+        new Date(pointage.date).getDay() > 0 &&
+        new Date(pointage.date).getDay() < 6
+      ) {
+        pointage[name] = value;
+      }
     }
     setSemaine({ ...semaine, pointages: copyPointages });
   };
