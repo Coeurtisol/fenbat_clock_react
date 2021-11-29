@@ -1,24 +1,29 @@
 import React from "react";
 import { Table, Button } from "react-bootstrap";
+import { Link } from "react-router-dom";
+import AUTH_API from "../services/authAPI.js";
 import SEMAINES_API from "../services/semainesAPI.js";
 import PointageAffaireModal from "./modals/PointageAffaireModal";
 import PointageHourModal from "./modals/PointageHourModal";
 import PointageMotifAbsenceModal from "./modals/PointageMotifAbsenceModal";
 
 const PointageTableau = ({
+  cadreEdit,
+  history,
+  listView,
   semaine,
   setSemaine,
-  fetchSemaine,
+  fetchRefresh,
   entites,
   affaires,
   motifsAbsence,
   search,
   week,
 }) => {
+  const roleId = AUTH_API.getRoleId();
   // ######################################## HANDLE FUNCTIONS
   const handleSubmitSave = async ({ target }) => {
     const updatedSemaine = { ...semaine };
-    // updatedSemaine.pointages = pointages;
     updatedSemaine.etatSemaineId = target.name
       ? +target.name
       : semaine.etatSemaine.id;
@@ -33,7 +38,7 @@ const PointageTableau = ({
     } catch (error) {
       console.log("erreur update", error);
     }
-    fetchSemaine();
+    fetchRefresh();
   };
 
   // ######################################### GENERATION TABLEAU
@@ -81,19 +86,21 @@ const PointageTableau = ({
   }
   // ligne des bouttons valeurs
   let btnValeurLine = [];
-  for (let i = 0; i < semaine.pointages.length; i++) {
-    btnValeurLine.push(
-      <React.Fragment key={i}>
-        <td className="text-center">
-          <PointageHourModal
-            semaine={semaine}
-            setSemaine={setSemaine}
-            index={i}
-            name="valeur"
-          />
-        </td>
-      </React.Fragment>
-    );
+  if (!listView) {
+    for (let i = 0; i < semaine.pointages.length; i++) {
+      btnValeurLine.push(
+        <React.Fragment key={i}>
+          <td className="text-center">
+            <PointageHourModal
+              semaine={semaine}
+              setSemaine={setSemaine}
+              index={i}
+              name="valeur"
+            />
+          </td>
+        </React.Fragment>
+      );
+    }
   }
   // ligne des affaires
   let affaireLine = [];
@@ -111,22 +118,24 @@ const PointageTableau = ({
   }
   // ligne des bouttons affaires
   let btnAffaireLine = [];
-  for (let i = 0; i < semaine.pointages.length; i++) {
-    btnAffaireLine.push(
-      <React.Fragment key={i}>
-        <td className="text-center">
-          <PointageAffaireModal
-            affaires={affaires}
-            semaine={semaine}
-            setSemaine={setSemaine}
-            entite={search.entite}
-            entites={entites}
-            index={i}
-            name="affaireId"
-          />
-        </td>
-      </React.Fragment>
-    );
+  if (!listView) {
+    for (let i = 0; i < semaine.pointages.length; i++) {
+      btnAffaireLine.push(
+        <React.Fragment key={i}>
+          <td className="text-center">
+            <PointageAffaireModal
+              affaires={affaires}
+              semaine={semaine}
+              setSemaine={setSemaine}
+              entite={search.entite || ""}
+              entites={entites}
+              index={i}
+              name="affaireId"
+            />
+          </td>
+        </React.Fragment>
+      );
+    }
   }
   // ligne des montants totaux
   let totalWeekValue = 0;
@@ -177,20 +186,22 @@ const PointageTableau = ({
   }
   // ligne des bouttons motifs
   let btnMotifLine = [];
-  for (let i = 0; i < semaine.pointages.length; i++) {
-    btnMotifLine.push(
-      <React.Fragment key={i}>
-        <td className="text-center">
-          <PointageMotifAbsenceModal
-            motifsAbsence={motifsAbsence}
-            semaine={semaine}
-            setSemaine={setSemaine}
-            index={i}
-            name="motifAbsenceId"
-          />
-        </td>
-      </React.Fragment>
-    );
+  if (!listView) {
+    for (let i = 0; i < semaine.pointages.length; i++) {
+      btnMotifLine.push(
+        <React.Fragment key={i}>
+          <td className="text-center">
+            <PointageMotifAbsenceModal
+              motifsAbsence={motifsAbsence}
+              semaine={semaine}
+              setSemaine={setSemaine}
+              index={i}
+              name="motifAbsenceId"
+            />
+          </td>
+        </React.Fragment>
+      );
+    }
   }
 
   // ############################################ TEMPLATE
@@ -198,9 +209,10 @@ const PointageTableau = ({
     <>
       <div className="container-fluid color-text">
         <h4 className="text-center mb-2">
-          {`Semaine ${week} : ${
-            semaine.etatSemaine && semaine.etatSemaine.name
-          }`}
+          {(listView || cadreEdit) &&
+            semaine.user &&
+            `${semaine.user.firstname} ${semaine.user.lastname} `}
+          {`(S ${week}) : ${semaine.etatSemaine && semaine.etatSemaine.name}`}
         </h4>
         <Table
           className="bt-0"
@@ -214,7 +226,7 @@ const PointageTableau = ({
             <tr className="align-middle">
               <th></th>
               {nameDayLine}
-              <th>Totaux</th>
+              <th className="text-center">Totaux</th>
             </tr>
           </thead>
           <tbody>
@@ -228,21 +240,25 @@ const PointageTableau = ({
               {valueLine}
               <td></td>
             </tr>
-            <tr className="align-middle">
-              <th></th>
-              {btnValeurLine}
-              <td></td>
-            </tr>
+            {!listView && (
+              <tr className="align-middle">
+                <th></th>
+                {btnValeurLine}
+                <td></td>
+              </tr>
+            )}
             <tr className="align-middle">
               <th>Affaire</th>
               {affaireLine}
               <td></td>
             </tr>
-            <tr className="align-middle">
-              <th></th>
-              {btnAffaireLine}
-              <td></td>
-            </tr>
+            {!listView && (
+              <tr className="align-middle">
+                <th></th>
+                {btnAffaireLine}
+                <td></td>
+              </tr>
+            )}
             <tr className="align-middle">
               <th>Total Heures</th>
               {valueTotalLine}
@@ -262,32 +278,81 @@ const PointageTableau = ({
               {motifLine}
               <td></td>
             </tr>
-            <tr className="align-middle">
-              <th></th>
-              {btnMotifLine}
-              <td></td>
-            </tr>
+            {!listView && (
+              <tr className="align-middle">
+                <th></th>
+                {btnMotifLine}
+                <td></td>
+              </tr>
+            )}
           </tbody>
         </Table>
       </div>
-      <div className="container-fluid d-flex justify-content-end mt-3">
-        <Button
-          className="mx-3"
-          variant="primary"
-          onClick={handleSubmitSave}
-          type="button"
-        >
-          Sauvegarder
-        </Button>
-        <Button
-          className="mx-3"
-          variant="success"
-          name="2"
-          onClick={handleSubmitSave}
-          type="button"
-        >
-          Envoyer pour validation
-        </Button>
+      <div
+        className={`container-fluid d-flex justify-content-${
+          listView || cadreEdit ? "between" : "end"
+        } mt-3`}
+      >
+        {cadreEdit && (
+          <Link
+            className="btn btn-primary mx-3"
+            to={`/gestion/pointage/${semaine.annee}/${semaine.numero}`}
+          >
+            Retour à gestion des pointages
+          </Link>
+        )}
+        {listView && (
+          <Button
+            className="mx-3"
+            variant="primary"
+            onClick={() =>
+              history.push(
+                `/gestion/pointage/${semaine.annee}/${semaine.numero}/${semaine.user.id}`
+              )
+            }
+            type="button"
+          >
+            Editer
+          </Button>
+        )}
+
+        <div>
+          {roleId <= 2 && semaine.etatSemaine.id != 5 && (
+            <Button
+              className="mx-3"
+              variant="danger"
+              name="5"
+              onClick={handleSubmitSave}
+              type="button"
+            >
+              Refuser
+            </Button>
+          )}
+          {!listView && (
+            <Button
+              className="mx-3"
+              variant="primary"
+              onClick={handleSubmitSave}
+              type="button"
+            >
+              Sauvegarder
+            </Button>
+          )}
+
+          <Button
+            className="mx-3"
+            variant="success"
+            name={roleId <= 2 ? 4 : roleId == 3 ? 3 : 2}
+            onClick={handleSubmitSave}
+            type="button"
+          >
+            {roleId <= 2
+              ? "Valider (resp site)"
+              : roleId == 3
+              ? "Valider (resp prod)"
+              : "Envoyer pour validation"}
+          </Button>
+        </div>
       </div>
     </>
   );

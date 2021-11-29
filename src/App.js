@@ -17,6 +17,7 @@ import AdminMotifsAbsencePage from "./js/pages/admin/AdminMotifsAbsencePage";
 import AdminAffairesPage from "./js/pages/admin/AdminAffairesPage";
 import HeaderComponent from "./js/components/HeaderComponent";
 import PointagePage from "./js/pages/PointagePage";
+import GestionPointagePage from "./js/pages/GestionPointagePage";
 import Loginuserlist from "./js/pages/Loginuserlist";
 import Loginkeypad from "./js/pages/Loginkeypad";
 import CommandePage from "./js/pages/CommandePage";
@@ -57,6 +58,8 @@ function App() {
               path="/admin/motifsAbsence"
               component={AdminMotifsAbsencePage}
             />
+            <PrivateRoute path="/gestion/pointage/:year/:week/:userId" component={PointagePage} />
+            <PrivateRoute path="/gestion/pointage/:year/:week" component={GestionPointagePage} />
             <PrivateRoute path="/pointage/:year/:week" component={PointagePage} />
             <PrivateRoute path="/commandes" component={CommandePage} />
             <PrivateRoute exact path="/" component={HomePage} />

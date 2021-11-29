@@ -9,7 +9,7 @@ import SEMAINES_API from "../services/semainesAPI";
 import PointageTableau from "../components/PointageTableau";
 
 const PointagePage = ({ history, match }) => {
-  const { year, week } = match.params;
+  const { year, week, userId } = match.params;
   const [semaine, setSemaine] = useState({ pointages: [] });
   const [affaires, setAffaires] = useState([]);
   const [motifsAbsence, setMotifsAbsence] = useState([]);
@@ -23,8 +23,12 @@ const PointagePage = ({ history, match }) => {
   // ######################################### FETCH FUNCTIONS
   const fetchSemaine = async () => {
     try {
-      console.log(year, week, AUTH_API.getId());
-      const response = await SEMAINES_API.findOne(year, week, AUTH_API.getId());
+      console.log(year, week, userId || AUTH_API.getId());
+      const response = await SEMAINES_API.findOne(
+        year,
+        week,
+        userId || AUTH_API.getId()
+      );
       const data = response.data;
       console.log("success fetch semaine", data);
       setSemaine(data);
@@ -136,26 +140,30 @@ const PointagePage = ({ history, match }) => {
   return (
     <>
       <div className="container-fluid color-text">
-        <h2 className="text-center my-2">{AUTH_API.getFullName()}</h2>
+        {!userId && semaine.user && (
+          <h2 className="text-center my-2">{`${semaine.user.firstname} ${semaine.user.lastname}`}</h2>
+        )}
         <div>
           {/* <div className="container d-flex flex-wrap justify-content-evenly"> */}
           <div id="SEARCH" className="my-2">
             <Form onSubmit={handleSubmitSearch} className="col-6 offset-3">
-              <Form.Group as={Row} className="mb-3">
-                <Form.Label column>Semaine</Form.Label>
-                <Col>
-                  <Form.Select
-                    name="semaine"
-                    onChange={(e) =>
-                      history.replace(`/pointage/${year}/${e.target.value}`)
-                    }
-                    value={week}
-                  >
-                    {!week && <option>Selectionnez la semaine</option>}
-                    {semaineOptions}
-                  </Form.Select>
-                </Col>
-              </Form.Group>
+              {!userId && (
+                <Form.Group as={Row} className="mb-3">
+                  <Form.Label column>Semaine</Form.Label>
+                  <Col>
+                    <Form.Select
+                      name="semaine"
+                      onChange={(e) =>
+                        history.replace(`/pointage/${year}/${e.target.value}`)
+                      }
+                      value={week}
+                    >
+                      {!week && <option>Selectionnez la semaine</option>}
+                      {semaineOptions}
+                    </Form.Select>
+                  </Col>
+                </Form.Group>
+              )}
               <Form.Group as={Row} className="mb-3">
                 <Form.Label column>Entité</Form.Label>
                 <Col>
@@ -233,9 +241,10 @@ const PointagePage = ({ history, match }) => {
         </div>
       </div>
       <PointageTableau
+        cadreEdit={userId}
         semaine={semaine}
         setSemaine={setSemaine}
-        fetchSemaine={fetchSemaine}
+        fetchRefresh={fetchSemaine}
         entites={entites}
         affaires={affaires}
         motifsAbsence={motifsAbsence}

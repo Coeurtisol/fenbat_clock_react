@@ -20,7 +20,7 @@ const NavbarComponent = ({ props }) => {
           <Nav className="me-auto">
             <Nav.Link href="#/">Accueil</Nav.Link>
             <NavDropdown
-              title={`Connecté (${AUTH_API.getRole()})`}
+              title={`${AUTH_API.getFullName()} (${AUTH_API.getRole()})`}
               id="basic-nav-dropdown"
             >
               <NavDropdown.Item href="#/admin/users">

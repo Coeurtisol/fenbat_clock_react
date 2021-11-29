@@ -44,6 +44,14 @@ function getId() {
   }
 }
 
+function getRoleId() {
+  if (isAuthenticated()) {
+    const token = getToken();
+    const jwtData = parseJwt(token);
+    return jwtData.role.id;
+  }
+}
+
 function getRole() {
   if (isAuthenticated()) {
     const token = getToken();
@@ -74,6 +82,7 @@ const AUTH_API = {
   isAuthenticated,
   getId,
   getRole,
+  getRoleId,
   getEntite,
   getFullName,
 };
