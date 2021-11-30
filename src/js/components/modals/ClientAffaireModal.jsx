@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import CLIENTSAFFAIRE_API from "../../services/clientsAffaireAPI";
 import { Form, Button, Modal } from "react-bootstrap";
+import { toast } from "react-toastify";
 
 const ClientAffaireModal = ({ fetchClientsAffaire, clientAffaire }) => {
   const [showModal, setShowModal] = useState(false);
@@ -34,12 +35,14 @@ const ClientAffaireModal = ({ fetchClientsAffaire, clientAffaire }) => {
     console.log("create clientAffaire", newClientAffaire);
     try {
       const response = await CLIENTSAFFAIRE_API.create(newClientAffaire);
-      console.log("success create", response);
+      console.log("success create clientsAffaire", response);
+      toast.success("Type de client d'affaire créé.");
       setNewClientAffaire({
         name: "",
       });
     } catch (error) {
-      console.log("erreur create", error);
+      console.log("erreur create clientsAffaire", error);
+      toast.error("Erreur à la création du type de client d'affaire.");
     }
     handleShowClientAffaireModal();
   };
@@ -54,12 +57,14 @@ const ClientAffaireModal = ({ fetchClientsAffaire, clientAffaire }) => {
         clientAffaire.id,
         newClientAffaire
       );
-      console.log("success update", response);
+      console.log("success update clientsAffaire", response);
+      toast.success("Type de client d'affaire mit à jour.");
       setNewClientAffaire({
         name: "",
       });
     } catch (error) {
-      console.log("erreur update", error);
+      console.log("erreur update clientsAffaire", error);
+      toast.error("Erreur à la mise à jour du type de client d'affaire.");
     }
     handleShowClientAffaireModal();
   };
@@ -68,9 +73,11 @@ const ClientAffaireModal = ({ fetchClientsAffaire, clientAffaire }) => {
   const handleDelete = async (id) => {
     try {
       const response = await CLIENTSAFFAIRE_API.deleteOne(id);
-      console.log("success delete", response);
+      console.log("success delete clientsAffaire", response);
+      toast.success("Type de client d'affaire supprimé.");
     } catch (error) {
-      console.log("erreur delete", error);
+      console.log("erreur delete clientsAffaire", error);
+      toast.error("Erreur à la suppression du type de client d'affaire.");
     }
     handleShowClientAffaireModal();
   };

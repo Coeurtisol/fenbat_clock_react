@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Form, Modal, Button } from "react-bootstrap";
+import { toast } from "react-toastify";
 import CATEGORIES_API from "../../services/categoriesAPI";
 
 const CategorieModal = ({ fetchCategories }) => {
@@ -17,12 +18,14 @@ const CategorieModal = ({ fetchCategories }) => {
     e.preventDefault();
     try {
       const response = await CATEGORIES_API.create(newCategorie);
-      console.log("success submit", response);
+      console.log("success create categorie", response);
+      toast.success("Catégorie créée.");
       setNewCategorie({
         name: "",
       });
     } catch (error) {
-      console.log("erreur submit", error);
+      console.log("erreur create categorie", error);
+      toast.error("Erreur à la création de la catégorie.");
     }
     fetchCategories();
     setShowModal(!showModal);

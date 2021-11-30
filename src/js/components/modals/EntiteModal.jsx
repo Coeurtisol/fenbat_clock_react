@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import ENTITES_API from "../../services/entitesAPI";
 import { Form, Button, Modal } from "react-bootstrap";
+import { toast } from "react-toastify";
 
 const EntiteModal = ({ fetchEntites, entite }) => {
   const [showModal, setShowModal] = useState(false);
@@ -31,12 +32,14 @@ const EntiteModal = ({ fetchEntites, entite }) => {
     console.log("create entite", newEntite);
     try {
       const response = await ENTITES_API.create(newEntite);
-      console.log("success create", response);
+      console.log("success create entite", response);
+      toast.success("Entité créée.");
       setNewEntite({
         name: "",
       });
     } catch (error) {
-      console.log("erreur create", error);
+      console.log("erreur create entite", error);
+      toast.error("Erreur à la création de l'entité.");
     }
     handleShowEntiteModal();
   };
@@ -48,12 +51,14 @@ const EntiteModal = ({ fetchEntites, entite }) => {
     console.log("update entite", newEntite);
     try {
       const response = await ENTITES_API.update(entite.id, newEntite);
-      console.log("success update", response);
+      console.log("success update entite", response);
+      toast.success("Entité mise à jour.");
       setNewEntite({
         name: "",
       });
     } catch (error) {
-      console.log("erreur update", error);
+      console.log("erreur update entite", error);
+      toast.error("Erreur à la mise à jour de l'entité.");
     }
     handleShowEntiteModal();
   };
@@ -62,9 +67,11 @@ const EntiteModal = ({ fetchEntites, entite }) => {
   const handleDelete = async (id) => {
     try {
       const response = await ENTITES_API.deleteOne(id);
-      console.log("success delete", response);
+      console.log("success delete entite", response);
+      toast.success("Entité supprimée.");
     } catch (error) {
-      console.log("erreur delete", error);
+      console.log("erreur delete entite", error);
+      toast.error("Erreur à la suppression de l'entité.");
     }
     handleShowEntiteModal();
   };
@@ -88,7 +95,11 @@ const EntiteModal = ({ fetchEntites, entite }) => {
         onHide={handleShowEntiteModal}
       >
         <Modal.Header closeButton>
-          <Modal.Title>{entite ? `Modification de l'entité : ${entite.name}` : "Nouvelle entité"}</Modal.Title>
+          <Modal.Title>
+            {entite
+              ? `Modification de l'entité : ${entite.name}`
+              : "Nouvelle entité"}
+          </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form onSubmit={entite ? handleUpdate : handleCreate}>

@@ -1,4 +1,5 @@
 import React from "react";
+import { toast } from "react-toastify";
 import { Table, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import AUTH_API from "../services/authAPI.js";
@@ -34,9 +35,11 @@ const PointageTableau = ({
         updatedSemaine.id,
         updatedSemaine
       );
-      console.log("success update", response);
+      console.log("success semaine update", response);
+      toast.success("Enregistrement réussie.");
     } catch (error) {
-      console.log("erreur update", error);
+      console.log("erreur semaine update", error);
+      toast.error("Enregistrement échoué.");
     }
     fetchRefresh();
   };

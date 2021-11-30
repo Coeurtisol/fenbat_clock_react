@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import SECTEURSAFFAIRE_API from "../../services/secteursAffaireAPI";
 import { Table } from "react-bootstrap";
 import SecteurAffaireModal from "../modals/SecteurAffaireModal";
+import { toast } from "react-toastify";
 
 const AdminSecteursAffaireComponent = () => {
   const [secteursAffaire, setSecteursAffaire] = useState([]);
@@ -10,10 +11,11 @@ const AdminSecteursAffaireComponent = () => {
   const fetchSecteursAffaire = async () => {
     try {
       const secteursAffaire = await SECTEURSAFFAIRE_API.findAll();
-      console.log("success fetch", secteursAffaire);
+      console.log("success fetch secteursAffaire", secteursAffaire);
       setSecteursAffaire(secteursAffaire);
     } catch (error) {
-      console.log("erreur fetch", error);
+      console.log("erreur fetch secteursAffaire", error);
+      toast.error("Erreur au chargement des secteurs d'affaires.");
     }
   };
 

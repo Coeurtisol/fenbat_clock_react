@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import ENTITES_API from "../../services/entitesAPI";
 import { Table } from "react-bootstrap";
 import EntiteModal from "../../components/modals/EntiteModal";
+import { toast } from "react-toastify";
 
 const AdminEntitesPage = () => {
   const [entites, setEntites] = useState([]);
@@ -10,10 +11,11 @@ const AdminEntitesPage = () => {
   const fetchEntites = async () => {
     try {
       const entites = await ENTITES_API.findAll();
-      console.log("success fetch", entites);
+      console.log("success fetch entites", entites);
       setEntites(entites);
     } catch (error) {
-      console.log("erreur fetch", error);
+      console.log("erreur fetch entites", error);
+      toast.error("Erreur au chargement des entités.");
     }
   };
 

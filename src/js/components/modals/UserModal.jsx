@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import USERS_API from "../../services/usersAPI";
 import ENTITES_API from "../../services/entitesAPI";
 import { Form, Button, Modal } from "react-bootstrap";
+import { toast } from "react-toastify";
 
 const UserModal = ({ fetchUsers, userId }) => {
   const [showModal, setShowModal] = useState(false);
@@ -25,7 +26,7 @@ const UserModal = ({ fetchUsers, userId }) => {
   const fetchUser = async (userId) => {
     try {
       const user = await USERS_API.findOne(userId);
-      // console.log("success fetch", user);
+      console.log("success fetch user", user);
       setNewUser({
         ...newUser,
         firstname: user.firstname,
@@ -34,17 +35,19 @@ const UserModal = ({ fetchUsers, userId }) => {
         roleId: user.role.id,
       });
     } catch (error) {
-      console.log("erreur fetch", error);
+      console.log("erreur fetch user", error);
+      toast.error("Erreur au chargement de l'utilisateur.");
     }
   };
 
   const fetchEntites = async () => {
     try {
       const entites = await ENTITES_API.findAll();
-      // console.log("success fetch", entites);
+      console.log("success fetch entites", entites);
       setEntites(entites);
     } catch (error) {
-      console.log("erreur fetch", error);
+      console.log("erreur fetch entites", error);
+      toast.error("Erreur au chargement des entités.");
     }
   };
 
@@ -76,7 +79,8 @@ const UserModal = ({ fetchUsers, userId }) => {
     console.log("create user", newUser);
     try {
       const response = await USERS_API.create(newUser);
-      console.log("success create", response);
+      console.log("success create user", response);
+      toast.success("Utilisateur créé.");
       setNewUser({
         firstname: "",
         lastname: "",
@@ -85,7 +89,8 @@ const UserModal = ({ fetchUsers, userId }) => {
         roleId: 5,
       });
     } catch (error) {
-      console.log("erreur create", error);
+      console.log("erreur create user", error);
+      toast.error("Erreur à la création de l'utilisateur.");
     }
     handleShowUserModal();
   };
@@ -97,7 +102,8 @@ const UserModal = ({ fetchUsers, userId }) => {
     console.log("update user", newUser);
     try {
       const response = await USERS_API.update(userId, newUser);
-      console.log("success update", response);
+      console.log("success update user", response);
+      toast.success("Utilisateur mit à jour.");
       setNewUser({
         firstname: "",
         lastname: "",
@@ -106,7 +112,8 @@ const UserModal = ({ fetchUsers, userId }) => {
         roleId: 5,
       });
     } catch (error) {
-      console.log("erreur update", error);
+      console.log("erreur update user", error);
+      toast.error("Erreur à la mise à jour de l'utilisateur.");
     }
     handleShowUserModal();
   };
@@ -115,9 +122,11 @@ const UserModal = ({ fetchUsers, userId }) => {
   const handleDelete = async (id) => {
     try {
       const response = await USERS_API.deleteOne(id);
-      console.log("success delete", response);
+      console.log("success delete user", response);
+      toast.success("Utilisateur supprimé.");
     } catch (error) {
-      console.log("erreur delete", error);
+      console.log("erreur delete user", error);
+      toast.error("Erreur à la suppression de l'utilisateur.");
     }
     handleShowUserModal();
   };

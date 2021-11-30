@@ -7,6 +7,7 @@ import AFFAIRES_API from "../services/affairesAPI";
 import MOTIFSABSENCE_API from "../services/motifsAbsenceAPI";
 import SEMAINES_API from "../services/semainesAPI";
 import PointageTableau from "../components/PointageTableau";
+import { toast } from "react-toastify";
 
 const PointagePage = ({ history, match }) => {
   const { year, week, userId } = match.params;
@@ -23,7 +24,9 @@ const PointagePage = ({ history, match }) => {
   // ######################################### FETCH FUNCTIONS
   const fetchSemaine = async () => {
     try {
-      console.log(year, week, userId || AUTH_API.getId());
+      console.log("année", year);
+      console.log("semaine", week);
+      console.log("userId", userId || AUTH_API.getId());
       const response = await SEMAINES_API.findOne(
         year,
         week,
@@ -33,37 +36,41 @@ const PointagePage = ({ history, match }) => {
       console.log("success fetch semaine", data);
       setSemaine(data);
     } catch (error) {
-      console.log("erreur fetch", error);
+      console.log("erreur fetch semaine", error);
+      toast.error("Erreur au chargement de la semaine.");
     }
   };
 
   const fetchEntites = async () => {
     try {
       const entites = await ENTITES_API.findAll();
-      console.log("success fetch", entites);
+      console.log("success fetch entites", entites);
       setEntites(entites);
     } catch (error) {
-      console.log("erreur fetch", error);
+      console.log("erreur fetch entites", error);
+      toast.error("Erreur au chargement des entités.");
     }
   };
 
   const fetchMotifsAbsence = async () => {
     try {
       const motifsAbsence = await MOTIFSABSENCE_API.findAll();
-      console.log("success fetch", motifsAbsence);
+      console.log("success fetch motifsAbsence", motifsAbsence);
       setMotifsAbsence(motifsAbsence);
     } catch (error) {
-      console.log("erreur fetch", error);
+      console.log("erreur fetch motifsAbsence", error);
+      toast.error("Erreur au chargement des motifs d'absences.");
     }
   };
 
   const fetchAffaires = async () => {
     try {
       const affaires = await AFFAIRES_API.findAll();
-      console.log("success fetch", affaires);
+      console.log("success fetch affaires", affaires);
       setAffaires(affaires);
     } catch (error) {
-      console.log("erreur fetch", error);
+      console.log("erreur fetch affaires", error);
+      toast.error("Erreur au chargement des affaires.");
     }
   };
 
@@ -72,25 +79,12 @@ const PointagePage = ({ history, match }) => {
     fetchEntites();
     fetchAffaires();
     fetchMotifsAbsence();
-    // setSearch({
-    //   ...search,
-    //   semaine: DATE_API.getWeekNumber(new Date()),
-    // });
   }, [year, week]);
 
   // ######################################### HANDLE FUNCTIONS
-  const handleChangeDate = ({ target }) => {
-    const { name, value } = target;
-    setSearch({ ...search, [name]: value });
-  };
-
   const handleChangeSearch = ({ target }) => {
     const { name, value } = target;
     setSearch({ ...search, [name]: value });
-  };
-
-  const handleSubmitSearch = () => {
-    console.log(search);
   };
 
   const handleChangeDefault = ({ name, value }) => {
@@ -146,7 +140,7 @@ const PointagePage = ({ history, match }) => {
         <div>
           {/* <div className="container d-flex flex-wrap justify-content-evenly"> */}
           <div id="SEARCH" className="my-2">
-            <Form onSubmit={handleSubmitSearch} className="col-6 offset-3">
+            <Form className="col-6 offset-3">
               {!userId && (
                 <Form.Group as={Row} className="mb-3">
                   <Form.Label column>Semaine</Form.Label>

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import MOTIFSABSENCE_API from "../../services/motifsAbsenceAPI";
 import { Table } from "react-bootstrap";
 import MotifAbsenceModal from "../../components/modals/MotifAbsenceModal";
+import { toast } from "react-toastify";
 
 const AdminMotifsAbsencePage = () => {
   const [motifsAbsence, setMotifsAbsence] = useState([]);
@@ -10,10 +11,11 @@ const AdminMotifsAbsencePage = () => {
   const fetchMotifsAbsence = async () => {
     try {
       const motifsAbsence = await MOTIFSABSENCE_API.findAll();
-      console.log("success fetch", motifsAbsence);
+      console.log("success fetch motifsAbsence", motifsAbsence);
       setMotifsAbsence(motifsAbsence);
     } catch (error) {
-      console.log("erreur fetch", error);
+      console.log("erreur fetch motifsAbsence", error);
+      toast.error("Erreur au chargement des motifs d'absences.")
     }
   };
 

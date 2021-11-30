@@ -8,6 +8,7 @@ import MOTIFSABSENCE_API from "../services/motifsAbsenceAPI";
 import SEMAINES_API from "../services/semainesAPI";
 import ETATSSEMAINE_API from "../services/etatsSemaineAPI";
 import PointageTableau from "../components/PointageTableau";
+import { toast } from "react-toastify";
 
 const GestionPointagePage = ({ history, match }) => {
   const { year, week } = match.params;
@@ -31,7 +32,8 @@ const GestionPointagePage = ({ history, match }) => {
       console.log("success fetch semaines", data);
       setSemaines(data);
     } catch (error) {
-      console.log("erreur fetch", error);
+      console.log("erreur fetch semaines", error);
+      toast.error("Erreur au chargement des semaines.")
     }
   };
 
@@ -43,37 +45,41 @@ const GestionPointagePage = ({ history, match }) => {
       console.log("success fetch etatsSemaine", data);
       setEtatsSemaine(data);
     } catch (error) {
-      console.log("erreur fetch", error);
+      console.log("erreur fetch etatsSemaine", error);
+      toast.error("Erreur au chargement des états de semaines.")
     }
   };
 
   const fetchEntites = async () => {
     try {
       const entites = await ENTITES_API.findAll();
-      console.log("success fetch", entites);
+      console.log("success fetch entites", entites);
       setEntites(entites);
     } catch (error) {
-      console.log("erreur fetch", error);
+      console.log("erreur fetch entites", error);
+      toast.error("Erreur au chargement des entités.")
     }
   };
 
   const fetchMotifsAbsence = async () => {
     try {
       const motifsAbsence = await MOTIFSABSENCE_API.findAll();
-      console.log("success fetch", motifsAbsence);
+      console.log("success fetch motifsAbsence", motifsAbsence);
       setMotifsAbsence(motifsAbsence);
     } catch (error) {
-      console.log("erreur fetch", error);
+      console.log("erreur fetch motifsAbsence", error);
+      toast.error("Erreur au chargement des motifs d'absences.")
     }
   };
 
   const fetchAffaires = async () => {
     try {
       const affaires = await AFFAIRES_API.findAll();
-      console.log("success fetch", affaires);
+      console.log("success fetch affaires", affaires);
       setAffaires(affaires);
     } catch (error) {
-      console.log("erreur fetch", error);
+      console.log("erreur fetch affaires", error);
+      toast.error("Erreur au chargement des affaires.")
     }
   };
 
@@ -89,10 +95,6 @@ const GestionPointagePage = ({ history, match }) => {
   const handleChangeFilter = ({ target }) => {
     const { name, value } = target;
     setFilter({ ...filter, [name]: value });
-  };
-
-  const handleSubmitFilter = () => {
-    console.log(filter);
   };
 
   // ######################################### FILTRAGE SEMAINES
@@ -139,7 +141,7 @@ const GestionPointagePage = ({ history, match }) => {
         <div>
           {/* <div className="container d-flex flex-wrap justify-content-evenly"> */}
           <div id="FILTER" className="my-2">
-            <Form onSubmit={handleSubmitFilter} className="col-6 offset-3">
+            <Form className="col-6 offset-3">
               <Form.Group as={Row} className="mb-3">
                 <Form.Label column>Semaine</Form.Label>
                 <Col>

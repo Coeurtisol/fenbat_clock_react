@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import MOTIFSABSENCE_API from "../../services/motifsAbsenceAPI";
 import { Form, Button, Modal } from "react-bootstrap";
+import { toast } from "react-toastify";
 
 const MotifAbsenceModal = ({ fetchMotifsAbsence, motifAbsence }) => {
   const [showModal, setShowModal] = useState(false);
@@ -31,12 +32,14 @@ const MotifAbsenceModal = ({ fetchMotifsAbsence, motifAbsence }) => {
     console.log("create motifAbsence", newMotifAbsence);
     try {
       const response = await MOTIFSABSENCE_API.create(newMotifAbsence);
-      console.log("success create", response);
+      console.log("success create motifAbsence", response);
+      toast.success("Motif d'absence créé.")
       setNewMotifAbsence({
         name: "",
       });
     } catch (error) {
-      console.log("erreur create", error);
+      console.log("erreur create motifAbsence", error);
+      toast.error("Erreur à la création du motif d'absence.")
     }
     handleShowMotifAbsenceModal();
   };
@@ -51,12 +54,14 @@ const MotifAbsenceModal = ({ fetchMotifsAbsence, motifAbsence }) => {
         motifAbsence.id,
         newMotifAbsence
       );
-      console.log("success update", response);
+      console.log("success update motifAbsence", response);
+      toast.success("Motif d'absence mit à jour.")
       setNewMotifAbsence({
         name: "",
       });
     } catch (error) {
-      console.log("erreur update", error);
+      console.log("erreur update motifAbsence", error);
+      toast.error("Erreur à la mise à jour du motif d'absence.")
     }
     handleShowMotifAbsenceModal();
   };
@@ -65,9 +70,11 @@ const MotifAbsenceModal = ({ fetchMotifsAbsence, motifAbsence }) => {
   const handleDelete = async (id) => {
     try {
       const response = await MOTIFSABSENCE_API.deleteOne(id);
-      console.log("success delete", response);
+      console.log("success delete motifAbsence", response);
+      toast.success("Motif d'absence supprimé.")
     } catch (error) {
-      console.log("erreur delete", error);
+      console.log("erreur delete motifAbsence", error);
+      toast.error("Erreur à la suppression du motif d'absence.")
     }
     handleShowMotifAbsenceModal();
   };

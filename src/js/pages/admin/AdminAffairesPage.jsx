@@ -4,8 +4,8 @@ import AffaireModal from "../../components/modals/AffaireModal";
 import AdminTypesAffaireComponent from "../../components/admin/AdminTypesAffaireComponent";
 import AdminSecteursAffaireComponent from "../../components/admin/AdminSecteursAffaireComponent";
 import AdminClientsAffaireComponent from "../../components/admin/AdminClientsAffaireComponent";
-// import ETATSAFFAIRE_API from "../../services/etatsAffaireAPI";
 import { Table } from "react-bootstrap";
+import { toast } from "react-toastify";
 
 const AdminAffairesPage = () => {
   const [affaires, setAffaires] = useState([]);
@@ -14,10 +14,11 @@ const AdminAffairesPage = () => {
   const fetchAffaires = async () => {
     try {
       const affaires = await AFFAIRES_API.findAll();
-      console.log("success fetch", affaires);
+      console.log("success fetch affaires", affaires);
       setAffaires(affaires);
     } catch (error) {
-      console.log("erreur fetch", error);
+      console.log("erreur fetch affaires", error);
+      toast.error("Erreur au chargement des affaires.")
     }
   };
 

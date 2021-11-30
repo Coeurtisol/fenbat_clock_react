@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Form, Modal, Button } from "react-bootstrap";
+import { toast } from "react-toastify";
 import ARTICLES_API from "../../services/articlesAPI";
 
 const ArticleModal = ({ fetchArticles, currentCategorie }) => {
@@ -21,13 +22,15 @@ const ArticleModal = ({ fetchArticles, currentCategorie }) => {
     const article = { name: newArticle.name, categorieId: currentCategorie };
     try {
       const response = await ARTICLES_API.create(article);
-      console.log("success submit", response);
+      console.log("success create article", response);
+      toast.error("Article créé.")
       setNewArticle({
         name: "",
         categorieId: currentCategorie,
       });
     } catch (error) {
-      console.log("erreur submit", error);
+      console.log("erreur create article", error);
+      toast.error("Erreur à la création de l'article.")
     }
     fetchArticles();
     setShowModal(!showModal);

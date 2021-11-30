@@ -1,6 +1,8 @@
 import "./css/App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import React, { useState } from "react";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import {
   HashRouter as Router,
   Switch,
@@ -58,9 +60,18 @@ function App() {
               path="/admin/motifsAbsence"
               component={AdminMotifsAbsencePage}
             />
-            <PrivateRoute path="/gestion/pointage/:year/:week/:userId" component={PointagePage} />
-            <PrivateRoute path="/gestion/pointage/:year/:week" component={GestionPointagePage} />
-            <PrivateRoute path="/pointage/:year/:week" component={PointagePage} />
+            <PrivateRoute
+              path="/gestion/pointage/:year/:week/:userId"
+              component={PointagePage}
+            />
+            <PrivateRoute
+              path="/gestion/pointage/:year/:week"
+              component={GestionPointagePage}
+            />
+            <PrivateRoute
+              path="/pointage/:year/:week"
+              component={PointagePage}
+            />
             <PrivateRoute path="/commandes" component={CommandePage} />
             <PrivateRoute exact path="/" component={HomePage} />
 
@@ -68,6 +79,7 @@ function App() {
           </Switch>
         </Router>
         {/* </div> */}
+        <ToastContainer position="bottom-left" autoClose={2500} />
       </div>
     </AuthContext.Provider>
   );

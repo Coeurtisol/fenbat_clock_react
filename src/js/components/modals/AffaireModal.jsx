@@ -5,6 +5,7 @@ import SECTEURSAFFAIRE_API from "../../services/secteursAffaireAPI";
 import CLIENTSAFFAIRE_API from "../../services/clientsAffaireAPI";
 import AFFAIRES_API from "../../services/affairesAPI";
 import { Form, Button, Modal } from "react-bootstrap";
+import { toast } from "react-toastify";
 
 const UserModal = ({ fetchAffaires, affaire }) => {
   const [showModal, setShowModal] = useState(false);
@@ -26,40 +27,44 @@ const UserModal = ({ fetchAffaires, affaire }) => {
   const fetchEntites = async () => {
     try {
       const entites = await ENTITES_API.findAll();
-      console.log("success fetch", entites);
+      console.log("success fetch entites", entites);
       setEntites(entites);
     } catch (error) {
-      console.log("erreur fetch", error);
+      console.log("erreur fetch entites", error);
+      toast.error("Erreur au chargement des entités.");
     }
   };
 
   const fetchTypesAffaire = async () => {
     try {
       const typesAffaire = await TYPESAFFAIRE_API.findAll();
-      console.log("success fetch", typesAffaire);
+      console.log("success fetch typesAffaire", typesAffaire);
       setTypesAffaire(typesAffaire);
     } catch (error) {
-      console.log("erreur fetch", error);
+      console.log("erreur fetch typesAffaire", error);
+      toast.error("Erreur au chargement des corps d'état.");
     }
   };
 
   const fetchSecteursAffaire = async () => {
     try {
       const secteursAffaire = await SECTEURSAFFAIRE_API.findAll();
-      console.log("success fetch", secteursAffaire);
+      console.log("success fetch secteursAffaire", secteursAffaire);
       setSecteursAffaire(secteursAffaire);
     } catch (error) {
-      console.log("erreur fetch", error);
+      console.log("erreur fetch secteursAffaire", error);
+      toast.error("Erreur au chargement des secteurs.");
     }
   };
 
   const fetchClientsAffaire = async () => {
     try {
       const clientsAffaire = await CLIENTSAFFAIRE_API.findAll();
-      console.log("success fetch", clientsAffaire);
+      console.log("success fetch clientsAffaire", clientsAffaire);
       setClientsAffaire(clientsAffaire);
     } catch (error) {
-      console.log("erreur fetch", error);
+      console.log("erreur fetch clientsAffaire", error);
+      toast.error("Erreur au chargement des types de clients.");
     }
   };
 

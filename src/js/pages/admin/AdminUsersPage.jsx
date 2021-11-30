@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import USERS_API from "../../services/usersAPI";
 import { Table } from "react-bootstrap";
 import UserModal from "../../components/modals/UserModal";
+import { toast } from "react-toastify";
 
 const AdminUsersPage = () => {
   const [users, setUsers] = useState([]);
@@ -10,10 +11,11 @@ const AdminUsersPage = () => {
   const fetchUsers = async () => {
     try {
       const users = await USERS_API.findAll();
-      // console.log("success fetch", users);
+      console.log("success fetch users", users);
       setUsers(users);
     } catch (error) {
-      console.log("erreur fetch", error);
+      console.log("erreur fetch users", error);
+      toast.error("Erreur au chargement des utilisateurs.")
     }
   };
 

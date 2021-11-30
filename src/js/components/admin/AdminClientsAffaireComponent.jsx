@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import CLIENTSAFFAIRE_API from "../../services/clientsAffaireAPI";
 import { Table } from "react-bootstrap";
 import ClientAffaireModal from "../modals/ClientAffaireModal";
+import { toast } from "react-toastify";
 
 const AdminClientsAffaireComponent = () => {
   const [clientsAffaire, setClientsAffaire] = useState([]);
@@ -10,10 +11,11 @@ const AdminClientsAffaireComponent = () => {
   const fetchClientsAffaire = async () => {
     try {
       const clientsAffaire = await CLIENTSAFFAIRE_API.findAll();
-      console.log("success fetch", clientsAffaire);
+      console.log("success fetch clientsAffaire", clientsAffaire);
       setClientsAffaire(clientsAffaire);
     } catch (error) {
-      console.log("erreur fetch", error);
+      console.log("erreur fetch clientsAffaire", error);
+      toast.error("Erreur au chargement des types de clients des affaires.");
     }
   };
 

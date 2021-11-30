@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import TYPESAFFAIRE_API from "../../services/typesAffaireAPI";
 import { Form, Button, Modal } from "react-bootstrap";
+import { toast } from "react-toastify";
 
 const TypeAffaireModal = ({ fetchTypesAffaire, typeAffaire }) => {
   const [showModal, setShowModal] = useState(false);
@@ -34,12 +35,14 @@ const TypeAffaireModal = ({ fetchTypesAffaire, typeAffaire }) => {
     console.log("create typeAffaire", newTypeAffaire);
     try {
       const response = await TYPESAFFAIRE_API.create(newTypeAffaire);
-      console.log("success create", response);
+      console.log("success create typesAffaire", response);
+      toast.success("Corps d'état créé.");
       setNewTypeAffaire({
         name: "",
       });
     } catch (error) {
-      console.log("erreur create", error);
+      console.log("erreur create typesAffaire", error);
+      toast.error("Erreur à la création du corps d'état.");
     }
     handleShowTypeAffaireModal();
   };
@@ -54,12 +57,14 @@ const TypeAffaireModal = ({ fetchTypesAffaire, typeAffaire }) => {
         typeAffaire.id,
         newTypeAffaire
       );
-      console.log("success update", response);
+      console.log("success update typesAffaire", response);
+      toast.success("Corps d'état mit à jour.");
       setNewTypeAffaire({
         name: "",
       });
     } catch (error) {
-      console.log("erreur update", error);
+      console.log("erreur update typesAffaire", error);
+      toast.error("Erreur à la mise à jour du corps d'état.");
     }
     handleShowTypeAffaireModal();
   };
@@ -68,9 +73,11 @@ const TypeAffaireModal = ({ fetchTypesAffaire, typeAffaire }) => {
   const handleDelete = async (id) => {
     try {
       const response = await TYPESAFFAIRE_API.deleteOne(id);
-      console.log("success delete", response);
+      console.log("success delete typesAffaire", response);
+      toast.success("Corps d'état surpprimé.");
     } catch (error) {
-      console.log("erreur delete", error);
+      console.log("erreur delete typesAffaire", error);
+      toast.error("Erreur à la suppression du corps d'état.");
     }
     handleShowTypeAffaireModal();
   };

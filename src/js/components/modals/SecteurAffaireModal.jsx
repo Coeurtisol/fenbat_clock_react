@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import SECTEURSAFFAIRE_API from "../../services/secteursAffaireAPI";
 import { Form, Button, Modal } from "react-bootstrap";
+import { toast } from "react-toastify";
 
 const SecteurAffaireModal = ({ fetchSecteursAffaire, secteurAffaire }) => {
   const [showModal, setShowModal] = useState(false);
@@ -34,12 +35,14 @@ const SecteurAffaireModal = ({ fetchSecteursAffaire, secteurAffaire }) => {
     console.log("create secteurAffaire", newSecteurAffaire);
     try {
       const response = await SECTEURSAFFAIRE_API.create(newSecteurAffaire);
-      console.log("success create", response);
+      console.log("success create secteurAffaire", response);
+      toast.success("Secteur d'affaires créé.");
       setNewSecteurAffaire({
         name: "",
       });
     } catch (error) {
-      console.log("erreur create", error);
+      console.log("erreur create secteurAffaire", error);
+      toast.error("Erreur à la création du secteur d'affaires.");
     }
     handleShowSecteurAffaireModal();
   };
@@ -54,12 +57,14 @@ const SecteurAffaireModal = ({ fetchSecteursAffaire, secteurAffaire }) => {
         secteurAffaire.id,
         newSecteurAffaire
       );
-      console.log("success update", response);
+      console.log("success update secteurAffaire", response);
+      toast.success("Secteur d'affaire mit à jour.");
       setNewSecteurAffaire({
         name: "",
       });
     } catch (error) {
-      console.log("erreur update", error);
+      console.log("erreur update secteurAffaire", error);
+      toast.error("Erreur à la mise à jour du secteur d'affaires.");
     }
     handleShowSecteurAffaireModal();
   };
@@ -68,9 +73,11 @@ const SecteurAffaireModal = ({ fetchSecteursAffaire, secteurAffaire }) => {
   const handleDelete = async (id) => {
     try {
       const response = await SECTEURSAFFAIRE_API.deleteOne(id);
-      console.log("success delete", response);
+      console.log("success delete secteurAffaire", response);
+      toast.success("Secteur d'affaires supprimé.");
     } catch (error) {
-      console.log("erreur delete", error);
+      console.log("erreur delete secteurAffaire", error);
+      toast.error("Erreur à la suppression du secteur d'affaires.");
     }
     handleShowSecteurAffaireModal();
   };

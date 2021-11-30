@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import TYPESAFFAIRE_API from "../../services/typesAffaireAPI";
 import { Table } from "react-bootstrap";
 import TypeAffaireModal from "../modals/TypeAffaireModal";
+import { toast } from "react-toastify";
 
 const AdminTypesAffaireComponent = () => {
   const [typesAffaire, setTypesAffaire] = useState([]);
@@ -10,10 +11,11 @@ const AdminTypesAffaireComponent = () => {
   const fetchTypesAffaire = async () => {
     try {
       const typesAffaire = await TYPESAFFAIRE_API.findAll();
-      console.log("success fetch", typesAffaire);
+      console.log("success fetch typesAffaire", typesAffaire);
       setTypesAffaire(typesAffaire);
     } catch (error) {
-      console.log("erreur fetch", error);
+      console.log("erreur fetch typesAffaire", error);
+      toast.error("Erreur au chargement des corps d'états.")
     }
   };
 
