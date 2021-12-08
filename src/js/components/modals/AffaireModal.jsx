@@ -3,6 +3,7 @@ import ENTITES_API from "../../services/entitesAPI";
 import TYPESAFFAIRE_API from "../../services/typesAffaireAPI";
 import SECTEURSAFFAIRE_API from "../../services/secteursAffaireAPI";
 import CLIENTSAFFAIRE_API from "../../services/clientsAffaireAPI";
+import DONNEURSAFFAIRE_API from "../../services/donneursAffaireAPI";
 import AFFAIRES_API from "../../services/affairesAPI";
 import { Form, Button, Modal } from "react-bootstrap";
 import { toast } from "react-toastify";
@@ -13,12 +14,14 @@ const UserModal = ({ fetchAffaires, affaire }) => {
   const [typesAffaire, setTypesAffaire] = useState([]);
   const [secteursAffaire, setSecteursAffaire] = useState([]);
   const [clientsAffaire, setClientsAffaire] = useState([]);
+  const [donneursAffaire, setDonneursAffaire] = useState([]);
   const etatsAffaire = ["En cours", "SAV", "Assurance", "Cloturé"];
   const [newAffaire, setNewAffaire] = useState({
     name: "",
     secteurAffaireId: "",
     typeAffaireId: "",
     clientAffaireId: "",
+    donneurAffaireId: "",
     etat: "En cours",
     entiteId: "",
   });
@@ -68,6 +71,17 @@ const UserModal = ({ fetchAffaires, affaire }) => {
     }
   };
 
+  const fetchDonneursAffaire = async () => {
+    try {
+      const donneursAffaire = await DONNEURSAFFAIRE_API.findAll();
+      console.log("success fetch donneursAffaire", donneursAffaire);
+      setDonneursAffaire(donneursAffaire);
+    } catch (error) {
+      console.log("erreur fetch donneursAffaire", error);
+      toast.error("Erreur au chargement des types de donneurs.");
+    }
+  };
+
   // HANDLE FUNCTIONS
   const handleShowUserModal = () => {
     setShowModal(!showModal);
@@ -78,7 +92,8 @@ const UserModal = ({ fetchAffaires, affaire }) => {
           name: affaire.name,
           secteurAffaireId: affaire.secteurAffaire.id,
           typeAffaireId: affaire.typeAffaire.id,
-          clientAffaireId: affaire.clientAffaire && affaire.clientAffaire.id,
+          clientAffaireId: affaire.clientAffaire.id,
+          donneurAffaireId: affaire.donneurAffaire.id,
           etat: affaire.etat,
           entiteId: affaire.entite.id,
         });
@@ -87,6 +102,7 @@ const UserModal = ({ fetchAffaires, affaire }) => {
       fetchTypesAffaire();
       fetchSecteursAffaire();
       fetchClientsAffaire();
+      fetchDonneursAffaire();
     } else {
       fetchAffaires();
     }
@@ -109,6 +125,7 @@ const UserModal = ({ fetchAffaires, affaire }) => {
         secteurAffaireId: "",
         typeAffaireId: "",
         clientAffaireId: "",
+        donneurAffaireId: "",
         etat: "En cours",
         entiteId: "",
       });
@@ -130,6 +147,7 @@ const UserModal = ({ fetchAffaires, affaire }) => {
         secteurAffaireId: "",
         typeAffaireId: "",
         clientAffaireId: "",
+        donneurAffaireId: "",
         etat: "En cours",
         entiteId: "",
       });
@@ -203,11 +221,29 @@ const UserModal = ({ fetchAffaires, affaire }) => {
               </Form.Select>
             </Form.Group>
             <Form.Group className="mb-3">
+              <Form.Label>Donneur d'ordre</Form.Label>
+              <Form.Select
+                name="donneurAffaireId"
+                onChange={handlechange}
+                value={newAffaire.donneurAffaireId}
+                required
+              >
+                {!newAffaire.donneurAffaireId && (
+                  <option>Selectionnez le donneur d'ordre de l'affaire</option>
+                )}
+                {donneursAffaire.map((d) => (
+                  <option key={d.id} value={d.id}>
+                    {d.name}
+                  </option>
+                ))}
+              </Form.Select>
+            </Form.Group>
+            <Form.Group className="mb-3">
               <Form.Label>Type de client</Form.Label>
               <Form.Select
                 name="clientAffaireId"
                 onChange={handlechange}
-                value={newAffaire.clientAffaireId || ""}
+                value={newAffaire.clientAffaireId}
                 required
               >
                 {!newAffaire.clientAffaireId && (

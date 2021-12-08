@@ -4,6 +4,7 @@ import AffaireModal from "../../components/modals/AffaireModal";
 import AdminTypesAffaireComponent from "../../components/admin/AdminTypesAffaireComponent";
 import AdminSecteursAffaireComponent from "../../components/admin/AdminSecteursAffaireComponent";
 import AdminClientsAffaireComponent from "../../components/admin/AdminClientsAffaireComponent";
+import AdminDonneursAffaireComponent from "../../components/admin/AdminDonneursAffaireComponent";
 import { Table } from "react-bootstrap";
 import { toast } from "react-toastify";
 
@@ -18,7 +19,7 @@ const AdminAffairesPage = () => {
       setAffaires(affaires);
     } catch (error) {
       console.log("erreur fetch affaires", error);
-      toast.error("Erreur au chargement des affaires.")
+      toast.error("Erreur au chargement des affaires.");
     }
   };
 
@@ -38,6 +39,7 @@ const AdminAffairesPage = () => {
             <thead>
               <tr className="align-middle">
                 <th className="text-center">Affaire</th>
+                <th className="text-center">Donneur d'ordre</th>
                 <th className="text-center">Client</th>
                 <th className="text-center">Secteur</th>
                 <th className="text-center">Corps d'état</th>
@@ -50,7 +52,8 @@ const AdminAffairesPage = () => {
               {affaires.map((a) => (
                 <tr key={a.id}>
                   <td>{a.name}</td>
-                  <td>{a.clientAffaire && a.clientAffaire.name}</td>
+                  <td>{a.donneurAffaire.name}</td>
+                  <td>{a.clientAffaire.name}</td>
                   <td>{a.secteurAffaire.name}</td>
                   <td>{a.typeAffaire.name}</td>
                   <td>{a.entite.name}</td>
@@ -62,15 +65,16 @@ const AdminAffairesPage = () => {
               ))}
             </tbody>
           </Table>
-          <AffaireModal fetchAffaires={fetchAffaires} />
         </>
       )}
+      <AffaireModal fetchAffaires={fetchAffaires} />
       <div className="d-flex flex-wrap justify-content-evenly">
         <AdminSecteursAffaireComponent />
         <AdminTypesAffaireComponent />
       </div>
       <div className="d-flex flex-wrap justify-content-evenly">
         <AdminClientsAffaireComponent />
+        <AdminDonneursAffaireComponent />
       </div>
     </main>
   );
