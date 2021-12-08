@@ -22,7 +22,7 @@ const PointageAffaireModal = ({
       setAffaireChoice(semaine.pointages[index].affaireId);
     }
   };
-  
+
   const handleSubmit = (e) => {
     e.preventDefault();
     let copyPointages = [...semaine.pointages];
@@ -32,13 +32,13 @@ const PointageAffaireModal = ({
     setSemaine({ ...semaine, pointages: copyPointages });
     handleShowModal();
   };
-  
+
   const filteredAffaires = affaires.filter(
     (a) => a.etat == "En cours" && entiteChoice && a.entite.name == entiteChoice
-    );
-    
-    // ############################################ TEMPLATE
-    return (
+  );
+
+  // ############################################ TEMPLATE
+  return (
     <>
       <Button
         size="sm"
@@ -129,7 +129,9 @@ const PointageAffaireModal = ({
                 <div className="d-flex justify-content-end align-items-center pt-3">
                   <p className="m-0 mr-3 pe-3">
                     {affaireChoice
-                      ? `Affaire selectionnée : ${affaireChoice}`
+                      ? `Affaire selectionnée : ${
+                          affaires.find((a) => a.id == affaireChoice).name
+                        }`
                       : "Aucune affaire selectionnée"}
                   </p>
                   <Button variant="primary" type="submit">
