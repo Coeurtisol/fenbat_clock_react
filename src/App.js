@@ -13,6 +13,7 @@ import {
 import AuthContext from "./js/contexts/AuthContext";
 import AUTH_API from "./js/services/authAPI";
 import HomePage from "./js/pages/HomePage";
+import AdminRolesPage from "./js/pages/admin/AdminRolesPage";
 import AdminUsersPage from "./js/pages/admin/AdminUsersPage";
 import AdminEntitesPage from "./js/pages/admin/AdminEntitesPage";
 import AdminMotifsAbsencePage from "./js/pages/admin/AdminMotifsAbsencePage";
@@ -50,6 +51,7 @@ function App() {
               </Route>
             )}
 
+            <PrivateRoute path="/admin/roles" component={AdminRolesPage} />
             <PrivateRoute path="/admin/users" component={AdminUsersPage} />
             <PrivateRoute path="/admin/entites" component={AdminEntitesPage} />
             <PrivateRoute

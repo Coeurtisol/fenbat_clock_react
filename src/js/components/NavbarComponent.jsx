@@ -26,6 +26,9 @@ const NavbarComponent = ({ props }) => {
               <NavDropdown.Item href="#/admin/users">
                 Utilisateurs
               </NavDropdown.Item>
+              <NavDropdown.Item href="#/admin/roles">
+                Rôles
+              </NavDropdown.Item>
               <NavDropdown.Divider />
               <NavDropdown.Item href="#/admin/affaires">
                 Affaires

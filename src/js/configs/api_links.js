@@ -2,6 +2,8 @@
 const API_URL = "http://test1.rosedevelopment.fr:24000/api/";
 
 export const USERS_API_URL = API_URL + "users";
+export const ROLES_API_URL = API_URL + "roles";
+export const PERMISSIONS_API_URL = API_URL + "permissions";
 export const SEMAINES_API_URL = API_URL + "semaines";
 export const ETATSSEMAINE_API_URL = API_URL + "etatsSemaine";
 export const POINTAGES_API_URL = API_URL + "pointages";
