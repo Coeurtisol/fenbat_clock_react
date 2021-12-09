@@ -7,6 +7,7 @@ const PointageMotifAbsenceModal = ({
   setSemaine,
   index,
   name,
+  handleSetErrors,
 }) => {
   const [showModal, setShowModal] = useState(false);
   const [motifChoice, setMotifChoice] = useState(0);
@@ -24,8 +25,20 @@ const PointageMotifAbsenceModal = ({
     let copyPointages = [...semaine.pointages];
     let copyPointage = { ...copyPointages[index] };
     copyPointage[name] = motifChoice;
+
+    // let motifBloquant;
+    // if (motifChoice > 0) {
+    //   motifBloquant = motifsAbsence.find((m) => m.id == motifChoice).bloquant;
+    // } else motifBloquant = false;
+    // const valeur = copyPointage.valeur;
+    // const affaireId = copyPointage.affaireId;
+    // if (motifBloquant && (valeur > 0 || affaireId > 0))
+    //   handleSetErrors(index, true);
+    // else handleSetErrors(index, false);
+    handleSetErrors(index, { motifAbsenceId: motifChoice });
+
     copyPointages[index] = copyPointage;
-    setSemaine({...semaine,pointages:copyPointages});
+    setSemaine({ ...semaine, pointages: copyPointages });
     handleShowModal();
   };
 

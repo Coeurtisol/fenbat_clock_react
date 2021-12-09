@@ -17,6 +17,7 @@ const PointagePage = ({ history, match }) => {
   const [defaultMotif, setDefaultMotif] = useState("");
   const [defaultAffaire, setDefaultAffaire] = useState("");
   const [entites, setEntites] = useState([]);
+  const [errors, setErrors] = useState(new Array(14).fill(false));
   const [search, setSearch] = useState({
     entite: AUTH_API.getEntite() || "",
   });
@@ -89,16 +90,53 @@ const PointagePage = ({ history, match }) => {
 
   const handleChangeDefault = ({ name, value }) => {
     let copyPointages = [...semaine.pointages];
-    for (const pointage of copyPointages) {
+    copyPointages.forEach((p, i) => {
       if (
         // NE PAS MODIFIER SAMEDI ET DIMANCHE
-        new Date(pointage.date).getDay() > 0 &&
-        new Date(pointage.date).getDay() < 6
+        new Date(p.date).getDay() > 0 &&
+        new Date(p.date).getDay() < 6
       ) {
-        pointage[name] = value;
+        p[name] = value;
+        handleSetErrors(i, { [name]: value }, true);
       }
-    }
+    });
     setSemaine({ ...semaine, pointages: copyPointages });
+    // test({ [name]: value });
+  };
+
+  // ######################################## VERIF POINTAGES
+  const handleSetErrors = (
+    index,
+    { motifAbsenceId, affaireId, valeur },
+    multi
+  ) => {
+    if (motifAbsenceId == undefined) {
+      motifAbsenceId = semaine.pointages[index].motifAbsenceId;
+    }
+    if (affaireId == undefined) {
+      affaireId = semaine.pointages[index].affaireId;
+    }
+    if (valeur == undefined) {
+      valeur = semaine.pointages[index].valeur;
+    }
+    let motifBloquant;
+    if (motifAbsenceId > 0) {
+      motifBloquant = motifsAbsence.find(
+        (m) => m.id == motifAbsenceId
+      ).bloquant;
+    } else motifBloquant = false;
+
+    let bool;
+    if (motifBloquant && (valeur > 0 || affaireId > 0)) bool = true;
+    else bool = false;
+
+    if (multi) {
+      setErrors([...errors, (errors[index] = bool)]);
+    } else {
+      const copyErrors = [...errors];
+      copyErrors[index] = bool;
+      setErrors(copyErrors);
+    }
   };
 
   // ######################################### FILTRAGE AFFAIRES
@@ -244,6 +282,9 @@ const PointagePage = ({ history, match }) => {
         motifsAbsence={motifsAbsence}
         search={search}
         week={week}
+        errors={errors}
+        setErrors={setErrors}
+        handleSetErrors={handleSetErrors}
       />
     </>
   );

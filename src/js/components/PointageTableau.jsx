@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { toast } from "react-toastify";
 import { Table, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
@@ -20,6 +20,8 @@ const PointageTableau = ({
   motifsAbsence,
   search,
   week,
+  errors,
+  handleSetErrors,
 }) => {
   const roleId = AUTH_API.getRoleId();
   // ######################################## HANDLE FUNCTIONS
@@ -43,6 +45,8 @@ const PointageTableau = ({
     }
     fetchRefresh();
   };
+
+  const submittable = errors.every((b) => b == false);
 
   // ######################################### GENERATION TABLEAU
   // Ligne nom du jour
@@ -81,7 +85,11 @@ const PointageTableau = ({
   for (let i = 0; i < semaine.pointages.length; i++) {
     valueLine.push(
       <React.Fragment key={i}>
-        <td className="text-center">
+        <td
+          className={`
+          text-center ${errors[i] ? "error-cell-pointage" : null}
+        `}
+        >
           {semaine.pointages[i].valeur > 0 && semaine.pointages[i].valeur}
         </td>
       </React.Fragment>
@@ -99,6 +107,8 @@ const PointageTableau = ({
               setSemaine={setSemaine}
               index={i}
               name="valeur"
+              handleSetErrors={handleSetErrors}
+              motifsAbsence={motifsAbsence}
             />
           </td>
         </React.Fragment>
@@ -110,7 +120,11 @@ const PointageTableau = ({
   for (let i = 0; i < semaine.pointages.length; i++) {
     affaireLine.push(
       <React.Fragment key={i}>
-        <td className="text-center">
+        <td
+          className={`
+            text-center ${errors[i] ? "error-cell-pointage" : null}
+          `}
+        >
           {semaine.pointages[i].affaireId > 0
             ? affaires.length != 0 &&
               affaires.find((a) => a.id == semaine.pointages[i].affaireId).name
@@ -134,6 +148,8 @@ const PointageTableau = ({
               entites={entites}
               index={i}
               name="affaireId"
+              handleSetErrors={handleSetErrors}
+              motifsAbsence={motifsAbsence}
             />
           </td>
         </React.Fragment>
@@ -176,7 +192,11 @@ const PointageTableau = ({
   for (let i = 0; i < semaine.pointages.length; i++) {
     motifLine.push(
       <React.Fragment key={i}>
-        <td className="text-center">
+        <td
+          className={`
+            text-center ${errors[i] ? "error-cell-pointage" : null}
+          `}
+        >
           {semaine.pointages[i].motifAbsenceId > 0
             ? motifsAbsence.length != 0 &&
               motifsAbsence.find(
@@ -200,6 +220,7 @@ const PointageTableau = ({
               setSemaine={setSemaine}
               index={i}
               name="motifAbsenceId"
+              handleSetErrors={handleSetErrors}
             />
           </td>
         </React.Fragment>
@@ -320,7 +341,7 @@ const PointageTableau = ({
         )}
 
         <div>
-          {roleId <= 2 && semaine.etatSemaine.id != 5 && (
+          {roleId <= 2 && semaine.etatSemaine && semaine.etatSemaine.id != 5 && (
             <Button
               className="mx-3"
               variant="danger"
@@ -337,6 +358,7 @@ const PointageTableau = ({
               variant="primary"
               onClick={handleSubmitSave}
               type="button"
+              disabled={!submittable}
             >
               Sauvegarder
             </Button>
@@ -348,6 +370,7 @@ const PointageTableau = ({
             name={roleId <= 2 ? 4 : roleId == 3 ? 3 : 2}
             onClick={handleSubmitSave}
             type="button"
+            disabled={!submittable}
           >
             {roleId <= 2
               ? "Valider (resp site)"

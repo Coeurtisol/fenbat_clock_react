@@ -15,7 +15,7 @@ const AdminMotifsAbsencePage = () => {
       setMotifsAbsence(motifsAbsence);
     } catch (error) {
       console.log("erreur fetch motifsAbsence", error);
-      toast.error("Erreur au chargement des motifs d'absences.")
+      toast.error("Erreur au chargement des motifs d'absences.");
     }
   };
 
@@ -34,6 +34,7 @@ const AdminMotifsAbsencePage = () => {
           <thead>
             <tr className="align-middle">
               <th className="text-center">Nom du motif d'absence</th>
+              <th className="text-center">Bloquant</th>
               <th></th>
             </tr>
           </thead>
@@ -41,6 +42,7 @@ const AdminMotifsAbsencePage = () => {
             {motifsAbsence.map((m) => (
               <tr key={m.id}>
                 <td>{m.name}</td>
+                <td>{m.bloquant ? "Oui" : "Non"}</td>
                 <td style={{ width: "1px" }} className="text-center">
                   <MotifAbsenceModal
                     fetchMotifsAbsence={fetchMotifsAbsence}

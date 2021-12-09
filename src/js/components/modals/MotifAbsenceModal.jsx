@@ -7,13 +7,18 @@ const MotifAbsenceModal = ({ fetchMotifsAbsence, motifAbsence }) => {
   const [showModal, setShowModal] = useState(false);
   const [newMotifAbsence, setNewMotifAbsence] = useState({
     name: "",
+    bloquant: "0",
   });
 
   const handleShowMotifAbsenceModal = () => {
     setShowModal(!showModal);
     if (!showModal) {
       if (motifAbsence) {
-        setNewMotifAbsence({ ...setNewMotifAbsence, name: motifAbsence.name });
+        setNewMotifAbsence({
+          ...setNewMotifAbsence,
+          name: motifAbsence.name,
+          bloquant: motifAbsence.bloquant,
+        });
       }
     } else {
       fetchMotifsAbsence();
@@ -33,13 +38,14 @@ const MotifAbsenceModal = ({ fetchMotifsAbsence, motifAbsence }) => {
     try {
       const response = await MOTIFSABSENCE_API.create(newMotifAbsence);
       console.log("success create motifAbsence", response);
-      toast.success("Motif d'absence créé.")
+      toast.success("Motif d'absence créé.");
       setNewMotifAbsence({
         name: "",
+        bloquant: "0",
       });
     } catch (error) {
       console.log("erreur create motifAbsence", error);
-      toast.error("Erreur à la création du motif d'absence.")
+      toast.error("Erreur à la création du motif d'absence.");
     }
     handleShowMotifAbsenceModal();
   };
@@ -55,13 +61,14 @@ const MotifAbsenceModal = ({ fetchMotifsAbsence, motifAbsence }) => {
         newMotifAbsence
       );
       console.log("success update motifAbsence", response);
-      toast.success("Motif d'absence mit à jour.")
+      toast.success("Motif d'absence mit à jour.");
       setNewMotifAbsence({
         name: "",
+        bloquant: "0",
       });
     } catch (error) {
       console.log("erreur update motifAbsence", error);
-      toast.error("Erreur à la mise à jour du motif d'absence.")
+      toast.error("Erreur à la mise à jour du motif d'absence.");
     }
     handleShowMotifAbsenceModal();
   };
@@ -71,10 +78,10 @@ const MotifAbsenceModal = ({ fetchMotifsAbsence, motifAbsence }) => {
     try {
       const response = await MOTIFSABSENCE_API.deleteOne(id);
       console.log("success delete motifAbsence", response);
-      toast.success("Motif d'absence supprimé.")
+      toast.success("Motif d'absence supprimé.");
     } catch (error) {
       console.log("erreur delete motifAbsence", error);
-      toast.error("Erreur à la suppression du motif d'absence.")
+      toast.error("Erreur à la suppression du motif d'absence.");
     }
     handleShowMotifAbsenceModal();
   };
@@ -115,6 +122,32 @@ const MotifAbsenceModal = ({ fetchMotifsAbsence, motifAbsence }) => {
                 value={newMotifAbsence.name}
                 onChange={handlechange}
                 required
+              />
+            </Form.Group>
+            <Form.Group className="mb-3 col-xl-5 col-12">
+              <Form.Label>Bloquant</Form.Label>
+              <Form.Check
+                onChange={handlechange}
+                type="radio"
+                name="bloquant"
+                label="Non"
+                value={"0"}
+                checked={
+                  newMotifAbsence.bloquant == "0" ||
+                  newMotifAbsence.bloquant == false ||
+                  newMotifAbsence.bloquant == null
+                }
+              />
+              <Form.Check
+                onChange={handlechange}
+                type="radio"
+                name="bloquant"
+                label="Oui"
+                value={"1"}
+                checked={
+                  newMotifAbsence.bloquant == "1" ||
+                  newMotifAbsence.bloquant == true
+                }
               />
             </Form.Group>
             <div className="d-flex justify-content-between">

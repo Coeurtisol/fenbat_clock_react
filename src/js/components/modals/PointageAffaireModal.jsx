@@ -9,6 +9,8 @@ const PointageAffaireModal = ({
   entites,
   index,
   name,
+  handleSetErrors,
+  motifsAbsence
 }) => {
   const [showModal, setShowModal] = useState(false);
   const [entiteChoice, setEntiteChoice] = useState(0);
@@ -28,6 +30,20 @@ const PointageAffaireModal = ({
     let copyPointages = [...semaine.pointages];
     let copyPointage = { ...copyPointages[index] };
     copyPointage[name] = affaireChoice;
+
+    // let motifBloquant;
+    // if (copyPointage.motifAbsenceId > 0) {
+    //   motifBloquant = motifsAbsence.find(
+    //     (m) => m.id == copyPointage.motifAbsenceId
+    //   ).bloquant;
+    // } else motifBloquant = false;
+    // const valeur = copyPointage.valeur;
+    // const affaireId = affaireChoice;
+    // if (motifBloquant && (valeur > 0 || affaireId > 0))
+    //   handleSetErrors(index, true);
+    // else handleSetErrors(index, false);
+    handleSetErrors(index, { affaireId: affaireChoice });
+
     copyPointages[index] = copyPointage;
     setSemaine({ ...semaine, pointages: copyPointages });
     handleShowModal();
@@ -128,7 +144,7 @@ const PointageAffaireModal = ({
                 </Form.Group>
                 <div className="d-flex justify-content-end align-items-center pt-3">
                   <p className="m-0 mr-3 pe-3">
-                    {affaireChoice
+                    {affaireChoice > 0
                       ? `Affaire selectionnée : ${
                           affaires.find((a) => a.id == affaireChoice).name
                         }`

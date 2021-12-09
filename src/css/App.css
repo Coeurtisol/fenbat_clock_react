@@ -183,3 +183,8 @@ main {
 .selected-option {
   background-color: #ffe2b4;
 }
+
+/* POINTAGES */
+.error-cell-pointage {
+  border: 2px solid red !important;
+}

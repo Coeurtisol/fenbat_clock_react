@@ -1,7 +1,14 @@
 import React, { useState } from "react";
 import { Form, Button, Modal } from "react-bootstrap";
 
-const PointageAffaireModal = ({ semaine, setSemaine, index, name }) => {
+const PointageAffaireModal = ({
+  semaine,
+  setSemaine,
+  index,
+  name,
+  handleSetErrors,
+  motifsAbsence,
+}) => {
   const [showModal, setShowModal] = useState(false);
   const [hours, setHours] = useState(0);
   const [minutes, setMinutes] = useState(0);
@@ -28,6 +35,20 @@ const PointageAffaireModal = ({ semaine, setSemaine, index, name }) => {
     let copyPointages = [...semaine.pointages];
     let copyPointage = { ...copyPointages[index] };
     copyPointage[name] = newValue;
+
+    // let motifBloquant;
+    // if (copyPointage.motifAbsenceId > 0) {
+    //   motifBloquant = motifsAbsence.find(
+    //     (m) => m.id == copyPointage.motifAbsenceId
+    //   ).bloquant;
+    // } else motifBloquant = false;
+    // const valeur = newValue;
+    // const affaireId = copyPointage.affaireId;
+    // if (motifBloquant && (valeur > 0 || affaireId > 0))
+    //   handleSetErrors(index, true);
+    // else handleSetErrors(index, false);
+    handleSetErrors(index, { valeur: newValue });
+
     copyPointages[index] = copyPointage;
     setSemaine({ ...semaine, pointages: copyPointages });
     handleShowModal();
