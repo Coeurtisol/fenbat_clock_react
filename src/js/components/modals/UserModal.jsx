@@ -1,26 +1,23 @@
 import React, { useState } from "react";
 import USERS_API from "../../services/usersAPI";
 import ENTITES_API from "../../services/entitesAPI";
+import ROLES_API from "../../services/rolesAPI";
 import { Form, Button, Modal } from "react-bootstrap";
 import { toast } from "react-toastify";
 
 const UserModal = ({ fetchUsers, userId }) => {
   const [showModal, setShowModal] = useState(false);
   const [entites, setEntites] = useState([]);
+  const [roles, setRoles] = useState([]);
   const [newUser, setNewUser] = useState({
     firstname: "",
     lastname: "",
+    email: "",
+    phoneNumber: "",
     accessCode: "",
     entiteId: null,
     roleId: 5,
   });
-  const roles = [
-    { id: 1, name: "Admin" },
-    { id: 2, name: "Responsable de site" },
-    { id: 3, name: "Responsable de production" },
-    { id: 4, name: "Chef d'équipe" },
-    { id: 5, name: "Technicien" },
-  ];
 
   // FETCH
   const fetchUser = async (userId) => {
@@ -31,12 +28,25 @@ const UserModal = ({ fetchUsers, userId }) => {
         ...newUser,
         firstname: user.firstname,
         lastname: user.lastname,
+        email: user.email,
+        phoneNumber: user.phoneNumber,
         entiteId: user.entite && user.entite.id,
         roleId: user.role.id,
       });
     } catch (error) {
       console.log("erreur fetch user", error);
       toast.error("Erreur au chargement de l'utilisateur.");
+    }
+  };
+
+  const fetchRoles = async () => {
+    try {
+      const roles = await ROLES_API.findAll();
+      console.log("success fetch roles", roles);
+      setRoles(roles);
+    } catch (error) {
+      console.log("erreur fetch roles", error);
+      toast.error("Erreur au chargement des rôles.");
     }
   };
 
@@ -59,6 +69,7 @@ const UserModal = ({ fetchUsers, userId }) => {
         fetchUser(userId);
       }
       fetchEntites();
+      fetchRoles();
     } else {
       fetchUsers();
     }
@@ -84,6 +95,8 @@ const UserModal = ({ fetchUsers, userId }) => {
       setNewUser({
         firstname: "",
         lastname: "",
+        email: "",
+        phoneNumber: "",
         accessCode: "",
         entiteId: 0,
         roleId: 5,
@@ -107,6 +120,8 @@ const UserModal = ({ fetchUsers, userId }) => {
       setNewUser({
         firstname: "",
         lastname: "",
+        email: "",
+        phoneNumber: "",
         accessCode: "",
         entiteId: null,
         roleId: 5,
@@ -176,6 +191,26 @@ const UserModal = ({ fetchUsers, userId }) => {
                 value={newUser.lastname}
                 onChange={handlechange}
                 required
+              />
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label>Email</Form.Label>
+              <Form.Control
+                type="email"
+                name="email"
+                placeholder="Adresse email de l'utilisateur"
+                value={newUser.email || ""}
+                onChange={handlechange}
+              />
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label>Numéro de téléphone</Form.Label>
+              <Form.Control
+                type="text"
+                name="phoneNumber"
+                placeholder="Numéro de téléphone de l'utilisateur"
+                value={newUser.phoneNumber || ""}
+                onChange={handlechange}
               />
             </Form.Group>
             {/* {!userId && ( */}

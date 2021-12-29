@@ -15,7 +15,7 @@ const AdminUsersPage = () => {
       setUsers(users);
     } catch (error) {
       console.log("erreur fetch users", error);
-      toast.error("Erreur au chargement des utilisateurs.")
+      toast.error("Erreur au chargement des utilisateurs.");
     }
   };
 
@@ -34,6 +34,8 @@ const AdminUsersPage = () => {
           <thead>
             <tr className="align-middle">
               <th className="text-center">Prénom Nom</th>
+              <th className="text-center">Email</th>
+              <th className="text-center">N° téléphone</th>
               <th className="text-center">Rôle</th>
               <th className="text-center">Entité</th>
               <th></th>
@@ -45,6 +47,8 @@ const AdminUsersPage = () => {
                 <td>
                   {u.firstname} {u.lastname}
                 </td>
+                <td>{u.email}</td>
+                <td>{u.phoneNumber}</td>
                 <td>{u.role.name}</td>
                 <td>{u.entite && u.entite.name}</td>
                 <td style={{ width: "1px" }} className="text-center">
