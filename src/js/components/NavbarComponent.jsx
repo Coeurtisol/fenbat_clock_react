@@ -54,6 +54,8 @@ const NavbarComponent = ({ props }) => {
                   <NavDropdown.Divider />
                 </>
               )}
+              <NavDropdown.Item href="#/moncompte">Mon compte</NavDropdown.Item>
+              <NavDropdown.Divider />
               <NavDropdown.Item onClick={logout}>Déconnexion</NavDropdown.Item>
             </NavDropdown>
           </Nav>

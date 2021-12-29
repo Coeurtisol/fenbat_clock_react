@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 
 const UserModal = ({ fetchUsers, userId }) => {
   const [showModal, setShowModal] = useState(false);
+  const [lockedSubmit, setLockedSubmit] = useState(false);
   const [entites, setEntites] = useState([]);
   const [roles, setRoles] = useState([]);
   const [newUser, setNewUser] = useState({
@@ -78,8 +79,15 @@ const UserModal = ({ fetchUsers, userId }) => {
   // FUNCTIONS
   const handlechange = ({ target }) => {
     const { name, value } = target;
-    if (name === "accessCode" && value.length > 4) {
-      return;
+    if (name === "accessCode") {
+      if (value.length > 0 && value.length < 4) {
+        setLockedSubmit(true);
+      } else {
+        setLockedSubmit(false);
+      }
+      if (value.length > 4) {
+        return;
+      }
     }
     setNewUser({ ...newUser, [name]: value });
   };
@@ -215,7 +223,7 @@ const UserModal = ({ fetchUsers, userId }) => {
             </Form.Group>
             {/* {!userId && ( */}
             <Form.Group className="mb-3">
-              <Form.Label>Code d'accès</Form.Label>
+              <Form.Label>Code d'accès (4 chiffres)</Form.Label>
               <Form.Control
                 type="number"
                 name="accessCode"
@@ -267,7 +275,7 @@ const UserModal = ({ fetchUsers, userId }) => {
               </Form.Select>
             </Form.Group>
             <div className="d-flex justify-content-between">
-              <Button variant="primary" type="submit">
+              <Button variant="primary" type="submit" disabled={lockedSubmit}>
                 Envoyer
               </Button>
               {userId && (

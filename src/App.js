@@ -13,6 +13,7 @@ import {
 import AuthContext from "./js/contexts/AuthContext";
 import AUTH_API from "./js/services/authAPI";
 import HomePage from "./js/pages/HomePage";
+import MonComptePage from "./js/pages/MonComptePage";
 import AdminRolesPage from "./js/pages/admin/AdminRolesPage";
 import AdminUsersPage from "./js/pages/admin/AdminUsersPage";
 import AdminEntitesPage from "./js/pages/admin/AdminEntitesPage";
@@ -75,6 +76,7 @@ function App() {
               component={PointagePage}
             />
             <PrivateRoute path="/commandes" component={CommandePage} />
+            <PrivateRoute path="/moncompte" component={MonComptePage} />
             <PrivateRoute exact path="/" component={HomePage} />
 
             <Route component={NotFoundPage} />
