@@ -52,6 +52,14 @@ function getRoleId() {
   }
 }
 
+function getPermissionId() {
+  if (isAuthenticated()) {
+    const token = getToken();
+    const jwtData = parseJwt(token);
+    return jwtData.role.permissionId;
+  }
+}
+
 function getRole() {
   if (isAuthenticated()) {
     const token = getToken();
@@ -83,6 +91,7 @@ const AUTH_API = {
   getId,
   getRole,
   getRoleId,
+  getPermissionId,
   getEntite,
   getFullName,
 };

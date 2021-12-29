@@ -2,8 +2,10 @@ import React, { useContext } from "react";
 import AuthContext from "../../js/contexts/AuthContext";
 import { Navbar, Container, Nav, NavDropdown } from "react-bootstrap";
 import AUTH_API from "../services/authAPI";
+import permissions from "../configs/permissions.js";
 
 const NavbarComponent = ({ props }) => {
+  const permissionId = AUTH_API.getPermissionId();
   const { setIsAuthenticated } = useContext(AuthContext);
 
   const logout = () => {
@@ -23,25 +25,35 @@ const NavbarComponent = ({ props }) => {
               title={`${AUTH_API.getFullName()} (${AUTH_API.getRole()})`}
               id="basic-nav-dropdown"
             >
-              <NavDropdown.Item href="#/admin/users">
-                Utilisateurs
-              </NavDropdown.Item>
-              <NavDropdown.Item href="#/admin/roles">
-                Rôles
-              </NavDropdown.Item>
-              <NavDropdown.Divider />
-              <NavDropdown.Item href="#/admin/affaires">
-                Affaires
-              </NavDropdown.Item>
-              <NavDropdown.Divider />
-              <NavDropdown.Item href="#/admin/motifsAbsence">
-                Motifs d'absence
-              </NavDropdown.Item>
-              <NavDropdown.Divider />
-              <NavDropdown.Item href="#/admin/entites">
-                Entités
-              </NavDropdown.Item>
-              <NavDropdown.Divider />
+              {permissionId <= permissions.respProd && (
+                <NavDropdown.Item href="#/admin/users">
+                  Utilisateurs
+                </NavDropdown.Item>
+              )}
+              {permissionId == permissions.respSite && (
+                <NavDropdown.Item href="#/admin/roles">Rôles</NavDropdown.Item>
+              )}
+              {permissionId <= permissions.respProd && (
+                <>
+                  <NavDropdown.Divider />
+                  <NavDropdown.Item href="#/admin/affaires">
+                    Affaires
+                  </NavDropdown.Item>
+                  <NavDropdown.Divider />
+                </>
+              )}
+              {permissionId == permissions.respSite && (
+                <>
+                  <NavDropdown.Item href="#/admin/motifsAbsence">
+                    Motifs d'absence
+                  </NavDropdown.Item>
+                  <NavDropdown.Divider />
+                  <NavDropdown.Item href="#/admin/entites">
+                    Entités
+                  </NavDropdown.Item>
+                  <NavDropdown.Divider />
+                </>
+              )}
               <NavDropdown.Item onClick={logout}>Déconnexion</NavDropdown.Item>
             </NavDropdown>
           </Nav>

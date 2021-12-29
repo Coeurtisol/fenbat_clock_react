@@ -37,6 +37,7 @@ const Loginuserlist = () => {
           >
             <div>
               {user.firstname} {user.lastname}
+              <br />({user.role.name})
             </div>
           </Link>
         ))}

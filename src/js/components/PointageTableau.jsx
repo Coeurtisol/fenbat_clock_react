@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import { toast } from "react-toastify";
 import { Table, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import permissions from "../configs/permissions.js";
 import AUTH_API from "../services/authAPI.js";
 import SEMAINES_API from "../services/semainesAPI.js";
 import PointageAffaireModal from "./modals/PointageAffaireModal";
@@ -23,7 +24,7 @@ const PointageTableau = ({
   errors,
   handleSetErrors,
 }) => {
-  const roleId = AUTH_API.getRoleId();
+  const permissionId = AUTH_API.getPermissionId();
   // ######################################## HANDLE FUNCTIONS
   const handleSubmitSave = async ({ target }) => {
     const updatedSemaine = { ...semaine };
@@ -46,7 +47,10 @@ const PointageTableau = ({
     fetchRefresh();
   };
 
-  const submittable = errors.every((b) => b == false);
+  let submittable = true;
+  if (errors) {
+    submittable = errors.every((b) => b == false);
+  }
 
   // ######################################### GENERATION TABLEAU
   // Ligne nom du jour
@@ -87,7 +91,7 @@ const PointageTableau = ({
       <React.Fragment key={i}>
         <td
           className={`
-          text-center ${errors[i] ? "error-cell-pointage" : null}
+          text-center ${errors && errors[i] ? "error-cell-pointage" : null}
         `}
         >
           {semaine.pointages[i].valeur > 0 && semaine.pointages[i].valeur}
@@ -122,7 +126,7 @@ const PointageTableau = ({
       <React.Fragment key={i}>
         <td
           className={`
-            text-center ${errors[i] ? "error-cell-pointage" : null}
+            text-center ${errors && errors[i] ? "error-cell-pointage" : null}
           `}
         >
           {semaine.pointages[i].affaireId > 0
@@ -194,7 +198,7 @@ const PointageTableau = ({
       <React.Fragment key={i}>
         <td
           className={`
-            text-center ${errors[i] ? "error-cell-pointage" : null}
+            text-center ${errors && errors[i] ? "error-cell-pointage" : null}
           `}
         >
           {semaine.pointages[i].motifAbsenceId > 0
@@ -341,17 +345,19 @@ const PointageTableau = ({
         )}
 
         <div>
-          {roleId <= 2 && semaine.etatSemaine && semaine.etatSemaine.id != 5 && (
-            <Button
-              className="mx-3"
-              variant="danger"
-              name="5"
-              onClick={handleSubmitSave}
-              type="button"
-            >
-              Refuser
-            </Button>
-          )}
+          {permissionId == permissions.respSite &&
+            semaine.etatSemaine &&
+            semaine.etatSemaine.id != 5 && (
+              <Button
+                className="mx-3"
+                variant="danger"
+                name="5"
+                onClick={handleSubmitSave}
+                type="button"
+              >
+                Refuser
+              </Button>
+            )}
           {!listView && (
             <Button
               className="mx-3"
@@ -367,16 +373,21 @@ const PointageTableau = ({
           <Button
             className="mx-3"
             variant="success"
-            name={roleId <= 2 ? 4 : roleId == 3 ? 3 : 2}
+            name={
+              permissionId == permissions.respSite
+                ? 4
+                : permissionId == permissions.respProd
+                ? 3
+                : 2
+            }
             onClick={handleSubmitSave}
             type="button"
             disabled={!submittable}
           >
-            {roleId <= 2
-              ? "Valider (resp site)"
-              : roleId == 3
-              ? "Valider (resp prod)"
-              : "Envoyer pour validation"}
+            {permissionId == permissions.respSite && "Valider (resp site)"}
+            {permissionId == permissions.respProd && "Valider (resp prod)"}
+            {permissionId >= permissions.chefEquipe &&
+              "Envoyer pour validation"}
           </Button>
         </div>
       </div>
