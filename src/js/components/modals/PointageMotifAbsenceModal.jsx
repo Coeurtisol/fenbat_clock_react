@@ -8,6 +8,7 @@ const PointageMotifAbsenceModal = ({
   index,
   name,
   handleSetErrors,
+  errors,
 }) => {
   const [showModal, setShowModal] = useState(false);
   const [motifChoice, setMotifChoice] = useState(0);
@@ -45,14 +46,21 @@ const PointageMotifAbsenceModal = ({
   // ############################################ TEMPLATE
   return (
     <>
-      <Button
-        size="sm"
-        variant="primary"
-        type="button"
+      <td
         onClick={handleShowModal}
+        className={`
+            text-center ${
+              errors && errors[index] ? "error-cell-pointage" : null
+            }
+          `}
       >
-        Modifier
-      </Button>
+        {semaine.pointages[index].motifAbsenceId > 0
+          ? motifsAbsence.length != 0 &&
+            motifsAbsence.find(
+              (m) => m.id == semaine.pointages[index].motifAbsenceId
+            ).name
+          : null}
+      </td>
       <Modal
         size="sm"
         aria-labelledby="contained-modal-title-vcenter"

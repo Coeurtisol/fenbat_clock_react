@@ -7,6 +7,7 @@ const PointageAffaireModal = ({
   index,
   name,
   handleSetErrors,
+  errors,
   motifsAbsence,
 }) => {
   const [showModal, setShowModal] = useState(false);
@@ -57,14 +58,14 @@ const PointageAffaireModal = ({
   // ################################################ TEMPLATE
   return (
     <>
-      <Button
-        size="sm"
-        variant="primary"
-        type="button"
+      <td
         onClick={handleShowModal}
+        className={`
+          text-center ${errors && errors[index] ? "error-cell-pointage" : null}
+        `}
       >
-        Modifier
-      </Button>
+        {value > 0 && value}
+      </td>
       <Modal
         size="sm"
         aria-labelledby="contained-modal-title-vcenter"

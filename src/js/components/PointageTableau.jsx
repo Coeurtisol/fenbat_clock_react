@@ -89,76 +89,37 @@ const PointageTableau = ({
   for (let i = 0; i < semaine.pointages.length; i++) {
     valueLine.push(
       <React.Fragment key={i}>
-        <td
-          className={`
-          text-center ${errors && errors[i] ? "error-cell-pointage" : null}
-        `}
-        >
-          {semaine.pointages[i].valeur > 0 && semaine.pointages[i].valeur}
-        </td>
+        <PointageHourModal
+          semaine={semaine}
+          setSemaine={setSemaine}
+          index={i}
+          name="valeur"
+          handleSetErrors={handleSetErrors}
+          motifsAbsence={motifsAbsence}
+          errors={errors}
+        />
       </React.Fragment>
     );
-  }
-  // ligne des bouttons valeurs
-  let btnValeurLine = [];
-  if (!listView) {
-    for (let i = 0; i < semaine.pointages.length; i++) {
-      btnValeurLine.push(
-        <React.Fragment key={i}>
-          <td className="text-center">
-            <PointageHourModal
-              semaine={semaine}
-              setSemaine={setSemaine}
-              index={i}
-              name="valeur"
-              handleSetErrors={handleSetErrors}
-              motifsAbsence={motifsAbsence}
-            />
-          </td>
-        </React.Fragment>
-      );
-    }
   }
   // ligne des affaires
   let affaireLine = [];
   for (let i = 0; i < semaine.pointages.length; i++) {
     affaireLine.push(
       <React.Fragment key={i}>
-        <td
-          className={`
-            text-center ${errors && errors[i] ? "error-cell-pointage" : null}
-          `}
-        >
-          {semaine.pointages[i].affaireId > 0
-            ? affaires.length != 0 &&
-              affaires.find((a) => a.id == semaine.pointages[i].affaireId).name
-            : null}
-        </td>
+        <PointageAffaireModal
+          affaires={affaires}
+          semaine={semaine}
+          setSemaine={setSemaine}
+          entite={search && search.entite || ""}
+          entites={entites}
+          index={i}
+          name="affaireId"
+          handleSetErrors={handleSetErrors}
+          motifsAbsence={motifsAbsence}
+          errors={errors}
+        />
       </React.Fragment>
     );
-  }
-  // ligne des bouttons affaires
-  let btnAffaireLine = [];
-  if (!listView) {
-    for (let i = 0; i < semaine.pointages.length; i++) {
-      btnAffaireLine.push(
-        <React.Fragment key={i}>
-          <td className="text-center">
-            <PointageAffaireModal
-              affaires={affaires}
-              semaine={semaine}
-              setSemaine={setSemaine}
-              entite={search.entite || ""}
-              entites={entites}
-              index={i}
-              name="affaireId"
-              handleSetErrors={handleSetErrors}
-              motifsAbsence={motifsAbsence}
-            />
-          </td>
-        </React.Fragment>
-      );
-    }
   }
   // ligne des montants totaux
   let totalWeekValue = 0;
@@ -196,40 +157,17 @@ const PointageTableau = ({
   for (let i = 0; i < semaine.pointages.length; i++) {
     motifLine.push(
       <React.Fragment key={i}>
-        <td
-          className={`
-            text-center ${errors && errors[i] ? "error-cell-pointage" : null}
-          `}
-        >
-          {semaine.pointages[i].motifAbsenceId > 0
-            ? motifsAbsence.length != 0 &&
-              motifsAbsence.find(
-                (m) => m.id == semaine.pointages[i].motifAbsenceId
-              ).name
-            : null}
-        </td>
+        <PointageMotifAbsenceModal
+          motifsAbsence={motifsAbsence}
+          semaine={semaine}
+          setSemaine={setSemaine}
+          index={i}
+          name="motifAbsenceId"
+          handleSetErrors={handleSetErrors}
+          errors={errors}
+        />
       </React.Fragment>
     );
-  }
-  // ligne des bouttons motifs
-  let btnMotifLine = [];
-  if (!listView) {
-    for (let i = 0; i < semaine.pointages.length; i++) {
-      btnMotifLine.push(
-        <React.Fragment key={i}>
-          <td className="text-center">
-            <PointageMotifAbsenceModal
-              motifsAbsence={motifsAbsence}
-              semaine={semaine}
-              setSemaine={setSemaine}
-              index={i}
-              name="motifAbsenceId"
-              handleSetErrors={handleSetErrors}
-            />
-          </td>
-        </React.Fragment>
-      );
-    }
   }
 
   // ############################################ TEMPLATE
@@ -268,25 +206,11 @@ const PointageTableau = ({
               {valueLine}
               <td></td>
             </tr>
-            {!listView && (
-              <tr className="align-middle">
-                <th></th>
-                {btnValeurLine}
-                <td></td>
-              </tr>
-            )}
             <tr className="align-middle">
               <th>Affaire</th>
               {affaireLine}
               <td></td>
             </tr>
-            {!listView && (
-              <tr className="align-middle">
-                <th></th>
-                {btnAffaireLine}
-                <td></td>
-              </tr>
-            )}
             <tr className="align-middle">
               <th>Total Heures</th>
               {valueTotalLine}
@@ -306,13 +230,6 @@ const PointageTableau = ({
               {motifLine}
               <td></td>
             </tr>
-            {!listView && (
-              <tr className="align-middle">
-                <th></th>
-                {btnMotifLine}
-                <td></td>
-              </tr>
-            )}
           </tbody>
         </Table>
       </div>

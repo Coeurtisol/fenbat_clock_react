@@ -10,7 +10,8 @@ const PointageAffaireModal = ({
   index,
   name,
   handleSetErrors,
-  motifsAbsence
+  errors,
+  motifsAbsence,
 }) => {
   const [showModal, setShowModal] = useState(false);
   const [entiteChoice, setEntiteChoice] = useState(0);
@@ -56,14 +57,20 @@ const PointageAffaireModal = ({
   // ############################################ TEMPLATE
   return (
     <>
-      <Button
-        size="sm"
-        variant="primary"
-        type="button"
+      <td
         onClick={handleShowModal}
+        className={`
+            text-center ${
+              errors && errors[index] ? "error-cell-pointage" : null
+            }
+          `}
       >
-        Modifier
-      </Button>
+        {semaine.pointages[index].affaireId > 0
+          ? affaires.length != 0 &&
+            affaires.find((a) => a.id == semaine.pointages[index].affaireId)
+              .name
+          : null}
+      </td>
       <Modal
         size="lg"
         aria-labelledby="contained-modal-title-vcenter"
