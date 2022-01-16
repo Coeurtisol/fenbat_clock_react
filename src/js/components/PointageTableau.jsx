@@ -47,6 +47,13 @@ const PointageTableau = ({
     fetchRefresh();
   };
 
+  const handleGetPDF = () => {
+    console.log(
+      "Téléchargement du PDF",
+      `${semaine.user.firstname}${semaine.user.lastname}-${semaine.annee}-${semaine.numero}`
+    );
+  };
+
   let submittable = true;
   if (errors) {
     submittable = errors.every((b) => b == false);
@@ -110,7 +117,7 @@ const PointageTableau = ({
           affaires={affaires}
           semaine={semaine}
           setSemaine={setSemaine}
-          entite={search && search.entite || ""}
+          entite={(search && search.entite) || ""}
           entites={entites}
           index={i}
           name="affaireId"
@@ -262,6 +269,16 @@ const PointageTableau = ({
         )}
 
         <div>
+          {semaine.fichierPDF && (
+            <Button
+              className="mx-3"
+              variant="info"
+              onClick={handleGetPDF}
+              type="button"
+            >
+              Télécharger le PDF
+            </Button>
+          )}
           {permissionId == permissions.respSite &&
             semaine.etatSemaine &&
             semaine.etatSemaine.id != 5 && (
