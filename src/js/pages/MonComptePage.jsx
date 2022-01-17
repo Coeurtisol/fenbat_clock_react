@@ -58,6 +58,7 @@ const MonComptePage = () => {
   // FUNCTIONS
   const handlechange = ({ target }) => {
     const { name, value } = target;
+    console.log(name, value);
     if (name === "accessCode") {
       if (value.length > 0 && value.length < 4) {
         setLockedSubmit(true);

@@ -8,11 +8,13 @@ const SecteurAffaireModal = ({ fetchSecteursAffaire, secteurAffaire }) => {
   const [newSecteurAffaire, setNewSecteurAffaire] = useState({
     name: "",
   });
+  let edit = false;
+  if (secteurAffaire) edit = true;
 
   const handleShowSecteurAffaireModal = () => {
     setShowModal(!showModal);
     if (!showModal) {
-      if (secteurAffaire) {
+      if (edit) {
         setNewSecteurAffaire({
           ...setNewSecteurAffaire,
           name: secteurAffaire.name,
@@ -87,11 +89,11 @@ const SecteurAffaireModal = ({ fetchSecteursAffaire, secteurAffaire }) => {
     <>
       <Button
         className="text-nowrap"
-        variant={secteurAffaire ? "primary" : "success"}
+        variant={edit ? "primary" : "success"}
         type="button"
         onClick={handleShowSecteurAffaireModal}
       >
-        {secteurAffaire ? "Editer" : "Nouveau secteur"}
+        {edit ? "Editer" : "Nouveau secteur"}
       </Button>
       <Modal
         size="lg"
@@ -102,13 +104,13 @@ const SecteurAffaireModal = ({ fetchSecteursAffaire, secteurAffaire }) => {
       >
         <Modal.Header closeButton>
           <Modal.Title>
-            {secteurAffaire
+            {edit
               ? `Modification du secteur : ${secteurAffaire.name}`
               : "Nouveau secteur"}
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form onSubmit={secteurAffaire ? handleUpdate : handleCreate}>
+          <Form onSubmit={edit ? handleUpdate : handleCreate}>
             <Form.Group className="mb-3">
               <Form.Label>Nom</Form.Label>
               <Form.Control
@@ -124,11 +126,12 @@ const SecteurAffaireModal = ({ fetchSecteursAffaire, secteurAffaire }) => {
               <Button variant="primary" type="submit">
                 Envoyer
               </Button>
-              {secteurAffaire && (
+              {edit && (
                 <Button
                   variant="danger"
                   type="button"
                   onClick={() => handleDelete(secteurAffaire.id)}
+                  disabled={secteurAffaire.affaires.length > 0}
                 >
                   Supprimer
                 </Button>

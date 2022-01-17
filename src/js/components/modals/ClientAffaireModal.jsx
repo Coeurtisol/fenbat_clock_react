@@ -8,11 +8,13 @@ const ClientAffaireModal = ({ fetchClientsAffaire, clientAffaire }) => {
   const [newClientAffaire, setNewClientAffaire] = useState({
     name: "",
   });
+  let edit = false;
+  if (clientAffaire) edit = true;
 
   const handleShowClientAffaireModal = () => {
     setShowModal(!showModal);
     if (!showModal) {
-      if (clientAffaire) {
+      if (edit) {
         setNewClientAffaire({
           ...setNewClientAffaire,
           name: clientAffaire.name,
@@ -87,11 +89,11 @@ const ClientAffaireModal = ({ fetchClientsAffaire, clientAffaire }) => {
     <>
       <Button
         className="text-nowrap"
-        variant={clientAffaire ? "primary" : "success"}
+        variant={edit ? "primary" : "success"}
         type="button"
         onClick={handleShowClientAffaireModal}
       >
-        {clientAffaire ? "Editer" : "Nouveau type de client"}
+        {edit ? "Editer" : "Nouveau type de client"}
       </Button>
       <Modal
         size="lg"
@@ -102,13 +104,13 @@ const ClientAffaireModal = ({ fetchClientsAffaire, clientAffaire }) => {
       >
         <Modal.Header closeButton>
           <Modal.Title>
-            {clientAffaire
+            {edit
               ? `Modification du type de client : ${clientAffaire.name}`
               : "Nouveau type de client"}
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form onSubmit={clientAffaire ? handleUpdate : handleCreate}>
+          <Form onSubmit={edit ? handleUpdate : handleCreate}>
             <Form.Group className="mb-3">
               <Form.Label>Nom</Form.Label>
               <Form.Control
@@ -124,11 +126,12 @@ const ClientAffaireModal = ({ fetchClientsAffaire, clientAffaire }) => {
               <Button variant="primary" type="submit">
                 Envoyer
               </Button>
-              {clientAffaire && (
+              {edit && (
                 <Button
                   variant="danger"
                   type="button"
                   onClick={() => handleDelete(clientAffaire.id)}
+                  disabled={clientAffaire.affaires.length > 0}
                 >
                   Supprimer
                 </Button>

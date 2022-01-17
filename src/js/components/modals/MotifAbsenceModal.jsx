@@ -9,11 +9,13 @@ const MotifAbsenceModal = ({ fetchMotifsAbsence, motifAbsence }) => {
     name: "",
     bloquant: "0",
   });
+  let edit = false;
+  if (motifAbsence) edit = true;
 
   const handleShowMotifAbsenceModal = () => {
     setShowModal(!showModal);
     if (!showModal) {
-      if (motifAbsence) {
+      if (edit) {
         setNewMotifAbsence({
           ...setNewMotifAbsence,
           name: motifAbsence.name,
@@ -91,11 +93,11 @@ const MotifAbsenceModal = ({ fetchMotifsAbsence, motifAbsence }) => {
     <>
       <Button
         className="text-nowrap"
-        variant={motifAbsence ? "primary" : "success"}
+        variant={edit ? "primary" : "success"}
         type="button"
         onClick={handleShowMotifAbsenceModal}
       >
-        {motifAbsence ? "Editer" : "Nouveau motif d'absence"}
+        {edit ? "Editer" : "Nouveau motif d'absence"}
       </Button>
       <Modal
         size="lg"
@@ -106,13 +108,13 @@ const MotifAbsenceModal = ({ fetchMotifsAbsence, motifAbsence }) => {
       >
         <Modal.Header closeButton>
           <Modal.Title>
-            {motifAbsence
+            {edit
               ? `Modification du motif d'absence : ${motifAbsence.name}`
               : "Nouveau motif d'absence"}
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form onSubmit={motifAbsence ? handleUpdate : handleCreate}>
+          <Form onSubmit={edit ? handleUpdate : handleCreate}>
             <Form.Group className="mb-3">
               <Form.Label>Nom</Form.Label>
               <Form.Control
@@ -154,11 +156,12 @@ const MotifAbsenceModal = ({ fetchMotifsAbsence, motifAbsence }) => {
               <Button variant="primary" type="submit">
                 Envoyer
               </Button>
-              {motifAbsence && (
+              {edit && (
                 <Button
                   variant="danger"
                   type="button"
                   onClick={() => handleDelete(motifAbsence.id)}
+                  disabled={motifAbsence.pointages.length > 0}
                 >
                   Supprimer
                 </Button>

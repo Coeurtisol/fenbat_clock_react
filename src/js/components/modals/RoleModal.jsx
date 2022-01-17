@@ -11,6 +11,8 @@ const RoleModal = ({ fetchRoles, role }) => {
     name: "",
     permissionId: "",
   });
+  let edit = false;
+  if (role) edit = true;
 
   // FETCH FUNCTIONS
   const fetchPermissions = async () => {
@@ -28,7 +30,7 @@ const RoleModal = ({ fetchRoles, role }) => {
   const handleShowRoleModal = () => {
     setShowModal(!showModal);
     if (!showModal) {
-      if (role) {
+      if (edit) {
         setNewRole({
           ...setNewRole,
           name: role.name,
@@ -103,11 +105,11 @@ const RoleModal = ({ fetchRoles, role }) => {
     <>
       <Button
         className="text-nowrap"
-        variant={role ? "primary" : "success"}
+        variant={edit ? "primary" : "success"}
         type="button"
         onClick={handleShowRoleModal}
       >
-        {role ? "Editer" : "Nouveau rôle"}
+        {edit ? "Editer" : "Nouveau rôle"}
       </Button>
       <Modal
         size="lg"
@@ -118,11 +120,11 @@ const RoleModal = ({ fetchRoles, role }) => {
       >
         <Modal.Header closeButton>
           <Modal.Title>
-            {role ? `Modification du rôle : ${role.name}` : "Nouveau rôle"}
+            {edit ? `Modification du rôle : ${role.name}` : "Nouveau rôle"}
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form onSubmit={role ? handleUpdate : handleCreate}>
+          <Form onSubmit={edit ? handleUpdate : handleCreate}>
             <Form.Group className="mb-3">
               <Form.Label>Nom</Form.Label>
               <Form.Control
@@ -143,7 +145,7 @@ const RoleModal = ({ fetchRoles, role }) => {
                 required
               >
                 {!newRole.permissionId && (
-                  <option>Selectionnez l'entité</option>
+                  <option value="">Selectionnez la permission</option>
                 )}
                 {permissions.map((p) => (
                   <option key={p.id} value={p.id}>
@@ -156,11 +158,12 @@ const RoleModal = ({ fetchRoles, role }) => {
               <Button variant="primary" type="submit">
                 Envoyer
               </Button>
-              {role && (
+              {edit && (
                 <Button
                   variant="danger"
                   type="button"
                   onClick={() => handleDelete(role.id)}
+                  disabled={role.users.length > 0}
                 >
                   Supprimer
                 </Button>

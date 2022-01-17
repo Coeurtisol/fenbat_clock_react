@@ -8,11 +8,13 @@ const DonneurAffaireModal = ({ fetchDonneursAffaire, donneurAffaire }) => {
   const [newDonneurAffaire, setNewDonneurAffaire] = useState({
     name: "",
   });
+  let edit = false;
+  if (donneurAffaire) edit = true;
 
   const handleShowDonneurAffaireModal = () => {
     setShowModal(!showModal);
     if (!showModal) {
-      if (donneurAffaire) {
+      if (edit) {
         setNewDonneurAffaire({
           ...setNewDonneurAffaire,
           name: donneurAffaire.name,
@@ -87,11 +89,11 @@ const DonneurAffaireModal = ({ fetchDonneursAffaire, donneurAffaire }) => {
     <>
       <Button
         className="text-nowrap"
-        variant={donneurAffaire ? "primary" : "success"}
+        variant={edit ? "primary" : "success"}
         type="button"
         onClick={handleShowDonneurAffaireModal}
       >
-        {donneurAffaire ? "Editer" : "Nouveau donneur d'ordre"}
+        {edit ? "Editer" : "Nouveau donneur d'ordre"}
       </Button>
       <Modal
         size="lg"
@@ -102,13 +104,13 @@ const DonneurAffaireModal = ({ fetchDonneursAffaire, donneurAffaire }) => {
       >
         <Modal.Header closeButton>
           <Modal.Title>
-            {donneurAffaire
+            {edit
               ? `Modification du donneur d'ordre : ${donneurAffaire.name}`
               : "Nouveau donneur d'ordre"}
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form onSubmit={donneurAffaire ? handleUpdate : handleCreate}>
+          <Form onSubmit={edit ? handleUpdate : handleCreate}>
             <Form.Group className="mb-3">
               <Form.Label>Nom</Form.Label>
               <Form.Control
@@ -124,11 +126,12 @@ const DonneurAffaireModal = ({ fetchDonneursAffaire, donneurAffaire }) => {
               <Button variant="primary" type="submit">
                 Envoyer
               </Button>
-              {donneurAffaire && (
+              {edit && (
                 <Button
                   variant="danger"
                   type="button"
                   onClick={() => handleDelete(donneurAffaire.id)}
+                  disabled={donneurAffaire.affaires.length > 0}
                 >
                   Supprimer
                 </Button>

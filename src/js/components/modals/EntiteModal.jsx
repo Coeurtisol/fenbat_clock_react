@@ -8,11 +8,13 @@ const EntiteModal = ({ fetchEntites, entite }) => {
   const [newEntite, setNewEntite] = useState({
     name: "",
   });
+  let edit = false;
+  if (entite) edit = true;
 
   const handleShowEntiteModal = () => {
     setShowModal(!showModal);
     if (!showModal) {
-      if (entite) {
+      if (edit) {
         setNewEntite({ ...setNewEntite, name: entite.name });
       }
     } else {
@@ -76,16 +78,28 @@ const EntiteModal = ({ fetchEntites, entite }) => {
     handleShowEntiteModal();
   };
 
+  // FUNCTIONS
+  let entiteUtilisee = false;
+  if (edit) {
+    if (
+      entite.Users.length > 0 ||
+      entite.affaires.length > 0 ||
+      entite.pointages.length > 0
+    ) {
+      entiteUtilisee = true;
+    }
+  }
+
   // TEMPLATE
   return (
     <>
       <Button
         className="text-nowrap"
-        variant={entite ? "primary" : "success"}
+        variant={edit ? "primary" : "success"}
         type="button"
         onClick={handleShowEntiteModal}
       >
-        {entite ? "Editer" : "Nouvelle entité"}
+        {edit ? "Editer" : "Nouvelle entité"}
       </Button>
       <Modal
         size="lg"
@@ -96,13 +110,13 @@ const EntiteModal = ({ fetchEntites, entite }) => {
       >
         <Modal.Header closeButton>
           <Modal.Title>
-            {entite
+            {edit
               ? `Modification de l'entité : ${entite.name}`
               : "Nouvelle entité"}
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form onSubmit={entite ? handleUpdate : handleCreate}>
+          <Form onSubmit={edit ? handleUpdate : handleCreate}>
             <Form.Group className="mb-3">
               <Form.Label>Nom</Form.Label>
               <Form.Control
@@ -118,11 +132,12 @@ const EntiteModal = ({ fetchEntites, entite }) => {
               <Button variant="primary" type="submit">
                 Envoyer
               </Button>
-              {entite && (
+              {edit && (
                 <Button
                   variant="danger"
                   type="button"
                   onClick={() => handleDelete(entite.id)}
+                  disabled={entiteUtilisee}
                 >
                   Supprimer
                 </Button>

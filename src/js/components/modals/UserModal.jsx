@@ -5,7 +5,7 @@ import ROLES_API from "../../services/rolesAPI";
 import { Form, Button, Modal } from "react-bootstrap";
 import { toast } from "react-toastify";
 
-const UserModal = ({ fetchUsers, userId }) => {
+const UserModal = ({ fetchUsers, user }) => {
   const [showModal, setShowModal] = useState(false);
   const [lockedSubmit, setLockedSubmit] = useState(false);
   const [entites, setEntites] = useState([]);
@@ -19,27 +19,10 @@ const UserModal = ({ fetchUsers, userId }) => {
     entiteId: null,
     roleId: 5,
   });
+  let edit = false;
+  if (user) edit = true;
 
   // FETCH
-  const fetchUser = async (userId) => {
-    try {
-      const user = await USERS_API.findOne(userId);
-      console.log("success fetch user", user);
-      setNewUser({
-        ...newUser,
-        firstname: user.firstname,
-        lastname: user.lastname,
-        email: user.email,
-        phoneNumber: user.phoneNumber,
-        entiteId: user.entite && user.entite.id,
-        roleId: user.role.id,
-      });
-    } catch (error) {
-      console.log("erreur fetch user", error);
-      toast.error("Erreur au chargement de l'utilisateur.");
-    }
-  };
-
   const fetchRoles = async () => {
     try {
       const roles = await ROLES_API.findAll();
@@ -62,12 +45,21 @@ const UserModal = ({ fetchUsers, userId }) => {
     }
   };
 
+  // HANDLE FUNCTIONS
   const handleShowUserModal = () => {
     setShowModal(!showModal);
     // logique inversée : showModal n'est pas encore à true dans la condition
     if (!showModal) {
-      if (userId) {
-        fetchUser(userId);
+      if (edit) {
+        setNewUser({
+          ...newUser,
+          firstname: user.firstname,
+          lastname: user.lastname,
+          email: user.email,
+          phoneNumber: user.phoneNumber,
+          entiteId: user.entite && user.entite.id,
+          roleId: user.role.id,
+        });
       }
       fetchEntites();
       fetchRoles();
@@ -75,8 +67,6 @@ const UserModal = ({ fetchUsers, userId }) => {
       fetchUsers();
     }
   };
-
-  // FUNCTIONS
   const handlechange = ({ target }) => {
     const { name, value } = target;
     if (name === "accessCode") {
@@ -122,7 +112,7 @@ const UserModal = ({ fetchUsers, userId }) => {
     !newUser.accessCode && delete newUser.accessCode;
     console.log("update user", newUser);
     try {
-      const response = await USERS_API.update(userId, newUser);
+      const response = await USERS_API.update(user.id, newUser);
       console.log("success update user", response);
       toast.success("Utilisateur mit à jour.");
       setNewUser({
@@ -154,16 +144,24 @@ const UserModal = ({ fetchUsers, userId }) => {
     handleShowUserModal();
   };
 
+  // FUNCTIONS
+  let utilisateurActif = false;
+  if (edit) {
+    if (user.pointages.length > 0 || user.commandes.length > 0) {
+      utilisateurActif = true;
+    }
+  }
+
   // TEMPLATE
   return (
     <>
       <Button
         className="text-nowrap"
-        variant={userId ? "primary" : "success"}
+        variant={edit ? "primary" : "success"}
         type="button"
         onClick={handleShowUserModal}
       >
-        {userId ? "Editer" : "Nouvel utilisateur"}
+        {edit ? "Editer" : "Nouvel utilisateur"}
       </Button>
       <Modal
         size="lg"
@@ -174,11 +172,11 @@ const UserModal = ({ fetchUsers, userId }) => {
       >
         <Modal.Header closeButton>
           <Modal.Title>
-            {userId ? `Modification` : "Nouvel Utilisateur"}
+            {edit ? `Modification` : "Nouvel Utilisateur"}
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form onSubmit={userId ? handleUpdate : handleCreate}>
+          <Form onSubmit={edit ? handleUpdate : handleCreate}>
             <Form.Group className="mb-3">
               <Form.Label>Prénom</Form.Label>
               <Form.Control
@@ -221,23 +219,21 @@ const UserModal = ({ fetchUsers, userId }) => {
                 onChange={handlechange}
               />
             </Form.Group>
-            {/* {!userId && ( */}
             <Form.Group className="mb-3">
               <Form.Label>Code d'accès (4 chiffres)</Form.Label>
               <Form.Control
                 type="number"
                 name="accessCode"
                 placeholder={`Code d'accès de l'utilisateur${
-                  userId
+                  edit
                     ? " (laisser vide pour ne pas modifier le code d'accès)"
                     : ""
                 }`}
                 value={newUser.accessCode}
                 onChange={handlechange}
-                required={userId ? false : true}
+                required={edit ? false : true}
               />
             </Form.Group>
-            {/* )} */}
             <Form.Group className="mb-3">
               <Form.Label>Entité</Form.Label>
               <Form.Select
@@ -278,11 +274,12 @@ const UserModal = ({ fetchUsers, userId }) => {
               <Button variant="primary" type="submit" disabled={lockedSubmit}>
                 Envoyer
               </Button>
-              {userId && (
+              {edit && (
                 <Button
                   variant="danger"
                   type="button"
-                  onClick={() => handleDelete(userId)}
+                  onClick={() => handleDelete(user.id)}
+                  disabled={utilisateurActif}
                 >
                   Supprimer
                 </Button>

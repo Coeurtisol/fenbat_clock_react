@@ -52,7 +52,7 @@ const AdminUsersPage = () => {
                 <td>{u.role.name}</td>
                 <td>{u.entite && u.entite.name}</td>
                 <td style={{ width: "1px" }} className="text-center">
-                  <UserModal fetchUsers={fetchUsers} userId={u.id} />
+                  <UserModal fetchUsers={fetchUsers} user={u} />
                 </td>
               </tr>
             ))}

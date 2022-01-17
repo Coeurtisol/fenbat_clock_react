@@ -25,6 +25,8 @@ const UserModal = ({ fetchAffaires, affaire }) => {
     etat: "En cours",
     entiteId: "",
   });
+  let edit = false;
+  if (affaire) edit = true;
 
   // FETCH FUNCTIONS
   const fetchEntites = async () => {
@@ -86,7 +88,7 @@ const UserModal = ({ fetchAffaires, affaire }) => {
   const handleShowUserModal = () => {
     setShowModal(!showModal);
     if (!showModal) {
-      if (affaire) {
+      if (edit) {
         setNewAffaire({
           ...newAffaire,
           name: affaire.name,
@@ -168,16 +170,24 @@ const UserModal = ({ fetchAffaires, affaire }) => {
     handleShowUserModal();
   };
 
+  // FUNCTIONS
+  let affaireUtilisee = false;
+  if (edit) {
+    if (affaire.pointages.length > 0 || affaire.commandes.length > 0) {
+      affaireUtilisee = true;
+    }
+  }
+
   // TEMPLATE
   return (
     <>
       <Button
         className="text-nowrap"
-        variant={affaire ? "primary" : "success"}
+        variant={edit ? "primary" : "success"}
         type="button"
         onClick={handleShowUserModal}
       >
-        {affaire ? "Editer" : "Nouvelle affaire"}
+        {edit ? "Editer" : "Nouvelle affaire"}
       </Button>
       <Modal
         size="lg"
@@ -188,11 +198,11 @@ const UserModal = ({ fetchAffaires, affaire }) => {
       >
         <Modal.Header closeButton>
           <Modal.Title>
-            {affaire ? `Modification` : "Nouvelle affaire"}
+            {edit ? `Modification` : "Nouvelle affaire"}
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form onSubmit={affaire ? handleUpdate : handleCreate}>
+          <Form onSubmit={edit ? handleUpdate : handleCreate}>
             <Form.Group className="mb-3">
               <Form.Label>Nom</Form.Label>
               <Form.Control
@@ -212,7 +222,9 @@ const UserModal = ({ fetchAffaires, affaire }) => {
                 value={newAffaire.entiteId}
                 required
               >
-                {!newAffaire.entiteId && <option>Selectionnez l'entité</option>}
+                {!newAffaire.entiteId && (
+                  <option value="">Selectionnez l'entité</option>
+                )}
                 {entites.map((e) => (
                   <option key={e.id} value={e.id}>
                     {e.name}
@@ -229,7 +241,9 @@ const UserModal = ({ fetchAffaires, affaire }) => {
                 required
               >
                 {!newAffaire.donneurAffaireId && (
-                  <option>Selectionnez le donneur d'ordre de l'affaire</option>
+                  <option value="">
+                    Selectionnez le donneur d'ordre de l'affaire
+                  </option>
                 )}
                 {donneursAffaire.map((d) => (
                   <option key={d.id} value={d.id}>
@@ -247,7 +261,9 @@ const UserModal = ({ fetchAffaires, affaire }) => {
                 required
               >
                 {!newAffaire.clientAffaireId && (
-                  <option>Selectionnez le type de client de l'affaire</option>
+                  <option value="">
+                    Selectionnez le type de client de l'affaire
+                  </option>
                 )}
                 {clientsAffaire.map((c) => (
                   <option key={c.id} value={c.id}>
@@ -265,7 +281,9 @@ const UserModal = ({ fetchAffaires, affaire }) => {
                 required
               >
                 {!newAffaire.typeAffaireId && (
-                  <option>Selectionnez le corps d'état de l'affaire</option>
+                  <option value="">
+                    Selectionnez le corps d'état de l'affaire
+                  </option>
                 )}
                 {typesAffaire.map((t) => (
                   <option key={t.id} value={t.id}>
@@ -283,7 +301,7 @@ const UserModal = ({ fetchAffaires, affaire }) => {
                 required
               >
                 {!newAffaire.secteurAffaireId && (
-                  <option>Selectionnez le secteur de l'affaire</option>
+                  <option value="">Selectionnez le secteur de l'affaire</option>
                 )}
                 {secteursAffaire.map((s) => (
                   <option key={s.id} value={s.id}>
@@ -292,7 +310,7 @@ const UserModal = ({ fetchAffaires, affaire }) => {
                 ))}
               </Form.Select>
             </Form.Group>
-            {affaire && (
+            {edit && (
               <Form.Group className="mb-3">
                 <Form.Label>Etat</Form.Label>
                 <Form.Select
@@ -313,11 +331,12 @@ const UserModal = ({ fetchAffaires, affaire }) => {
               <Button variant="primary" type="submit">
                 Envoyer
               </Button>
-              {affaire && (
+              {edit && (
                 <Button
                   variant="danger"
                   type="button"
                   onClick={() => handleDelete(affaire.id)}
+                  disabled={affaireUtilisee}
                 >
                   Supprimer
                 </Button>

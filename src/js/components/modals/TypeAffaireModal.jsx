@@ -8,11 +8,13 @@ const TypeAffaireModal = ({ fetchTypesAffaire, typeAffaire }) => {
   const [newTypeAffaire, setNewTypeAffaire] = useState({
     name: "",
   });
+  let edit = false;
+  if (typeAffaire) edit = true;
 
   const handleShowTypeAffaireModal = () => {
     setShowModal(!showModal);
     if (!showModal) {
-      if (typeAffaire) {
+      if (edit) {
         setNewTypeAffaire({
           ...setNewTypeAffaire,
           name: typeAffaire.name,
@@ -87,11 +89,11 @@ const TypeAffaireModal = ({ fetchTypesAffaire, typeAffaire }) => {
     <>
       <Button
         className="text-nowrap"
-        variant={typeAffaire ? "primary" : "success"}
+        variant={edit ? "primary" : "success"}
         type="button"
         onClick={handleShowTypeAffaireModal}
       >
-        {typeAffaire ? "Editer" : "Nouveau corps d'état"}
+        {edit ? "Editer" : "Nouveau corps d'état"}
       </Button>
       <Modal
         size="lg"
@@ -102,13 +104,13 @@ const TypeAffaireModal = ({ fetchTypesAffaire, typeAffaire }) => {
       >
         <Modal.Header closeButton>
           <Modal.Title>
-            {typeAffaire
+            {edit
               ? `Modification du corps d'état : ${typeAffaire.name}`
               : "Nouveau corps d'état"}
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form onSubmit={typeAffaire ? handleUpdate : handleCreate}>
+          <Form onSubmit={edit ? handleUpdate : handleCreate}>
             <Form.Group className="mb-3">
               <Form.Label>Nom</Form.Label>
               <Form.Control
@@ -124,11 +126,12 @@ const TypeAffaireModal = ({ fetchTypesAffaire, typeAffaire }) => {
               <Button variant="primary" type="submit">
                 Envoyer
               </Button>
-              {typeAffaire && (
+              {edit && (
                 <Button
                   variant="danger"
                   type="button"
                   onClick={() => handleDelete(typeAffaire.id)}
+                  disabled={typeAffaire.affaires.length > 0}
                 >
                   Supprimer
                 </Button>
