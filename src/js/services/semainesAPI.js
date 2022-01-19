@@ -17,6 +17,24 @@ async function update(id, semaine) {
   return await axios.put(SEMAINES_API_URL + "/" + id, semaine);
 }
 
-const SEMAINES_API = { create, update, findOne, getAllByWeek };
+async function getPDF(prenomNom, annee, semaine) {
+  axios
+    .get(`${SEMAINES_API_URL}/pdf/${prenomNom}/${annee}/${semaine}`, {
+      responseType: "blob",
+    })
+    .then((response) => {
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute(
+        "download",
+        `pointage-${prenomNom}-${annee}-${semaine}.pdf`
+      );
+      document.body.appendChild(link);
+      link.click();
+    });
+}
+
+const SEMAINES_API = { create, update, findOne, getAllByWeek, getPDF };
 
 export default SEMAINES_API;

@@ -188,3 +188,7 @@ main {
 .error-cell-pointage {
   border: 2px solid red !important;
 }
+
+div.table-responsive::-webkit-scrollbar {
+  display: none;
+}

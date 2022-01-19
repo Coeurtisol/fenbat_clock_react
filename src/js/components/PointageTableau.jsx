@@ -8,6 +8,7 @@ import SEMAINES_API from "../services/semainesAPI.js";
 import PointageAffaireModal from "./modals/PointageAffaireModal";
 import PointageHourModal from "./modals/PointageHourModal";
 import PointageMotifAbsenceModal from "./modals/PointageMotifAbsenceModal";
+import PointageCommentaireModal from "./modals/PointageCommentaireModal";
 
 const PointageTableau = ({
   cadreEdit,
@@ -47,10 +48,15 @@ const PointageTableau = ({
     fetchRefresh();
   };
 
-  const handleGetPDF = () => {
+  const handleGetPDF = async () => {
     console.log(
       "Téléchargement du PDF",
       `${semaine.user.firstname}${semaine.user.lastname}-${semaine.annee}-${semaine.numero}`
+    );
+    await SEMAINES_API.getPDF(
+      semaine.user.firstname + semaine.user.lastname,
+      semaine.annee,
+      semaine.numero
     );
   };
 
@@ -186,6 +192,12 @@ const PointageTableau = ({
             semaine.user &&
             `${semaine.user.firstname} ${semaine.user.lastname} `}
           {`(S ${week}) : ${semaine.etatSemaine && semaine.etatSemaine.name}`}
+          <PointageCommentaireModal
+            semaine={semaine}
+            setSemaine={setSemaine}
+            handleSubmitSave={handleSubmitSave}
+            edit={false}
+          />
         </h4>
         <Table
           className="bt-0"
@@ -243,7 +255,7 @@ const PointageTableau = ({
       <div
         className={`container-fluid d-flex justify-content-${
           listView || cadreEdit ? "between" : "end"
-        } mt-3`}
+        } my-3`}
       >
         {cadreEdit && (
           <Link
@@ -282,15 +294,12 @@ const PointageTableau = ({
           {permissionId == permissions.respSite &&
             semaine.etatSemaine &&
             semaine.etatSemaine.id != 5 && (
-              <Button
-                className="mx-3"
-                variant="danger"
-                name="5"
-                onClick={handleSubmitSave}
-                type="button"
-              >
-                Refuser
-              </Button>
+              <PointageCommentaireModal
+                semaine={semaine}
+                setSemaine={setSemaine}
+                handleSubmitSave={handleSubmitSave}
+                edit={true}
+              />
             )}
           {!listView && (
             <Button
