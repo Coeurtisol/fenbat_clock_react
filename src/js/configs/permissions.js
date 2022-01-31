@@ -1,8 +1,8 @@
 const permissions = {
-  respSite: 1,
-  respProd: 2,
-  chefEquipe: 3,
-  technicien: 4,
+  respSite: { id: 1 },
+  respProd: { id: 2 },
+  chefEquipe: { id: 3 },
+  technicien: { id: 4 },
 };
 
 export default permissions;

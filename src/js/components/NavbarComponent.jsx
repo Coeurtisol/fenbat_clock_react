@@ -25,15 +25,15 @@ const NavbarComponent = ({ props }) => {
               title={`${AUTH_API.getFullName()} (${AUTH_API.getRole()})`}
               id="basic-nav-dropdown"
             >
-              {permissionId <= permissions.respProd && (
+              {permissionId <= permissions.respProd.id && (
                 <NavDropdown.Item href="#/admin/users">
                   Utilisateurs
                 </NavDropdown.Item>
               )}
-              {permissionId == permissions.respSite && (
+              {permissionId == permissions.respSite.id && (
                 <NavDropdown.Item href="#/admin/roles">Rôles</NavDropdown.Item>
               )}
-              {permissionId <= permissions.respProd && (
+              {permissionId <= permissions.respProd.id && (
                 <>
                   <NavDropdown.Divider />
                   <NavDropdown.Item href="#/admin/affaires">
@@ -42,7 +42,7 @@ const NavbarComponent = ({ props }) => {
                   <NavDropdown.Divider />
                 </>
               )}
-              {permissionId == permissions.respSite && (
+              {permissionId == permissions.respSite.id && (
                 <>
                   <NavDropdown.Item href="#/admin/motifsAbsence">
                     Motifs d'absence

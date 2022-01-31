@@ -33,6 +33,7 @@ const PointageTableau = ({
       ? +target.name
       : semaine.etatSemaine.id;
     delete updatedSemaine.etatSemaine;
+    if (target.name == 4) updatedSemaine.commentaire = "";
     console.log("updated semaine", updatedSemaine);
     try {
       const response = await SEMAINES_API.update(
@@ -291,7 +292,7 @@ const PointageTableau = ({
               Télécharger le PDF
             </Button>
           )}
-          {permissionId == permissions.respSite &&
+          {permissionId == permissions.respSite.id &&
             semaine.etatSemaine &&
             semaine.etatSemaine.id != 5 && (
               <PointageCommentaireModal
@@ -317,9 +318,9 @@ const PointageTableau = ({
             className="mx-3"
             variant="success"
             name={
-              permissionId == permissions.respSite
+              permissionId == permissions.respSite.id
                 ? 4
-                : permissionId == permissions.respProd
+                : permissionId == permissions.respProd.id
                 ? 3
                 : 2
             }
@@ -327,9 +328,9 @@ const PointageTableau = ({
             type="button"
             disabled={!submittable}
           >
-            {permissionId == permissions.respSite && "Valider (resp site)"}
-            {permissionId == permissions.respProd && "Valider (resp prod)"}
-            {permissionId >= permissions.chefEquipe &&
+            {permissionId == permissions.respSite.id && "Valider (resp site)"}
+            {permissionId == permissions.respProd.id && "Valider (resp prod)"}
+            {permissionId >= permissions.chefEquipe.id &&
               "Envoyer pour validation"}
           </Button>
         </div>

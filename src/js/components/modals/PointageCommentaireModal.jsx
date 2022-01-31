@@ -19,6 +19,11 @@ const PointageCommentaireModal = ({
     setSemaine({ ...semaine, commentaire: value });
   };
 
+  const handleSubmit = (e) => {
+    handleSubmitSave(e);
+    handleShowModal();
+  };
+
   // ############################################ TEMPLATE
   return (
     <>
@@ -26,7 +31,7 @@ const PointageCommentaireModal = ({
         <Button
           variant="info"
           type="button"
-          className="btn-sm"
+          className="btn-sm mx-3"
           onClick={handleShowModal}
         >
           Voir le commentaire
@@ -55,7 +60,7 @@ const PointageCommentaireModal = ({
         </Modal.Header>
         <Modal.Body>
           <Form>
-            <Form.Group className="mb-3 col-xl-5 col-12">
+            <Form.Group className="mb-3">
               <Form.Label>Commentaire</Form.Label>
               <Form.Control
                 onChange={handleChange}
@@ -72,7 +77,7 @@ const PointageCommentaireModal = ({
                 variant="danger"
                 name="5"
                 type="button"
-                onClick={handleSubmitSave}
+                onClick={(e) => handleSubmit(e)}
               >
                 Confirmer
               </Button>

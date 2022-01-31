@@ -16,7 +16,7 @@ const HomePage = () => {
         >
           <h1>Pointages</h1>
         </Link>
-        {permissionId <= permissions.respProd && (
+        {permissionId <= permissions.respProd.id && (
           <Link
             to={`/gestion/pointage/${new Date().getFullYear()}/${DATE_API.getWeekNumber(
               new Date()
@@ -28,7 +28,7 @@ const HomePage = () => {
         <Link to="/">
           <h1>Ressources humaines</h1>
         </Link>
-        {permissionId != permissions.technicien && (
+        {permissionId != permissions.technicien.id && (
           <Link to="/commandes">
             <h1>Commandes</h1>
           </Link>

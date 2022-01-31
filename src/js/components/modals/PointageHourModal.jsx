@@ -26,8 +26,6 @@ const PointageAffaireModal = ({
     }
   };
 
-  console.log(setSemaine);
-
   const handleSubmit = (e) => {
     e.preventDefault();
     const newValue = hours + minutes;
