@@ -314,25 +314,23 @@ const PointageTableau = ({
             </Button>
           )}
 
-          <Button
-            className="mx-3"
-            variant="success"
-            name={
-              permissionId == permissions.respSite.id
-                ? 4
-                : permissionId == permissions.respProd.id
-                ? 3
-                : 2
-            }
-            onClick={handleSubmitSave}
-            type="button"
-            disabled={!submittable}
-          >
-            {permissionId == permissions.respSite.id && "Valider (resp site)"}
-            {permissionId == permissions.respProd.id && "Valider (resp prod)"}
-            {permissionId >= permissions.chefEquipe.id &&
-              "Envoyer pour validation"}
-          </Button>
+          {AUTH_API.peutValider(
+            semaine.etatSemaine && semaine.etatSemaine.id
+          ) && (
+            <Button
+              className="mx-3"
+              variant="success"
+              name={AUTH_API.getValidationLevel()}
+              onClick={handleSubmitSave}
+              type="button"
+              disabled={!submittable}
+            >
+              {permissionId == permissions.respSite.id && "Valider (resp site)"}
+              {permissionId == permissions.respProd.id && "Valider (resp prod)"}
+              {permissionId >= permissions.chefEquipe.id &&
+                "Envoyer pour validation"}
+            </Button>
+          )}
         </div>
       </div>
     </>

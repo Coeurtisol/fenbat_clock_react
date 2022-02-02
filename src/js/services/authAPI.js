@@ -84,6 +84,23 @@ function getFullName() {
   }
 }
 
+function getValidationLevel() {
+  const permissionId = getPermissionId();
+  // resp site => valid resp site
+  if (permissionId == 1) return 4;
+  // resp prod => valid resp prod
+  else if (permissionId == 2) return 3;
+  // chef equipe ou => attente de validation
+  else return 2;
+}
+
+function peutValider(semaineEtatId) {
+  const validationLevel = getValidationLevel();
+  if (semaineEtatId == 1 || semaineEtatId == 5) return true;
+  else if (semaineEtatId < validationLevel) return true;
+  else return false;
+}
+
 const AUTH_API = {
   login,
   logout,
@@ -94,6 +111,8 @@ const AUTH_API = {
   getPermissionId,
   getEntite,
   getFullName,
+  getValidationLevel,
+  peutValider,
 };
 
 export default AUTH_API;
