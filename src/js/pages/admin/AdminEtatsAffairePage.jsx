@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import ETATSAFFAIRE_API from "../../services/etatsAffaireAPI";
+import { Table } from "react-bootstrap";
 
 const AdminEtatsAffairePage = () => {
   const [etatsAffaire, setEtatsAffaire] = useState([]);
@@ -56,12 +57,12 @@ const AdminEtatsAffairePage = () => {
 
   // TEMPLATE
   return (
-    <main>
+    <main className="admin">
       <h1>Liste des états d'affaire :</h1>
       {etatsAffaire.length === 0 ? (
         <p>Aucun état d'affaire n'est enregistré pour le moment</p>
       ) : (
-        <table>
+        <Table responsive>
           <thead>
             <tr>
               <th>Nom</th>
@@ -80,7 +81,7 @@ const AdminEtatsAffairePage = () => {
               </tr>
             ))}
           </tbody>
-        </table>
+        </Table>
       )}
       <br />
       <h1>Ajouter un état d'affaire :</h1>

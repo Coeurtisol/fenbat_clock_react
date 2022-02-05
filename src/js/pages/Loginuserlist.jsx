@@ -21,7 +21,7 @@ const Loginuserlist = () => {
   }, []);
 
   return (
-    <main className="user-container">
+    <main className="d-flex flex-wrap justify-content-evenly user-container">
       {users
         .sort((a, b) => {
           return a.firstname.localeCompare(b.firstname);

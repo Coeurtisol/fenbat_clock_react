@@ -30,7 +30,7 @@ const AdminClientsAffaireComponent = () => {
       {clientsAffaire.length === 0 ? (
         <p>Aucun type de client n'est enregistré pour le moment</p>
       ) : (
-        <Table className="bt-0" variant="light" striped bordered hover>
+        <Table className="bt-0" variant="light" striped bordered hover responsive>
           <thead>
             <tr className="align-middle">
               <th className="text-center">Type de client</th>

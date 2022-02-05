@@ -54,7 +54,7 @@ const CommandePage = () => {
       <h1>Commandes</h1>
       <div className="commande-container">
         <div className="row">
-          <div className="col-9 offset-3">
+          <div className="col-9 mx-auto">
             <ListGroup horizontal>
               <ListGroup.Item>Magasin</ListGroup.Item>
               <ListGroup.Item>Panier</ListGroup.Item>

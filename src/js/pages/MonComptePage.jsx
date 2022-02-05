@@ -88,7 +88,7 @@ const MonComptePage = () => {
   };
 
   return (
-    <main className="color-text">
+    <main className="color-text mt-3 col-md-8 col-11 mx-auto">
       <h1>Mon compte</h1>
       <Form onSubmit={handleSubmit}>
         <Form.Group className="mb-3">

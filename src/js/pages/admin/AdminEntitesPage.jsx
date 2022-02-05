@@ -25,12 +25,12 @@ const AdminEntitesPage = () => {
 
   // TEMPLATE
   return (
-    <main className="color-text">
+    <main className="color-text admin">
       <h1 className="text-center">Entités</h1>
       {entites.length === 0 ? (
         <p>Aucune entité n'est enregistrée pour le moment</p>
       ) : (
-        <Table className="bt-0" variant="light" striped bordered hover>
+        <Table className="bt-0" variant="light" striped bordered hover responsive>
           <thead>
             <tr className="align-middle">
               <th className="text-center">Nom de l'entité</th>

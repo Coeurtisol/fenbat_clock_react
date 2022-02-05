@@ -7,7 +7,7 @@ import permissions from "../configs/permissions.js";
 const HomePage = () => {
   const permissionId = AUTH_API.getPermissionId();
   return (
-    <main>
+    <main className="accueil">
       <div className="menu-container">
         <Link
           to={`/pointage/${new Date().getFullYear()}/${DATE_API.getWeekNumber(
@@ -25,14 +25,14 @@ const HomePage = () => {
             <h1>Validation pointages</h1>
           </Link>
         )}
-        <Link to="/">
+        {/* <Link to="/">
           <h1>Ressources humaines</h1>
-        </Link>
-        {permissionId != permissions.technicien.id && (
+        </Link> */}
+        {/* {permissionId != permissions.technicien.id && (
           <Link to="/commandes">
             <h1>Commandes</h1>
           </Link>
-        )}
+        )} */}
       </div>
     </main>
   );

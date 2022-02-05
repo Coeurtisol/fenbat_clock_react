@@ -25,12 +25,12 @@ const AdminUsersPage = () => {
 
   // TEMPLATE
   return (
-    <main className="color-text">
+    <main className="color-text admin">
       <h1 className="text-center">Utilisateurs</h1>
       {users.length === 0 ? (
         <p>Aucun utilisateur n'est enregistré pour le moment</p>
       ) : (
-        <Table className="bt-0" variant="light" striped bordered hover>
+        <Table className="bt-0" variant="light" striped bordered hover responsive>
           <thead>
             <tr className="align-middle">
               <th className="text-center">Prénom Nom</th>

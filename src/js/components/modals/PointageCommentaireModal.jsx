@@ -39,7 +39,7 @@ const PointageCommentaireModal = ({
       )}
       {edit && (
         <Button
-          className="mx-3"
+          className="mb-3 mx-3"
           variant="danger"
           name="5"
           onClick={handleShowModal}

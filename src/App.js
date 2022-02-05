@@ -30,6 +30,14 @@ import PrivateRoute from "./js/components/PrivateRoute";
 import PublicRoute from "./js/components/PublicRoute";
 
 function App() {
+  let ip;
+  async function setIp() {
+    const ip = await AUTH_API.getIp();
+    console.log(ip);
+  }
+  // setIp();
+  // console.log(ip);
+
   const [isAuthenticated, setIsAuthenticated] = useState(
     AUTH_API.isAuthenticated()
   );
@@ -44,6 +52,7 @@ function App() {
         <Router>
           <HeaderComponentWithRouter />
           <Switch>
+            {/* <PublicRoute path="/loginuserlist" component={Loginuserlist} /> */}
             <PublicRoute path="/loginuserlist" component={Loginuserlist} />
             <PublicRoute path="/loginkeypad" component={Loginkeypad} />
             {!isAuthenticated && (

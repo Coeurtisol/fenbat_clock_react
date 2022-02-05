@@ -178,7 +178,7 @@ const PointagePage = ({ history, match }) => {
         <div>
           {/* <div className="container d-flex flex-wrap justify-content-evenly"> */}
           <div id="SEARCH" className="my-2">
-            <Form className="col-6 offset-3">
+            <Form className="col-11 col-md-8 col-lg-6 mx-auto">
               {!userId && (
                 <Form.Group as={Row} className="mb-3">
                   <Form.Label column>Semaine</Form.Label>

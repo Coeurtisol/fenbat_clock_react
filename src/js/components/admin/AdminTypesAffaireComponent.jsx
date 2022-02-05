@@ -30,7 +30,7 @@ const AdminTypesAffaireComponent = () => {
       {typesAffaire.length === 0 ? (
         <p>Aucune corps d'état n'est enregistré pour le moment</p>
       ) : (
-        <Table className="bt-0" variant="light" striped bordered hover>
+        <Table className="bt-0" variant="light" striped bordered hover responsive>
           <thead>
             <tr className="align-middle">
               <th className="text-center">Nom du corps d'état</th>

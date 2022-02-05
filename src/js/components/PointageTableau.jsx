@@ -260,7 +260,7 @@ const PointageTableau = ({
       >
         {cadreEdit && (
           <Link
-            className="btn btn-primary mx-3"
+            className="btn btn-primary mb-3 mx-3"
             to={`/gestion/pointage/${semaine.annee}/${semaine.numero}`}
           >
             Retour à gestion des pointages
@@ -268,7 +268,7 @@ const PointageTableau = ({
         )}
         {listView && (
           <Button
-            className="mx-3"
+            className="mb-3 mx-3"
             variant="primary"
             onClick={() =>
               history.push(
@@ -284,7 +284,7 @@ const PointageTableau = ({
         <div>
           {semaine.fichierPDF && (
             <Button
-              className="mx-3"
+              className="mb-3 mx-3"
               variant="info"
               onClick={handleGetPDF}
               type="button"
@@ -304,7 +304,7 @@ const PointageTableau = ({
             )}
           {!listView && (
             <Button
-              className="mx-3"
+              className="mb-3 mx-3"
               variant="primary"
               onClick={handleSubmitSave}
               type="button"
@@ -318,7 +318,7 @@ const PointageTableau = ({
             semaine.etatSemaine && semaine.etatSemaine.id
           ) && (
             <Button
-              className="mx-3"
+              className="mb-3 mx-3"
               variant="success"
               name={AUTH_API.getValidationLevel()}
               onClick={handleSubmitSave}

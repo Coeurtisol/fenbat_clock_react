@@ -2,6 +2,7 @@ import React, { useContext, useEffect } from "react";
 import { useState } from "react";
 import AuthContext from "../contexts/AuthContext";
 import AUTH_API from "../services/authAPI";
+import { Link } from "react-router-dom";
 
 const Loginkeypad = ({ location, history }) => {
   const { setIsAuthenticated } = useContext(AuthContext);
@@ -66,12 +67,19 @@ const Loginkeypad = ({ location, history }) => {
 
   // TEMPLATE
   return (
-    <main className="keypad">
-      <div className="keypad_container">
-        <div className="keypad_input">{password.mask}</div>
-        <button className="keypad_num" onClick={handleReset}>
+    <main className="mt-3 mx-3">
+      <Link to={`/loginuserlist`} className="btn btn-primary mb-3">
+        Retour
+      </Link>
+      <div className="col-md-6 col-12 mx-auto keypad_input">
+        {password.mask}
+      </div>
+      <div className="keypad_del_container">
+        <button className="keypad_num keypad_del" onClick={handleReset}>
           DEL
         </button>
+      </div>
+      <div className="mt-3 d-flex flex-wrap justify-content-evenly keypad_container">
         {numbers.map((number) => (
           <button
             className="keypad_num"

@@ -29,13 +29,13 @@ const AdminAffairesPage = () => {
 
   // TEMPLATE
   return (
-    <main className="color-text">
+    <main className="color-text admin">
       <h1 className="text-center">Affaires</h1>
       {affaires.length === 0 ? (
         <p>Aucune affaire n'est enregistrée pour le moment</p>
       ) : (
         <>
-          <Table className="bt-0" variant="light" striped bordered hover>
+          <Table className="bt-0" variant="light" striped bordered hover responsive>
             <thead>
               <tr className="align-middle">
                 <th className="text-center">Affaire</th>

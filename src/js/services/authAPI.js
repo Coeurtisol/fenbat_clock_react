@@ -1,5 +1,5 @@
 import axios from "axios";
-import { USERS_API_URL } from "../configs/api_links";
+import { API_URL, USERS_API_URL } from "../configs/api_links";
 
 async function login(credentials) {
   const response = await axios.post(USERS_API_URL + "/auth/login", credentials);
@@ -101,6 +101,11 @@ function peutValider(semaineEtatId) {
   else return false;
 }
 
+async function getIp() {
+  const ip = await axios.get(API_URL + "ip");
+  return ip.data;
+}
+
 const AUTH_API = {
   login,
   logout,
@@ -113,6 +118,7 @@ const AUTH_API = {
   getFullName,
   getValidationLevel,
   peutValider,
+  getIp,
 };
 
 export default AUTH_API;
