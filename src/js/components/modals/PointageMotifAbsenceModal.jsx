@@ -9,6 +9,7 @@ const PointageMotifAbsenceModal = ({
   name,
   handleSetErrors,
   errors,
+  listView
 }) => {
   const [showModal, setShowModal] = useState(false);
   const [motifChoice, setMotifChoice] = useState(0);
@@ -47,7 +48,7 @@ const PointageMotifAbsenceModal = ({
   return (
     <>
       <td
-        onClick={handleShowModal}
+        onClick={!listView ? handleShowModal : null}
         className={`
             text-center ${
               errors && errors[index] ? "error-cell-pointage" : null

@@ -12,6 +12,7 @@ const PointageAffaireModal = ({
   handleSetErrors,
   errors,
   motifsAbsence,
+  listView,
 }) => {
   const [showModal, setShowModal] = useState(false);
   const [entiteChoice, setEntiteChoice] = useState(0);
@@ -58,7 +59,7 @@ const PointageAffaireModal = ({
   return (
     <>
       <td
-        onClick={handleShowModal}
+        onClick={!listView ? handleShowModal : null}
         className={`
             text-center ${
               errors && errors[index] ? "error-cell-pointage" : null

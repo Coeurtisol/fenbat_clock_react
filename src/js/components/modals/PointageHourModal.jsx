@@ -9,6 +9,7 @@ const PointageAffaireModal = ({
   handleSetErrors,
   errors,
   motifsAbsence,
+  listView,
 }) => {
   const [showModal, setShowModal] = useState(false);
   const [hours, setHours] = useState(0);
@@ -59,10 +60,12 @@ const PointageAffaireModal = ({
   return (
     <>
       <td
-        onClick={handleShowModal}
+        onClick={!listView ? handleShowModal : null}
         className={`
-          text-center ${errors && errors[index] ? "error-cell-pointage" : null}
-        `}
+          text-center btn-cell ${
+            errors && errors[index] ? "error-cell-pointage" : null
+          } 
+          `}
       >
         {value > 0 && value}
       </td>

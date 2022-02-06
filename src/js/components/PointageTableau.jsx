@@ -111,6 +111,7 @@ const PointageTableau = ({
           handleSetErrors={handleSetErrors}
           motifsAbsence={motifsAbsence}
           errors={errors}
+          listView={listView}
         />
       </React.Fragment>
     );
@@ -131,6 +132,7 @@ const PointageTableau = ({
           handleSetErrors={handleSetErrors}
           motifsAbsence={motifsAbsence}
           errors={errors}
+          listView={listView}
         />
       </React.Fragment>
     );
@@ -179,6 +181,7 @@ const PointageTableau = ({
           name="motifAbsenceId"
           handleSetErrors={handleSetErrors}
           errors={errors}
+          listView={listView}
         />
       </React.Fragment>
     );
@@ -292,7 +295,7 @@ const PointageTableau = ({
               Télécharger le PDF
             </Button>
           )}
-          {permissionId == permissions.respSite.id &&
+          {!listView && permissionId == permissions.respSite.id &&
             semaine.etatSemaine &&
             semaine.etatSemaine.id != 5 && (
               <PointageCommentaireModal
