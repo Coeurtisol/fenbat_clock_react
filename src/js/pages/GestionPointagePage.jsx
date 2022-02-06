@@ -33,7 +33,7 @@ const GestionPointagePage = ({ history, match }) => {
       setSemaines(data);
     } catch (error) {
       console.log("erreur fetch semaines", error);
-      toast.error("Erreur au chargement des semaines.")
+      toast.error("Erreur au chargement des semaines.");
     }
   };
 
@@ -46,7 +46,7 @@ const GestionPointagePage = ({ history, match }) => {
       setEtatsSemaine(data);
     } catch (error) {
       console.log("erreur fetch etatsSemaine", error);
-      toast.error("Erreur au chargement des états de semaines.")
+      toast.error("Erreur au chargement des états de semaines.");
     }
   };
 
@@ -57,7 +57,7 @@ const GestionPointagePage = ({ history, match }) => {
       setEntites(entites);
     } catch (error) {
       console.log("erreur fetch entites", error);
-      toast.error("Erreur au chargement des entités.")
+      toast.error("Erreur au chargement des entités.");
     }
   };
 
@@ -68,7 +68,7 @@ const GestionPointagePage = ({ history, match }) => {
       setMotifsAbsence(motifsAbsence);
     } catch (error) {
       console.log("erreur fetch motifsAbsence", error);
-      toast.error("Erreur au chargement des motifs d'absences.")
+      toast.error("Erreur au chargement des motifs d'absences.");
     }
   };
 
@@ -79,7 +79,7 @@ const GestionPointagePage = ({ history, match }) => {
       setAffaires(affaires);
     } catch (error) {
       console.log("erreur fetch affaires", error);
-      toast.error("Erreur au chargement des affaires.")
+      toast.error("Erreur au chargement des affaires.");
     }
   };
 
@@ -143,8 +143,10 @@ const GestionPointagePage = ({ history, match }) => {
           <div id="FILTER" className="my-2">
             <Form className="col-11 col-md-8 col-lg-6 mx-auto">
               <Form.Group as={Row} className="mb-3">
-                <Form.Label column>Semaine</Form.Label>
-                <Col>
+                <Form.Label column className="col-5">
+                  Semaine
+                </Form.Label>
+                <Col className="col-7">
                   <Form.Select
                     name="semaine"
                     onChange={(e) =>
@@ -160,8 +162,10 @@ const GestionPointagePage = ({ history, match }) => {
                 </Col>
               </Form.Group>
               <Form.Group as={Row} className="mb-3">
-                <Form.Label column>Employé</Form.Label>
-                <Col>
+                <Form.Label column className="col-5">
+                  Employé
+                </Form.Label>
+                <Col className="col-7">
                   <Form.Select name="userId" onChange={handleChangeFilter}>
                     <option value="all">Tout les employés</option>
                     {semaines.map((s) => (
@@ -173,8 +177,10 @@ const GestionPointagePage = ({ history, match }) => {
                 </Col>
               </Form.Group>
               <Form.Group as={Row} className="mb-3">
-                <Form.Label column>Etat semaine</Form.Label>
-                <Col>
+                <Form.Label column className="col-5">
+                  Etat semaine
+                </Form.Label>
+                <Col className="col-7">
                   <Form.Select name="etatSemaine" onChange={handleChangeFilter}>
                     <option value="all">Tous les états</option>
                     {etatsSemaine.map((e) => (
