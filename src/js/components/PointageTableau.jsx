@@ -38,6 +38,7 @@ const PointageTableau = ({
     try {
       const response = await SEMAINES_API.update(
         updatedSemaine.id,
+        AUTH_API.getId(),
         updatedSemaine
       );
       console.log("success semaine update", response);
@@ -49,15 +50,16 @@ const PointageTableau = ({
     fetchRefresh();
   };
 
-  const handleGetPDF = async () => {
+  const handleGetPDF = async ({ target }) => {
+    const version = target.getAttribute("data-version");
     console.log(
-      "Téléchargement du PDF",
-      `${semaine.user.firstname}${semaine.user.lastname}-${semaine.annee}-${semaine.numero}`
+      `Téléchargement du PDF (version : ${version}) ${semaine.user.firstname}${semaine.user.lastname}-${semaine.annee}-${semaine.numero}`
     );
     await SEMAINES_API.getPDF(
       semaine.user.firstname + semaine.user.lastname,
       semaine.annee,
-      semaine.numero
+      semaine.numero,
+      version
     );
   };
 
@@ -285,17 +287,30 @@ const PointageTableau = ({
         )}
 
         <div>
-          {semaine.fichierPDF && (
+          {semaine.PDFemploye && (
             <Button
               className="mb-3 mx-3"
               variant="info"
               onClick={handleGetPDF}
               type="button"
+              data-version="0"
             >
-              Télécharger le PDF
+              Télécharger le PDF (employé)
             </Button>
           )}
-          {!listView && permissionId == permissions.respSite.id &&
+          {semaine.PDFresponsable && (
+            <Button
+              className="mb-3 mx-3"
+              variant="info"
+              onClick={handleGetPDF}
+              type="button"
+              data-version="1"
+            >
+              Télécharger le PDF (responsable)
+            </Button>
+          )}
+          {!listView &&
+            permissionId == permissions.respSite.id &&
             semaine.etatSemaine &&
             semaine.etatSemaine.id != 5 && (
               <PointageCommentaireModal

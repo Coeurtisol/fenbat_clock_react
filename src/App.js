@@ -30,11 +30,11 @@ import PrivateRoute from "./js/components/PrivateRoute";
 import PublicRoute from "./js/components/PublicRoute";
 
 function App() {
-  let ip;
-  async function setIp() {
-    const ip = await AUTH_API.getIp();
-    console.log(ip);
-  }
+  // let ip;
+  // async function setIp() {
+  //   const ip = await AUTH_API.getIp();
+  //   console.log(ip);
+  // }
   // setIp();
   // console.log(ip);
 

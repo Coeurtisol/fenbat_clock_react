@@ -13,22 +13,25 @@ async function findOne(year, week, userId) {
   return await axios.get(`${SEMAINES_API_URL}/${year}/${week}/${userId}`);
 }
 
-async function update(id, semaine) {
-  return await axios.put(SEMAINES_API_URL + "/" + id, semaine);
+async function update(id, userId, semaine) {
+  return await axios.put(SEMAINES_API_URL + "/" + id, { userId, semaine });
 }
 
-async function getPDF(prenomNom, annee, semaine) {
+async function getPDF(prenomNom, annee, semaine, version) {
   axios
-    .get(`${SEMAINES_API_URL}/pdf/${prenomNom}/${annee}/${semaine}`, {
-      responseType: "blob",
-    })
+    .get(
+      `${SEMAINES_API_URL}/pdf/${prenomNom}/${annee}/${semaine}/${version}`,
+      {
+        responseType: "blob",
+      }
+    )
     .then((response) => {
       const url = window.URL.createObjectURL(new Blob([response.data]));
       const link = document.createElement("a");
       link.href = url;
       link.setAttribute(
         "download",
-        `pointage-${prenomNom}-${annee}-${semaine}.pdf`
+        `pointage-${prenomNom}-${annee}-${semaine}-${version}.pdf`
       );
       document.body.appendChild(link);
       link.click();
