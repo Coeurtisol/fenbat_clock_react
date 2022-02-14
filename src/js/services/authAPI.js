@@ -1,11 +1,34 @@
 import axios from "axios";
-import { API_URL, USERS_API_URL } from "../configs/api_links";
+import { AUTH_API_URL } from "../configs/api_links";
+
+async function isSecure() {
+  const res = await axios.get(AUTH_API_URL + "/issecure");
+  return res.data.isSecure;
+}
 
 async function login(credentials) {
-  const response = await axios.post(USERS_API_URL + "/auth/login", credentials);
+  const response = await axios.post(AUTH_API_URL + "/login", credentials);
   const token = response.data;
 
-  window.localStorage.setItem("authToken", token);
+  if (typeof token == "string") {
+    window.localStorage.setItem("authToken", token);
+  }
+
+  //axios.defaults.headers["Authorization"] = "Bearer " + token;
+
+  return response;
+}
+
+async function externalLogin(credentials) {
+  const response = await axios.post(
+    AUTH_API_URL + "/externalLogin",
+    credentials
+  );
+  const token = response.data;
+
+  if (typeof token == "string") {
+    window.localStorage.setItem("authToken", token);
+  }
 
   //axios.defaults.headers["Authorization"] = "Bearer " + token;
 
@@ -101,13 +124,9 @@ function peutValider(semaineEtatId) {
   else return false;
 }
 
-async function getIp() {
-  const ip = await axios.get(API_URL + "ip");
-  return ip.data;
-}
-
 const AUTH_API = {
   login,
+  externalLogin,
   logout,
   isAuthenticated,
   getId,
@@ -118,7 +137,7 @@ const AUTH_API = {
   getFullName,
   getValidationLevel,
   peutValider,
-  getIp,
+  isSecure,
 };
 
 export default AUTH_API;

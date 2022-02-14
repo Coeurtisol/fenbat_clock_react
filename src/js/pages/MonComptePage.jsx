@@ -16,6 +16,7 @@ const MonComptePage = () => {
     email: "",
     phoneNumber: "",
     accessCode: "",
+    password: "",
     entiteId: null,
   });
 
@@ -31,6 +32,7 @@ const MonComptePage = () => {
         email: data.email,
         phoneNumber: data.phoneNumber,
         accessCode: "",
+        password: "",
         entiteId: data.entite && data.entite.id,
       });
     } catch (error) {
@@ -58,7 +60,6 @@ const MonComptePage = () => {
   // FUNCTIONS
   const handlechange = ({ target }) => {
     const { name, value } = target;
-    console.log(name, value);
     if (name === "accessCode") {
       if (value.length > 0 && value.length < 4) {
         setLockedSubmit(true);
@@ -75,6 +76,7 @@ const MonComptePage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     !user.accessCode && delete user.accessCode;
+    !user.password && delete user.password;
     console.log("update user", user);
     try {
       const response = await USERS_API.update(id, user);
@@ -141,6 +143,17 @@ const MonComptePage = () => {
             placeholder="Laisser vide pour ne pas modifier le code d'accès"
             value={user.accessCode}
             onChange={handlechange}
+          />
+        </Form.Group>
+        <Form.Group className="mb-3">
+          <Form.Label>Mot de passe</Form.Label>
+          <Form.Control
+            type="password"
+            name="password"
+            placeholder="Laisser vide pour ne pas modifier le mot de passe"
+            value={user.password}
+            onChange={handlechange}
+            minLength="4"
           />
         </Form.Group>
         <Form.Group className="mb-3">

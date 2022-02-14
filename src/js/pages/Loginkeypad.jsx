@@ -1,8 +1,8 @@
-import React, { useContext, useEffect } from "react";
-import { useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import AuthContext from "../contexts/AuthContext";
 import AUTH_API from "../services/authAPI";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const Loginkeypad = ({ location, history }) => {
   const { setIsAuthenticated } = useContext(AuthContext);
@@ -18,33 +18,33 @@ const Loginkeypad = ({ location, history }) => {
   }, []);
 
   const [locked, setLocked] = useState(false);
-  const [password, setPassword] = useState({
+  const [accessCode, setAccessCode] = useState({
     value: "",
     mask: "",
   });
 
   // BOUTTONS CHIFFRE
   const handleClickAdd = (x) => {
-    if (password.value.length < 3) {
-      setPassword({
-        value: password.value + x,
-        mask: password.mask + "X",
+    if (accessCode.value.length < 3) {
+      setAccessCode({
+        value: accessCode.value + x,
+        mask: accessCode.mask + "X",
       });
       return;
     }
-    console.log("connexion mdp=", password.value + x);
-    setPassword({
-      value: password.value + x,
-      mask: password.mask + "X",
+    console.log("connexion mdp=", accessCode.value + x);
+    setAccessCode({
+      value: accessCode.value + x,
+      mask: accessCode.mask + "X",
     });
     setLocked(true);
-    const credentials = { id, password: password.value + x };
+    const credentials = { id, accessCode: accessCode.value + x };
     login(credentials);
   };
 
   // BOUTTON SUPPRIMER / (ANNULER)
   const handleReset = () => {
-    setPassword({
+    setAccessCode({
       value: "",
       mask: "",
     });
@@ -54,15 +54,20 @@ const Loginkeypad = ({ location, history }) => {
   // CONNEXION
   const login = async (credentials) => {
     try {
-      const data = await AUTH_API.login(credentials);
-      // await AUTH_API.login(credentials);
+      const res = await AUTH_API.login(credentials);
+      if (res.data.error) {
+        toast.error(res.data.error);
+        handleReset();
+        return;
+      }
       setIsAuthenticated(true);
-      console.log("success login", data);
+      toast.success("Connexion réussi");
+      console.log("success login", res);
       history.replace("/");
     } catch (error) {
       console.log("erreur login", error);
+      handleReset();
     }
-    handleReset();
   };
 
   // TEMPLATE
@@ -71,9 +76,10 @@ const Loginkeypad = ({ location, history }) => {
       <Link to={`/loginuserlist`} className="btn btn-primary mb-3">
         Retour
       </Link>
-      <div className="col-md-6 col-12 mx-auto keypad_input">
-        {password.mask}
-      </div>
+      <input className="col-md-6 col-12 mx-auto keypad_input" value={accessCode.mask} disabled/>
+      {/* <div className="col-md-6 col-12 mx-auto keypad_input">
+        {accessCode.mask}
+      </div> */}
       <div className="keypad_del_container">
         <button className="keypad_num keypad_del" onClick={handleReset}>
           DEL

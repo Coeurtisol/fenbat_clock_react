@@ -186,11 +186,11 @@ main.admin {
 }
 
 .keypad_input {
-  /* grid-column: 1/5; */
+  display: block;
   background-color: white;
-  font-size: 2em;
-  padding: 1em;
-  /* text-align: center; */
+  font-size: 3em;
+  padding: 8px;
+  text-align: center;
   border-radius: 1rem;
 }
 

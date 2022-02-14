@@ -1,5 +1,6 @@
 export const API_URL = process.env.REACT_APP_API_URL;
 
+export const AUTH_API_URL = API_URL + "auth";
 export const USERS_API_URL = API_URL + "users";
 export const ROLES_API_URL = API_URL + "roles";
 export const PERMISSIONS_API_URL = API_URL + "permissions";

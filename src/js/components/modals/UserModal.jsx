@@ -16,6 +16,7 @@ const UserModal = ({ fetchUsers, user }) => {
     email: "",
     phoneNumber: "",
     accessCode: "",
+    password: "",
     entiteId: null,
     roleId: 5,
   });
@@ -96,6 +97,7 @@ const UserModal = ({ fetchUsers, user }) => {
         email: "",
         phoneNumber: "",
         accessCode: "",
+        password: "",
         entiteId: 0,
         roleId: 5,
       });
@@ -110,6 +112,7 @@ const UserModal = ({ fetchUsers, user }) => {
   const handleUpdate = async (e) => {
     e.preventDefault();
     !newUser.accessCode && delete newUser.accessCode;
+    !newUser.password && delete newUser.password;
     console.log("update user", newUser);
     try {
       const response = await USERS_API.update(user.id, newUser);
@@ -121,6 +124,7 @@ const UserModal = ({ fetchUsers, user }) => {
         email: "",
         phoneNumber: "",
         accessCode: "",
+        password: "",
         entiteId: null,
         roleId: 5,
       });
@@ -231,6 +235,18 @@ const UserModal = ({ fetchUsers, user }) => {
                 }`}
                 value={newUser.accessCode}
                 onChange={handlechange}
+                required={edit ? false : true}
+              />
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label>Mot de passe</Form.Label>
+              <Form.Control
+                type="password"
+                name="password"
+                placeholder="Laisser vide pour ne pas modifier le mot de passe"
+                value={newUser.password}
+                onChange={handlechange}
+                minLength="4"
                 required={edit ? false : true}
               />
             </Form.Group>

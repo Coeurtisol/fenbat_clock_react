@@ -1,6 +1,6 @@
 import "./css/App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import {
@@ -28,15 +28,17 @@ import CommandePage from "./js/pages/CommandePage";
 import NotFoundPage from "./js/pages/NotFoundPage";
 import PrivateRoute from "./js/components/PrivateRoute";
 import PublicRoute from "./js/components/PublicRoute";
+import LoginForm from "./js/pages/LoginForm";
 
 function App() {
-  // let ip;
-  // async function setIp() {
-  //   const ip = await AUTH_API.getIp();
-  //   console.log(ip);
-  // }
-  // setIp();
-  // console.log(ip);
+  const [isSecure, setIsSecure] = useState(true);
+  async function handleIsSecure() {
+    const isSecureResponse = await AUTH_API.isSecure();
+    setIsSecure(isSecureResponse);
+  }
+  // useEffect(() => {
+  //   handleIsSecure();
+  // }, []);
 
   const [isAuthenticated, setIsAuthenticated] = useState(
     AUTH_API.isAuthenticated()
@@ -52,12 +54,16 @@ function App() {
         <Router>
           <HeaderComponentWithRouter />
           <Switch>
-            {/* <PublicRoute path="/loginuserlist" component={Loginuserlist} /> */}
-            <PublicRoute path="/loginuserlist" component={Loginuserlist} />
+            {!isSecure && (
+              <PublicRoute path="/loginpage" component={LoginForm} />
+            )}
+            {isSecure && (
+              <PublicRoute path="/loginuserlist" component={Loginuserlist} />
+            )}
             <PublicRoute path="/loginkeypad" component={Loginkeypad} />
             {!isAuthenticated && (
               <Route path="/">
-                <Redirect to="/loginuserlist" />
+                <Redirect to={isSecure ? "/loginuserlist" : "/loginpage"} />
               </Route>
             )}
 
