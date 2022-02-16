@@ -22,6 +22,7 @@ const GestionPointagePage = ({ history, match }) => {
     userId: "all",
     etatSemaine: "all",
   });
+  const [etatFilter, setEtatFilter] = useState([]);
 
   // ######################################### FETCH FUNCTIONS
   const fetchSemaines = async () => {
@@ -97,6 +98,20 @@ const GestionPointagePage = ({ history, match }) => {
     setFilter({ ...filter, [name]: value });
   };
 
+  const handleChangeEtatFilter = ({ target }) => {
+    const { value, checked } = target;
+    if (checked) {
+      const copyEtatFilter = [...etatFilter];
+      copyEtatFilter.push(Number(value));
+      setEtatFilter(copyEtatFilter);
+    } else {
+      const copyEtatFilter = [...etatFilter];
+      const index = copyEtatFilter.indexOf(Number(value));
+      copyEtatFilter.splice(index, 1);
+      setEtatFilter(copyEtatFilter);
+    }
+  };
+
   // ######################################### FILTRAGE SEMAINES
   const filteredSemainesByUser =
     filter.userId == "all"
@@ -104,10 +119,10 @@ const GestionPointagePage = ({ history, match }) => {
       : semaines.filter((s) => s.user.id == filter.userId);
 
   const filteredSemainesByEtat =
-    filter.etatSemaine == "all"
+    etatFilter.length == 0
       ? filteredSemainesByUser
-      : filteredSemainesByUser.filter(
-          (s) => s.etatSemaine.id == filter.etatSemaine
+      : filteredSemainesByUser.filter((s) =>
+          etatFilter.includes(s.etatSemaine.id)
         );
 
   // ######################################### GESTION SEMAINES
@@ -143,10 +158,10 @@ const GestionPointagePage = ({ history, match }) => {
           <div id="FILTER" className="my-2">
             <Form className="col-11 col-md-8 col-lg-6 mx-auto">
               <Form.Group className="d-flex flex-column flex-sm-row mb-3">
-                <Form.Label column className="col-12 col-sm-5">
+                <Form.Label column className="col-12 col-sm-4">
                   Semaine
                 </Form.Label>
-                <Col className="col-12 col-sm-7">
+                <Col className="col-12 col-sm-8">
                   <Form.Select
                     name="semaine"
                     onChange={(e) =>
@@ -162,10 +177,10 @@ const GestionPointagePage = ({ history, match }) => {
                 </Col>
               </Form.Group>
               <Form.Group className="d-flex flex-column flex-sm-row mb-3">
-                <Form.Label column className="col-12 col-sm-5">
+                <Form.Label column className="col-12 col-sm-4">
                   Employé
                 </Form.Label>
-                <Col className="col-12 col-sm-7">
+                <Col className="col-12 col-sm-8">
                   <Form.Select name="userId" onChange={handleChangeFilter}>
                     <option value="all">Tout les employés</option>
                     {semaines.map((s) => (
@@ -177,18 +192,25 @@ const GestionPointagePage = ({ history, match }) => {
                 </Col>
               </Form.Group>
               <Form.Group className="d-flex flex-column flex-sm-row mb-3">
-                <Form.Label column className="col-12 col-sm-5">
+                <Form.Label column className="col-12 col-sm-4">
                   Etat semaine
                 </Form.Label>
-                <Col className="col-12 col-sm-7">
-                  <Form.Select name="etatSemaine" onChange={handleChangeFilter}>
-                    <option value="all">Tous les états</option>
-                    {etatsSemaine.map((e) => (
-                      <option key={e.id} value={e.id}>
-                        {e.name}
-                      </option>
-                    ))}
-                  </Form.Select>
+                <Col className="col-12 col-sm-8">
+                  {etatsSemaine.map((e) => (
+                    <div key={e.id}>
+                      <Form.Check
+                        style={{display:'inline-block'}}
+                        className="mx-1"
+                        key={e.id}
+                        onChange={handleChangeEtatFilter}
+                        type="checkbox"
+                        name="etatSemaine"
+                        id={`cb-${e.name}`}
+                        value={e.id}
+                      />
+                      <Form.Label htmlFor={`cb-${e.name}`}>{e.name}</Form.Label>
+                    </div>
+                  ))}
                 </Col>
               </Form.Group>
             </Form>
