@@ -10,18 +10,30 @@ const Loginkeypad = ({ location, history }) => {
   if (!id) {
     history.replace("/loginuserlist");
   }
-
-  const [numbers, setNumbers] = useState([]);
-
-  useEffect(() => {
-    setNumbers([0, 1, 2, 3, 4, 5, 6, 7, 8, 9].sort(() => Math.random() - 0.5));
-  }, []);
-
   const [locked, setLocked] = useState(false);
   const [accessCode, setAccessCode] = useState({
     value: "",
     mask: "",
   });
+
+  //  PAVE FIXE
+  // const [numbers, setNumbers] = useState([]);
+  // useEffect(() => {
+  //   setNumbers([0, 1, 2, 3, 4, 5, 6, 7, 8, 9].sort(() => Math.random() - 0.5));
+  // }, []);
+
+  // PAVE DYNAMIQUE
+  const numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].sort(
+    () => Math.random() - 0.5
+  );
+
+  // CONNEXION CLAVIER
+  document.onkeyup = (e) => handleKeyboard(e);
+  const handleKeyboard = ({ key }) => {
+    if (window.location.hash.split("/"[1] == "loginkeypad") && !isNaN(key)) {
+      handleClickAdd(key);
+    }
+  };
 
   // BOUTTONS CHIFFRE
   const handleClickAdd = (x) => {
@@ -32,7 +44,7 @@ const Loginkeypad = ({ location, history }) => {
       });
       return;
     }
-    console.log("connexion mdp=", accessCode.value + x);
+    console.log("connexion mdp = ", accessCode.value + x);
     setAccessCode({
       value: accessCode.value + x,
       mask: accessCode.mask + "X",
@@ -64,6 +76,7 @@ const Loginkeypad = ({ location, history }) => {
       toast.success("Connexion réussi");
       console.log("success login", res);
       history.replace("/");
+      document.onkeyup = null;
     } catch (error) {
       console.log("erreur login", error);
       handleReset();
@@ -76,10 +89,11 @@ const Loginkeypad = ({ location, history }) => {
       <Link to={`/loginuserlist`} className="btn btn-primary mb-3">
         Retour
       </Link>
-      <input className="col-md-6 col-12 mx-auto keypad_input" value={accessCode.mask} disabled/>
-      {/* <div className="col-md-6 col-12 mx-auto keypad_input">
-        {accessCode.mask}
-      </div> */}
+      <input
+        className="col-md-6 col-12 mx-auto keypad_input"
+        value={accessCode.mask}
+        disabled
+      />
       <div className="keypad_del_container">
         <button className="keypad_num keypad_del" onClick={handleReset}>
           DEL
