@@ -69,7 +69,7 @@ const CommandePage = () => {
             </div>
             <ListGroup>
               <ListGroup.Item onClick={() => setCurrentCategorie(null)}>
-                Toutes les articles
+                Tous les articles
               </ListGroup.Item>
             </ListGroup>
             {categories.map((c) => (

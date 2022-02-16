@@ -95,7 +95,7 @@ const PointageTableau = ({
     momentDayLine.push(
       <React.Fragment key={i}>
         <td className="text-center">
-          {semaine.pointages && semaine.pointages[i].moment ? "P.M" : "A.M"}
+          {semaine.pointages[i].moment ? "P.M" : "A.M"}
         </td>
       </React.Fragment>
     );
@@ -127,7 +127,7 @@ const PointageTableau = ({
           affaires={affaires}
           semaine={semaine}
           setSemaine={setSemaine}
-          entite={(search && search.entite) || ""}
+          entite={search?.entite || ""}
           entites={entites}
           index={i}
           name="affaireId"
@@ -194,10 +194,8 @@ const PointageTableau = ({
     <>
       <div className="container-fluid color-text">
         <h4 className="text-center mb-2">
-          {(listView || cadreEdit) &&
-            semaine.user &&
-            `${semaine.user.firstname} ${semaine.user.lastname} `}
-          {`(S ${week}) : ${semaine.etatSemaine && semaine.etatSemaine.name}`}
+          {listView && `${semaine.user?.firstname} ${semaine.user?.lastname} `}
+          {`(S ${week}) : ${semaine.etatSemaine?.name}`}
           <PointageCommentaireModal
             semaine={semaine}
             setSemaine={setSemaine}
@@ -259,13 +257,14 @@ const PointageTableau = ({
         </Table>
       </div>
       <div
-        className={`container-fluid d-flex justify-content-${
-          listView || cadreEdit ? "between" : "end"
-        } my-3`}
+        // className={`container-fluid d-flex justify-content-${
+        //   listView || cadreEdit ? "between" : "end"
+        // } my-3`}
+        className={'container-fluid d-flex flex-wrap my-3'}
       >
         {cadreEdit && (
           <Link
-            className="btn btn-primary mb-3 mx-3"
+            className="btn btn-primary mb-3 ms-3 me-auto"
             to={`/gestion/pointage/${semaine.annee}/${semaine.numero}`}
           >
             Retour à gestion des pointages
@@ -273,7 +272,7 @@ const PointageTableau = ({
         )}
         {listView && (
           <Button
-            className="mb-3 mx-3"
+            className="mb-3 ms-3 me-auto"
             variant="primary"
             onClick={() =>
               history.push(
@@ -286,7 +285,7 @@ const PointageTableau = ({
           </Button>
         )}
 
-        <div>
+        {/* <div> */}
           {semaine.PDFemploye && (
             <Button
               className="mb-3 mx-3"
@@ -311,8 +310,7 @@ const PointageTableau = ({
           )}
           {!listView &&
             permissionId == permissions.respSite.id &&
-            semaine.etatSemaine &&
-            semaine.etatSemaine.id != 5 && (
+            semaine.etatSemaine?.id != 5 && (
               <PointageCommentaireModal
                 semaine={semaine}
                 setSemaine={setSemaine}
@@ -332,9 +330,7 @@ const PointageTableau = ({
             </Button>
           )}
 
-          {AUTH_API.peutValider(
-            semaine.etatSemaine && semaine.etatSemaine.id
-          ) && (
+          {AUTH_API.peutValider(semaine.etatSemaine?.id) && (
             <Button
               className="mb-3 mx-3"
               variant="success"
@@ -350,7 +346,7 @@ const PointageTableau = ({
             </Button>
           )}
         </div>
-      </div>
+      {/* </div> */}
     </>
   );
 };

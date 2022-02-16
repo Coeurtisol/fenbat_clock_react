@@ -153,13 +153,13 @@ const GestionPointagePage = ({ history, match }) => {
   return (
     <>
       <div className="container-fluid color-text">
+        <h2 className="text-center mt-2 mb-4">Gestion pointages</h2>
         <div>
-          {/* <div className="container d-flex flex-wrap justify-content-evenly"> */}
           <div id="FILTER" className="my-2">
             <Form className="col-11 col-md-8 col-lg-6 mx-auto">
               <Form.Group className="d-flex flex-column flex-sm-row mb-3">
-                <Form.Label column className="col-12 col-sm-4">
-                  Semaine
+                <Form.Label column className="text-start text-sm-end pe-2 col-12 col-sm-4">
+                  Semaine : 
                 </Form.Label>
                 <Col className="col-12 col-sm-8">
                   <Form.Select
@@ -177,12 +177,12 @@ const GestionPointagePage = ({ history, match }) => {
                 </Col>
               </Form.Group>
               <Form.Group className="d-flex flex-column flex-sm-row mb-3">
-                <Form.Label column className="col-12 col-sm-4">
-                  Employé
+                <Form.Label column className="text-start text-sm-end pe-2 col-12 col-sm-4">
+                  Employé : 
                 </Form.Label>
                 <Col className="col-12 col-sm-8">
                   <Form.Select name="userId" onChange={handleChangeFilter}>
-                    <option value="all">Tout les employés</option>
+                    <option value="all">Tous les employés</option>
                     {semaines.map((s) => (
                       <option key={s.user.id} value={s.user.id}>
                         {s.user.firstname} {s.user.lastname}
@@ -192,14 +192,14 @@ const GestionPointagePage = ({ history, match }) => {
                 </Col>
               </Form.Group>
               <Form.Group className="d-flex flex-column flex-sm-row mb-3">
-                <Form.Label column className="col-12 col-sm-4">
-                  Etat semaine
+                <Form.Label column className="text-start text-sm-end pe-2 pt-0 col-12 col-sm-4">
+                  Etat validation : 
                 </Form.Label>
                 <Col className="col-12 col-sm-8">
                   {etatsSemaine.map((e) => (
                     <div key={e.id}>
                       <Form.Check
-                        style={{display:'inline-block'}}
+                        style={{ display: "inline-block" }}
                         className="mx-1"
                         key={e.id}
                         onChange={handleChangeEtatFilter}

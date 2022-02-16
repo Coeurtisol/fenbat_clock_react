@@ -172,17 +172,19 @@ const PointagePage = ({ history, match }) => {
   return (
     <>
       <div className="container-fluid color-text">
-        {!userId && semaine.user && (
-          <h2 className="text-center my-2">{`${semaine.user.firstname} ${semaine.user.lastname}`}</h2>
-        )}
+        <h2 className="text-center mt-2 mb-4">
+          {userId
+            ? `Pointages de ${semaine.user?.firstname} ${semaine.user?.lastname}`
+            : "Mes pointages"}
+        </h2>
         <div>
           {/* <div className="container d-flex flex-wrap justify-content-evenly"> */}
           <div id="SEARCH" className="my-2">
             <Form className="col-11 col-md-8 col-lg-6 mx-auto">
               {!userId && (
                 <Form.Group className="d-flex flex-column flex-sm-row mb-3">
-                  <Form.Label column className="col-12 col-sm-5">
-                    Semaine
+                  <Form.Label column className="text-start text-sm-end pe-2 col-12 col-sm-5">
+                    Semaine : 
                   </Form.Label>
                   <Col className="col-12 col-sm-7">
                     <Form.Select
@@ -199,8 +201,8 @@ const PointagePage = ({ history, match }) => {
                 </Form.Group>
               )}
               <Form.Group className="d-flex flex-column flex-sm-row mb-3">
-                <Form.Label column className="col-12 col-sm-5">
-                  Entité
+                <Form.Label column className="text-start text-sm-end pe-2 col-12 col-sm-5">
+                  Entité : 
                 </Form.Label>
                 <Col className="col-12 col-sm-7">
                   <Form.Select
@@ -227,8 +229,8 @@ const PointagePage = ({ history, match }) => {
                 </Col>
               </Form.Group>
               <Form.Group className="d-flex flex-column flex-sm-row mb-3">
-                <Form.Label column className="col-12 col-sm-5">
-                  Affaire par défaut
+                <Form.Label column className="text-start text-sm-end pe-2 col-12 col-sm-5">
+                  Affaire par défaut : 
                 </Form.Label>
                 <Col className="col-12 col-sm-7">
                   <Form.Select
@@ -251,8 +253,8 @@ const PointagePage = ({ history, match }) => {
                 </Col>
               </Form.Group>
               <Form.Group className="d-flex flex-column flex-sm-row mb-3">
-                <Form.Label column className="col-12 col-sm-5">
-                  Motif d'absence par défaut
+                <Form.Label column className="text-start text-sm-end pe-2 col-12 col-sm-5">
+                  Autre par défaut : 
                 </Form.Label>
                 <Col className="col-12 col-sm-7">
                   <Form.Select
