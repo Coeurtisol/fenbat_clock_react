@@ -12,43 +12,37 @@ const PointageAffaireModal = ({
   listView,
 }) => {
   const [showModal, setShowModal] = useState(false);
-  const [hours, setHours] = useState(0);
-  const [minutes, setMinutes] = useState(0);
   const value = semaine.pointages[index].valeur;
+  const [newValue, setNewValue] = useState({
+    hours: 0,
+    minutes: 0,
+  });
 
   // ################################## HANDLE FUNCTIONS
   const handleShowModal = () => {
     setShowModal(!showModal);
     if (!showModal) {
-      setHours(Math.trunc(value));
-      // console.log(Math.trunc(value));
-      setMinutes(value - Math.trunc(value));
-      // console.log(value - Math.trunc(value));
+      setNewValue({
+        hours: Math.trunc(value),
+        minutes: value - Math.trunc(value),
+      });
     }
+  };
+
+  // console.log("newvalue", newValue);
+  const handleChangeNewValue = ({ target }) => {
+    const { name, value } = target;
+    // console.log("handleChange", name, value);
+    setNewValue({ ...newValue, [name]: Number(value) });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const newValue = hours + minutes;
-    // console.log(typeof newValue);
-    // console.log(hours);
-    // console.log(minutes);
-    // console.log(newValue);
+    const formattedValue = newValue.hours + newValue.minutes;
+
     let copyPointages = [...semaine.pointages];
     let copyPointage = { ...copyPointages[index] };
-    copyPointage[name] = newValue;
-
-    // let motifBloquant;
-    // if (copyPointage.motifAbsenceId > 0) {
-    //   motifBloquant = motifsAbsence.find(
-    //     (m) => m.id == copyPointage.motifAbsenceId
-    //   ).bloquant;
-    // } else motifBloquant = false;
-    // const valeur = newValue;
-    // const affaireId = copyPointage.affaireId;
-    // if (motifBloquant && (valeur > 0 || affaireId > 0))
-    //   handleSetErrors(index, true);
-    // else handleSetErrors(index, false);
+    copyPointage[name] = formattedValue;
     handleSetErrors(index, { valeur: newValue });
 
     copyPointages[index] = copyPointage;
@@ -70,7 +64,7 @@ const PointageAffaireModal = ({
         {value > 0 && value}
       </td>
       <Modal
-        size="sm"
+        size="lg"
         aria-labelledby="contained-modal-title-vcenter"
         centered
         show={showModal}
@@ -82,41 +76,66 @@ const PointageAffaireModal = ({
         <Modal.Body>
           <Form onSubmit={handleSubmit}>
             <Form.Group className="mb-3">
-              <Form.Label>Heures</Form.Label>
-              <Form.Select
-                onChange={(e) => setHours(Number(e.target.value))}
-                value={hours}
-              >
-                <option value="0">0</option>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-                <option value="6">6</option>
-              </Form.Select>
-              {/* {entites.map((e) => (
+              <Form.Label><h4 className="color-text">heures</h4></Form.Label>
+              <div className="pointage-hour-modal-keynumber">
+                {["1", "2", "3", "4", "5", "6", "0"].map((n) => (
                   <Form.Check
-                    onChange={(e) => setEntiteChoice(e.target.value)}
+                    key={n}
+                    onChange={handleChangeNewValue}
                     type="radio"
-                    name="entiteId"
-                    key={e.id}
-                    label={e.name}
-                    value={e.name}
+                    name="hours"
+                    value={n}
+                    label={n}
+                    checked={newValue.hours == n}
+                    id={`cb-hours-${n}`}
                   />
-                ))} */}
+                ))}
+              </div>
             </Form.Group>
             <Form.Group className="mb-3">
-              <Form.Label>Minutes</Form.Label>
-              <Form.Select
-                onChange={(e) => setMinutes(Number(e.target.value))}
-                value={minutes}
-              >
-                <option value="0.0">0</option>
-                <option value="0.25">.25 (15 minutes)</option>
-                <option value="0.5">.50 (30 minutes)</option>
-                <option value="0.75">.75 (45 minutes)</option>
-              </Form.Select>
+              <Form.Label>
+                <h4 className="color-text">Minutes</h4>
+              </Form.Label>
+              <div className="pointage-hour-modal-keynumber">
+                <Form.Check
+                  onChange={handleChangeNewValue}
+                  type="radio"
+                  name="minutes"
+                  label=".25 (15 minutes)"
+                  value="0.25"
+                  checked={newValue.minutes == "0.25"}
+                  id={`cb-minutes-0.25`}
+                />
+                <Form.Check
+                  onChange={handleChangeNewValue}
+                  type="radio"
+                  name="minutes"
+                  label=".50 (30 minutes)"
+                  value="0.5"
+                  checked={newValue.minutes == "0.5"}
+                  id={`cb-minutes-0.5`}
+                />
+                <Form.Check
+                  onChange={handleChangeNewValue}
+                  type="radio"
+                  name="minutes"
+                  label=".75 (45 minutes)"
+                  value="0.75"
+                  checked={newValue.minutes == "0.75"}
+                  id={`cb-minutes-0.75`}
+                />
+              </div>
+              <div className="pointage-hour-modal-keynumber">
+                <Form.Check
+                  onChange={handleChangeNewValue}
+                  type="radio"
+                  name="minutes"
+                  label="0"
+                  value="0"
+                  checked={newValue.minutes == "0"}
+                  id={`cb-minutes-0`}
+                />
+              </div>
             </Form.Group>
             <div className="d-flex justify-content-between">
               <Button variant="primary" type="submit">
@@ -125,8 +144,10 @@ const PointageAffaireModal = ({
               <Button
                 variant="primary"
                 onClick={() => {
-                  setHours(0);
-                  setMinutes(0);
+                  setNewValue({
+                    hours: 0,
+                    minutes: 0,
+                  });
                 }}
                 type="submit"
               >

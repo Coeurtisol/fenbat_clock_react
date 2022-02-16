@@ -250,3 +250,27 @@ div.table-responsive::-webkit-scrollbar {
   /* display: none; */
   /* transform: translateY(20px) */
 }
+
+.pointage-hour-modal-keynumber {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.pointage-hour-modal-keynumber div {
+  padding: 0;
+}
+.pointage-hour-modal-keynumber input[type="radio"] {
+  display: none;
+}
+.pointage-hour-modal-keynumber input[type="radio"] ~ label {
+  background-color: #515860;
+  color: white;
+  font-size: 2em;
+  padding: .5em 1em;
+  margin: .5em;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.pointage-hour-modal-keynumber input[type="radio"]:checked ~ label {
+  color: #ffb743;
+}

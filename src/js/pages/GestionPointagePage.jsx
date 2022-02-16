@@ -199,16 +199,14 @@ const GestionPointagePage = ({ history, match }) => {
                   {etatsSemaine.map((e) => (
                     <div key={e.id}>
                       <Form.Check
-                        style={{ display: "inline-block" }}
-                        className="mx-1"
                         key={e.id}
                         onChange={handleChangeEtatFilter}
                         type="checkbox"
                         name="etatSemaine"
                         id={`cb-${e.name}`}
+                        label={e.name}
                         value={e.id}
                       />
-                      <Form.Label htmlFor={`cb-${e.name}`}>{e.name}</Form.Label>
                     </div>
                   ))}
                 </Col>
