@@ -6,6 +6,7 @@ const PointageCommentaireModal = ({
   setSemaine,
   handleSubmitSave,
   edit,
+  cadreEdit,
 }) => {
   const [showModal, setShowModal] = useState(false);
 
@@ -68,10 +69,10 @@ const PointageCommentaireModal = ({
                 placeholder="Saississez votre commentaire"
                 name="commentaire"
                 value={semaine.commentaire || ""}
-                disabled={!edit}
+                disabled={!edit && !cadreEdit}
               />
             </Form.Group>
-            {edit && (
+            {(edit || cadreEdit) && (
               <Button
                 className="mx-3"
                 variant="danger"

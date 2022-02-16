@@ -201,6 +201,7 @@ const PointageTableau = ({
             setSemaine={setSemaine}
             handleSubmitSave={handleSubmitSave}
             edit={false}
+            cadreEdit={cadreEdit}
           />
         </h4>
         <Table
