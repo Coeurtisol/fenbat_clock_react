@@ -260,7 +260,7 @@ const PointageTableau = ({
         // className={`container-fluid d-flex justify-content-${
         //   listView || cadreEdit ? "between" : "end"
         // } my-3`}
-        className={'container-fluid d-flex flex-wrap my-3'}
+        className={'container-fluid d-flex flex-wrap justify-content-end my-3'}
       >
         {cadreEdit && (
           <Link
