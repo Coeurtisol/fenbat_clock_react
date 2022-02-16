@@ -142,11 +142,11 @@ const GestionPointagePage = ({ history, match }) => {
           {/* <div className="container d-flex flex-wrap justify-content-evenly"> */}
           <div id="FILTER" className="my-2">
             <Form className="col-11 col-md-8 col-lg-6 mx-auto">
-              <Form.Group as={Row} className="mb-3">
-                <Form.Label column className="col-5">
+              <Form.Group className="d-flex flex-column flex-sm-row mb-3">
+                <Form.Label column className="col-12 col-sm-5">
                   Semaine
                 </Form.Label>
-                <Col className="col-7">
+                <Col className="col-12 col-sm-7">
                   <Form.Select
                     name="semaine"
                     onChange={(e) =>
@@ -161,11 +161,11 @@ const GestionPointagePage = ({ history, match }) => {
                   </Form.Select>
                 </Col>
               </Form.Group>
-              <Form.Group as={Row} className="mb-3">
-                <Form.Label column className="col-5">
+              <Form.Group className="d-flex flex-column flex-sm-row mb-3">
+                <Form.Label column className="col-12 col-sm-5">
                   Employé
                 </Form.Label>
-                <Col className="col-7">
+                <Col className="col-12 col-sm-7">
                   <Form.Select name="userId" onChange={handleChangeFilter}>
                     <option value="all">Tout les employés</option>
                     {semaines.map((s) => (
@@ -176,11 +176,11 @@ const GestionPointagePage = ({ history, match }) => {
                   </Form.Select>
                 </Col>
               </Form.Group>
-              <Form.Group as={Row} className="mb-3">
-                <Form.Label column className="col-5">
+              <Form.Group className="d-flex flex-column flex-sm-row mb-3">
+                <Form.Label column className="col-12 col-sm-5">
                   Etat semaine
                 </Form.Label>
-                <Col className="col-7">
+                <Col className="col-12 col-sm-7">
                   <Form.Select name="etatSemaine" onChange={handleChangeFilter}>
                     <option value="all">Tous les états</option>
                     {etatsSemaine.map((e) => (

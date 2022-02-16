@@ -180,11 +180,11 @@ const PointagePage = ({ history, match }) => {
           <div id="SEARCH" className="my-2">
             <Form className="col-11 col-md-8 col-lg-6 mx-auto">
               {!userId && (
-                <Form.Group as={Row} className="mb-3">
-                  <Form.Label column className="col-5">
+                <Form.Group className="d-flex flex-column flex-sm-row mb-3">
+                  <Form.Label column className="col-12 col-sm-5">
                     Semaine
                   </Form.Label>
-                  <Col className="col-7">
+                  <Col className="col-12 col-sm-7">
                     <Form.Select
                       name="semaine"
                       onChange={(e) =>
@@ -198,11 +198,11 @@ const PointagePage = ({ history, match }) => {
                   </Col>
                 </Form.Group>
               )}
-              <Form.Group as={Row} className="mb-3">
-                <Form.Label column className="col-5">
+              <Form.Group className="d-flex flex-column flex-sm-row mb-3">
+                <Form.Label column className="col-12 col-sm-5">
                   Entité
                 </Form.Label>
-                <Col className="col-7">
+                <Col className="col-12 col-sm-7">
                   <Form.Select
                     name="entite"
                     onChange={(e) => {
@@ -226,11 +226,11 @@ const PointagePage = ({ history, match }) => {
                   </Form.Select>
                 </Col>
               </Form.Group>
-              <Form.Group as={Row} className="mb-3">
-                <Form.Label column className="col-5">
+              <Form.Group className="d-flex flex-column flex-sm-row mb-3">
+                <Form.Label column className="col-12 col-sm-5">
                   Affaire par défaut
                 </Form.Label>
-                <Col className="col-7">
+                <Col className="col-12 col-sm-7">
                   <Form.Select
                     onChange={(e) => {
                       handleChangeDefault(e.target);
@@ -250,11 +250,11 @@ const PointagePage = ({ history, match }) => {
                   </Form.Select>
                 </Col>
               </Form.Group>
-              <Form.Group as={Row} className="mb-3">
-                <Form.Label column className="col-5">
+              <Form.Group className="d-flex flex-column flex-sm-row mb-3">
+                <Form.Label column className="col-12 col-sm-5">
                   Motif d'absence par défaut
                 </Form.Label>
-                <Col className="col-7">
+                <Col className="col-12 col-sm-7">
                   <Form.Select
                     onChange={(e) => {
                       handleChangeDefault(e.target);
