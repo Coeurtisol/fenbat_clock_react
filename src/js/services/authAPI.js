@@ -12,9 +12,8 @@ async function login(credentials) {
 
   if (typeof token == "string") {
     window.localStorage.setItem("authToken", token);
+    axios.defaults.headers["Authorization"] = "Bearer " + token;
   }
-
-  //axios.defaults.headers["Authorization"] = "Bearer " + token;
 
   return response;
 }
@@ -28,16 +27,15 @@ async function externalLogin(credentials) {
 
   if (typeof token == "string") {
     window.localStorage.setItem("authToken", token);
+    axios.defaults.headers["Authorization"] = "Bearer " + token;
   }
-
-  //axios.defaults.headers["Authorization"] = "Bearer " + token;
 
   return response;
 }
 
 function logout() {
   window.localStorage.removeItem("authToken");
-  // delete axios.defaults.headers["Authorization"];
+  delete axios.defaults.headers["Authorization"];
 }
 
 function parseJwt(token) {
