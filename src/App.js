@@ -31,6 +31,8 @@ import PublicRoute from "./js/components/PublicRoute";
 import LoginForm from "./js/pages/LoginForm";
 
 function App() {
+  AUTH_API.setup();
+
   const [isSecure, setIsSecure] = useState(true);
   async function handleIsSecure() {
     const isSecureResponse = await AUTH_API.isSecure();
@@ -39,6 +41,7 @@ function App() {
   // useEffect(() => {
   //   handleIsSecure();
   // }, []);
+
 
   const [isAuthenticated, setIsAuthenticated] = useState(
     AUTH_API.isAuthenticated()

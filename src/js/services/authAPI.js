@@ -9,12 +9,10 @@ async function isSecure() {
 async function login(credentials) {
   const response = await axios.post(AUTH_API_URL + "/login", credentials);
   const token = response.data;
-
   if (typeof token == "string") {
     window.localStorage.setItem("authToken", token);
-    axios.defaults.headers["Authorization"] = "Bearer " + token;
+    setAxiosToken(token);
   }
-
   return response;
 }
 
@@ -24,12 +22,10 @@ async function externalLogin(credentials) {
     credentials
   );
   const token = response.data;
-
   if (typeof token == "string") {
     window.localStorage.setItem("authToken", token);
-    axios.defaults.headers["Authorization"] = "Bearer " + token;
+    setAxiosToken(token);
   }
-
   return response;
 }
 
@@ -38,23 +34,38 @@ function logout() {
   delete axios.defaults.headers["Authorization"];
 }
 
-function parseJwt(token) {
-  const base64Payload = token.split(".")[1];
-  const payload = Buffer.from(base64Payload, "base64");
-  return JSON.parse(payload.toString());
+function setup() {
+  const token = getToken();
+  if (isTokenValid(token)) {
+    setAxiosToken(token);
+  }
+}
+
+function setAxiosToken(token) {
+  axios.defaults.headers["Authorization"] = "Bearer " + token;
 }
 
 function getToken() {
   return window.localStorage.getItem("authToken");
 }
 
-function isAuthenticated() {
-  const token = getToken();
+function parseJwt(token) {
+  const base64Payload = token.split(".")[1];
+  const payload = Buffer.from(base64Payload, "base64");
+  return JSON.parse(payload.toString());
+}
+
+function isTokenValid(token) {
   if (token) {
     const jwtData = parseJwt(token);
     return jwtData.exp * 1000 > new Date().getTime();
   }
   return false;
+}
+
+function isAuthenticated() {
+  const token = getToken();
+  return isTokenValid(token);
 }
 
 function getId() {
@@ -123,6 +134,7 @@ function peutValider(semaineEtatId) {
 }
 
 const AUTH_API = {
+  setup,
   login,
   externalLogin,
   logout,
