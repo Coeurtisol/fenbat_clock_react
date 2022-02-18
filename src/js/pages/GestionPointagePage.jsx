@@ -20,7 +20,7 @@ const GestionPointagePage = ({ history, match }) => {
   const [filter, setFilter] = useState({
     entite: AUTH_API.getEntite() || "",
     userId: "all",
-    etatValidation: [],
+    etatValidation: {},
   });
 
   // ######################################### FETCH FUNCTIONS
@@ -43,6 +43,17 @@ const GestionPointagePage = ({ history, match }) => {
       const response = await ETATSSEMAINE_API.getAll();
       const data = response.data;
       console.log("success fetch etatsSemaine", data);
+
+      const etatValidationFilter = {};
+      data.forEach((ev) => {
+        etatValidationFilter[ev.name] = false;
+      });
+      etatValidationFilter["En attente de validation"] =
+        AUTH_API.getPermissionId() == 2 && true;
+      etatValidationFilter["Validé par responsable de production"] =
+        AUTH_API.getPermissionId() == 1 && true;
+      setFilter({ ...filter, etatValidation: etatValidationFilter });
+
       setEtatsSemaine(data);
     } catch (error) {
       console.log("erreur fetch etatsSemaine", error);
@@ -97,34 +108,29 @@ const GestionPointagePage = ({ history, match }) => {
     setFilter({ ...filter, [name]: value });
   };
 
-  const handleChangeEtatValidation = ({ target }) => {
+  const handleChangeEtatValidationFilter = ({ target }) => {
     const { value, checked } = target;
-    if (checked) {
-      const copyEtatValidation = [...filter.etatValidation];
-      copyEtatValidation.push(Number(value));
-      setFilter({ ...filter, etatValidation: copyEtatValidation });
-    } else {
-      const copyEtatValidation = [...filter.etatValidation];
-      const index = copyEtatValidation.indexOf(Number(value));
-      copyEtatValidation.splice(index, 1);
-      setFilter({ ...filter, etatValidation: copyEtatValidation });
-    }
+    const copyEtatValidation = filter.etatValidation;
+    copyEtatValidation[value] = checked;
+    setFilter({ ...filter, etatValidation: copyEtatValidation });
   };
 
   // ######################################### FILTRAGE SEMAINES
-  const filteredSemainesByUser =
+  const semainesFiltreesParUtilisateur =
     filter.userId == "all"
       ? semaines
       : semaines.filter((s) => s.user.id == filter.userId);
 
-  const filteredSemainesByEtat =
-    filter.etatValidation.length == 0
-      ? filteredSemainesByUser
-      : filteredSemainesByUser.filter((s) =>
-          filter.etatValidation.includes(s.etatSemaine.id)
-        );
-  console.log(filter.etatValidation);
-  console.log(filteredSemainesByEtat);
+  let semainesFiltreesParEtatValidation = semainesFiltreesParUtilisateur;
+  const valuesFilterEtatValidation = Object.values(filter.etatValidation);
+  const filtreParEtatValidationNonActif = valuesFilterEtatValidation.every(
+    (ev) => !ev
+  );
+  if (!filtreParEtatValidationNonActif) {
+    semainesFiltreesParEtatValidation = semainesFiltreesParUtilisateur.filter(
+      (s) => filter.etatValidation[s.etatSemaine.name]
+    );
+  }
 
   // ######################################### GESTION SEMAINES
   const formatDateSelect = (date) => {
@@ -210,12 +216,13 @@ const GestionPointagePage = ({ history, match }) => {
                     <div key={e.id}>
                       <Form.Check
                         key={e.id}
-                        onChange={handleChangeEtatValidation}
+                        onChange={handleChangeEtatValidationFilter}
                         type="checkbox"
                         name="etatSemaine"
                         id={`cb-${e.name}`}
                         label={e.name}
-                        value={e.id}
+                        value={e.name}
+                        checked={filter.etatValidation[e.name]}
                       />
                     </div>
                   ))}
@@ -225,13 +232,13 @@ const GestionPointagePage = ({ history, match }) => {
           </div>
         </div>
       </div>
-      {filteredSemainesByEtat.length == 0 ? (
+      {semainesFiltreesParEtatValidation.length == 0 ? (
         <h4 className="text-center">
           Aucune semaine de pointage ne correspond à ce filtrage.
         </h4>
       ) : (
         <>
-          {filteredSemainesByEtat.map((s, k) => (
+          {semainesFiltreesParEtatValidation.map((s, k) => (
             <PointageTableau
               history={history}
               listView={true}
