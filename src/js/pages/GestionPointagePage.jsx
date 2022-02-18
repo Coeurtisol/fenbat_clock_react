@@ -20,9 +20,8 @@ const GestionPointagePage = ({ history, match }) => {
   const [filter, setFilter] = useState({
     entite: AUTH_API.getEntite() || "",
     userId: "all",
-    etatSemaine: "all",
+    etatValidation: [],
   });
-  const [etatFilter, setEtatFilter] = useState([]);
 
   // ######################################### FETCH FUNCTIONS
   const fetchSemaines = async () => {
@@ -98,17 +97,17 @@ const GestionPointagePage = ({ history, match }) => {
     setFilter({ ...filter, [name]: value });
   };
 
-  const handleChangeEtatFilter = ({ target }) => {
+  const handleChangeEtatValidation = ({ target }) => {
     const { value, checked } = target;
     if (checked) {
-      const copyEtatFilter = [...etatFilter];
-      copyEtatFilter.push(Number(value));
-      setEtatFilter(copyEtatFilter);
+      const copyEtatValidation = [...filter.etatValidation];
+      copyEtatValidation.push(Number(value));
+      setFilter({ ...filter, etatValidation: copyEtatValidation });
     } else {
-      const copyEtatFilter = [...etatFilter];
-      const index = copyEtatFilter.indexOf(Number(value));
-      copyEtatFilter.splice(index, 1);
-      setEtatFilter(copyEtatFilter);
+      const copyEtatValidation = [...filter.etatValidation];
+      const index = copyEtatValidation.indexOf(Number(value));
+      copyEtatValidation.splice(index, 1);
+      setFilter({ ...filter, etatValidation: copyEtatValidation });
     }
   };
 
@@ -119,11 +118,13 @@ const GestionPointagePage = ({ history, match }) => {
       : semaines.filter((s) => s.user.id == filter.userId);
 
   const filteredSemainesByEtat =
-    etatFilter.length == 0
+    filter.etatValidation.length == 0
       ? filteredSemainesByUser
       : filteredSemainesByUser.filter((s) =>
-          etatFilter.includes(s.etatSemaine.id)
+          filter.etatValidation.includes(s.etatSemaine.id)
         );
+  console.log(filter.etatValidation);
+  console.log(filteredSemainesByEtat);
 
   // ######################################### GESTION SEMAINES
   const formatDateSelect = (date) => {
@@ -158,8 +159,11 @@ const GestionPointagePage = ({ history, match }) => {
           <div id="FILTER" className="my-2">
             <Form className="col-11 col-md-8 col-lg-6 mx-auto">
               <Form.Group className="d-flex flex-column flex-sm-row mb-3">
-                <Form.Label column className="text-start text-sm-end pe-2 col-12 col-sm-4">
-                  Semaine : 
+                <Form.Label
+                  column
+                  className="text-start text-sm-end pe-2 col-12 col-sm-4"
+                >
+                  Semaine :
                 </Form.Label>
                 <Col className="col-12 col-sm-8">
                   <Form.Select
@@ -177,8 +181,11 @@ const GestionPointagePage = ({ history, match }) => {
                 </Col>
               </Form.Group>
               <Form.Group className="d-flex flex-column flex-sm-row mb-3">
-                <Form.Label column className="text-start text-sm-end pe-2 col-12 col-sm-4">
-                  Employé : 
+                <Form.Label
+                  column
+                  className="text-start text-sm-end pe-2 col-12 col-sm-4"
+                >
+                  Employé :
                 </Form.Label>
                 <Col className="col-12 col-sm-8">
                   <Form.Select name="userId" onChange={handleChangeFilter}>
@@ -192,15 +199,18 @@ const GestionPointagePage = ({ history, match }) => {
                 </Col>
               </Form.Group>
               <Form.Group className="d-flex flex-column flex-sm-row mb-3">
-                <Form.Label column className="text-start text-sm-end pe-2 pt-0 col-12 col-sm-4">
-                  Etat validation : 
+                <Form.Label
+                  column
+                  className="text-start text-sm-end pe-2 pt-0 col-12 col-sm-4"
+                >
+                  Etat validation :
                 </Form.Label>
                 <Col className="col-12 col-sm-8">
                   {etatsSemaine.map((e) => (
                     <div key={e.id}>
                       <Form.Check
                         key={e.id}
-                        onChange={handleChangeEtatFilter}
+                        onChange={handleChangeEtatValidation}
                         type="checkbox"
                         name="etatSemaine"
                         id={`cb-${e.name}`}
