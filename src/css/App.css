@@ -274,3 +274,8 @@ div.table-responsive::-webkit-scrollbar {
 .pointage-hour-modal-keynumber input[type="radio"]:checked ~ label {
   color: #ffb743;
 }
+
+/* COMMANDES */
+.command-active-item{
+  background-color: #ffe2b4 !important;
+}
