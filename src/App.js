@@ -19,16 +19,19 @@ import AdminUsersPage from "./js/pages/admin/AdminUsersPage";
 import AdminEntitesPage from "./js/pages/admin/AdminEntitesPage";
 import AdminMotifsAbsencePage from "./js/pages/admin/AdminMotifsAbsencePage";
 import AdminAffairesPage from "./js/pages/admin/AdminAffairesPage";
+import AdminCategoriesPage from "./js/pages/admin/AdminCategoriesPage";
 import HeaderComponent from "./js/components/HeaderComponent";
 import PointagePage from "./js/pages/PointagePage";
 import GestionPointagePage from "./js/pages/GestionPointagePage";
 import Loginuserlist from "./js/pages/Loginuserlist";
 import Loginkeypad from "./js/pages/Loginkeypad";
-import CommandePage from "./js/pages/CommandePage";
+// import CommandePage from "./js/pages/CommandePage";
 import NotFoundPage from "./js/pages/NotFoundPage";
 import PrivateRoute from "./js/components/PrivateRoute";
 import PublicRoute from "./js/components/PublicRoute";
 import LoginForm from "./js/pages/LoginForm";
+import AdminArticlesPage from "./js/pages/admin/AdminArticlesPage";
+import AdminFournisseursPage from "./js/pages/admin/AdminFournisseursPage";
 
 function App() {
   AUTH_API.setup();
@@ -82,6 +85,18 @@ function App() {
               component={AdminMotifsAbsencePage}
             />
             <PrivateRoute
+              path="/admin/categories"
+              component={AdminCategoriesPage}
+            />
+            <PrivateRoute
+              path="/admin/articles"
+              component={AdminArticlesPage}
+            />
+            <PrivateRoute
+              path="/admin/fournisseurs"
+              component={AdminFournisseursPage}
+            />
+            <PrivateRoute
               path="/gestion/pointage/:year/:week/:userId"
               component={PointagePage}
             />
@@ -93,7 +108,7 @@ function App() {
               path="/pointage/:year/:week"
               component={PointagePage}
             />
-            <PrivateRoute path="/commandes" component={CommandePage} />
+            {/* <PrivateRoute path="/commandes" component={CommandePage} /> */}
             <PrivateRoute path="/moncompte" component={MonComptePage} />
             <PrivateRoute exact path="/" component={HomePage} />
 

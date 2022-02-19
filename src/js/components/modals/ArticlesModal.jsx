@@ -2,26 +2,40 @@ import React, { useEffect, useState } from "react";
 import { Form, Modal, Button } from "react-bootstrap";
 import { toast } from "react-toastify";
 import ARTICLES_API from "../../services/articlesAPI";
+import CATEGORIES_API from "../../services/categoriesAPI";
 
-const ArticleModal = ({
-  fetchArticles,
-  currentCategorie,
-  categories,
-  article,
-}) => {
+const ArticlesModal = ({ fetchArticles, article }) => {
   const edit = article && true;
   const [showModal, setShowModal] = useState(false);
+  const [categories, setCategories] = useState([]);
   const [newArticle, setNewArticle] = useState({
     name: "",
-    categorieId: currentCategorie,
+    categorieId: "",
   });
+
+  // FETCH
+  const fetchCategories = async () => {
+    try {
+      const data = await CATEGORIES_API.findAll();
+      console.log("success fetch categorie", data);
+      setCategories(data);
+    } catch (error) {
+      console.log("erreur fetch categorie", error);
+    }
+  };
 
   const handleShowArticleModal = () => {
     setShowModal(!showModal);
-    if (edit) {
-      setNewArticle({ name: article.name, categorieId: article.categorie?.id });
+    if (!showModal) {
+      if (edit) {
+        setNewArticle({
+          name: article.name,
+          categorieId: article.categorie?.id,
+        });
+      }
+      fetchCategories();
     } else {
-      setNewArticle({ ...newArticle, categorieId: currentCategorie });
+      fetchArticles();
     }
   };
 
@@ -40,7 +54,7 @@ const ArticleModal = ({
       toast.success("Article créé.");
       setNewArticle({
         name: "",
-        categorieId: currentCategorie,
+        categorieId: "",
       });
     } catch (error) {
       console.log("erreur create article", error);
@@ -87,16 +101,16 @@ const ArticleModal = ({
   // TEMPLATE
   return (
     <>
-      <div className="text-center">
-        <Button
-          className={`btn btn-primary ${edit ? "btn-sm" : ""}`}
-          onClick={handleShowArticleModal}
-        >
-          {edit ? "Modifier l'article" : "Ajouter un article"}
-        </Button>
-      </div>
+      <Button
+        className={`btn ${
+          edit ? "btn-primary btn-sm my-0" : "btn-success my-2"
+        }`}
+        onClick={handleShowArticleModal}
+      >
+        {edit ? "Editer" : "Nouvel article"}
+      </Button>
       <Modal
-        size="sm"
+        size="md"
         aria-labelledby="contained-modal-title-vcenter"
         centered
         show={showModal}
@@ -156,4 +170,4 @@ const ArticleModal = ({
   );
 };
 
-export default ArticleModal;
+export default ArticlesModal;

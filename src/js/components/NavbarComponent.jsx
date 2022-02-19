@@ -54,6 +54,20 @@ const NavbarComponent = ({ props }) => {
                   <NavDropdown.Divider />
                 </>
               )}
+              {permissionId <= permissions.respProd.id && (
+                <>
+                  <NavDropdown.Item href="#/admin/articles">
+                    Articles
+                  </NavDropdown.Item>
+                  <NavDropdown.Item href="#/admin/categories">
+                    Catégories
+                  </NavDropdown.Item>
+                  <NavDropdown.Item href="#/admin/fournisseurs">
+                    Fournisseurs
+                  </NavDropdown.Item>
+                  <NavDropdown.Divider />
+                </>
+              )}
               <NavDropdown.Item href="#/moncompte">Mon compte</NavDropdown.Item>
               <NavDropdown.Divider />
               <NavDropdown.Item onClick={logout}>Déconnexion</NavDropdown.Item>

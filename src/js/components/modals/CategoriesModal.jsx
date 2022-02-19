@@ -3,15 +3,19 @@ import { Form, Modal, Button } from "react-bootstrap";
 import { toast } from "react-toastify";
 import CATEGORIES_API from "../../services/categoriesAPI";
 
-const CategorieModal = ({ fetchCategories, categorie }) => {
+const CategoriesModal = ({ fetchCategories, categorie }) => {
   const edit = categorie && true;
   const [showModal, setShowModal] = useState(false);
   const [newCategorie, setNewCategorie] = useState({ name: "" });
 
   const handleShowCategorieModal = () => {
     setShowModal(!showModal);
-    if (edit) {
-      setNewCategorie({ ...newCategorie, name: categorie.name });
+    if (!showModal) {
+      if (edit) {
+        setNewCategorie({ ...newCategorie, name: categorie.name });
+      }
+    } else {
+      fetchCategories();
     }
   };
 
@@ -76,13 +80,15 @@ const CategorieModal = ({ fetchCategories, categorie }) => {
   return (
     <>
       <Button
-        className={`btn btn-primary ${edit ? "btn-sm my-0" : "my-2"}`}
+        className={`btn ${
+          edit ? "btn-primary btn-sm my-0" : "btn-success my-2"
+        }`}
         onClick={handleShowCategorieModal}
       >
-        {edit ? "Modifier la catégorie" : "Ajouter une catégorie"}
+        {edit ? "Editer" : "Nouvelle catégorie"}
       </Button>
       <Modal
-        size="sm"
+        size="md"
         aria-labelledby="contained-modal-title-vcenter"
         centered
         show={showModal}
@@ -127,4 +133,4 @@ const CategorieModal = ({ fetchCategories, categorie }) => {
   );
 };
 
-export default CategorieModal;
+export default CategoriesModal;
