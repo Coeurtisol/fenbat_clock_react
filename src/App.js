@@ -25,7 +25,7 @@ import PointagePage from "./js/pages/PointagePage";
 import GestionPointagePage from "./js/pages/GestionPointagePage";
 import Loginuserlist from "./js/pages/Loginuserlist";
 import Loginkeypad from "./js/pages/Loginkeypad";
-// import CommandePage from "./js/pages/CommandePage";
+import CommandePage from "./js/pages/CommandePage";
 import NotFoundPage from "./js/pages/NotFoundPage";
 import PrivateRoute from "./js/components/PrivateRoute";
 import PublicRoute from "./js/components/PublicRoute";
@@ -108,7 +108,7 @@ function App() {
               path="/pointage/:year/:week"
               component={PointagePage}
             />
-            {/* <PrivateRoute path="/commandes" component={CommandePage} /> */}
+            <PrivateRoute path="/commandes" component={CommandePage} />
             <PrivateRoute path="/moncompte" component={MonComptePage} />
             <PrivateRoute exact path="/" component={HomePage} />
 

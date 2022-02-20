@@ -18,3 +18,4 @@ export const DONNEURSAFFAIRE_API_URL = API_URL + "donneursAffaire";
 export const CATEGORIES_API_URL = API_URL + "categories";
 export const ARTICLES_API_URL = API_URL + "articles";
 export const FOURNISSEURS_API_URL = API_URL + "fournisseurs";
+export const COMMANDES_API_URL = API_URL + "commandes";
