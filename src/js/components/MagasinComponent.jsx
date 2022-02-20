@@ -43,8 +43,12 @@ const Magasin = ({}) => {
       : a.categorie != null && a.categorie.id == currentCategorie
   );
 
-  const filteredArticlesBySearch = filteredArticlesByCategorie.filter((a) =>
-    a.name.toLowerCase().includes(searchValue.toLowerCase())
+  const filteredArticlesBySearch = filteredArticlesByCategorie.filter(
+    (a) =>
+      a.name.toLowerCase().includes(searchValue.toLowerCase()) 
+      // || a.fournisseurs
+      //   .map((f) => f.fournisseur.name.toLowerCase())
+      //   .includes(searchValue.toLowerCase())
   );
 
   return (
