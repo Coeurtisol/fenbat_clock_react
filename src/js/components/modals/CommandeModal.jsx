@@ -43,8 +43,8 @@ const CommandeModal = ({ article, commande }) => {
         quantite: 1,
         affaireId: "",
       });
+      fetchAffaires();
     }
-    fetchAffaires();
     // } else {
     //   fetchCommandes();
     // }
@@ -78,26 +78,6 @@ const CommandeModal = ({ article, commande }) => {
     handleShowCommandeModal();
   };
 
-  // UPDATE
-  const handleUpdate = async (e) => {
-    e.preventDefault();
-    delete newCommande.accessCode;
-    console.log("update commande", newCommande);
-    try {
-      const response = await COMMANDES_API.update(commande.id, newCommande);
-      console.log("success update commande", response);
-      toast.success("Commande mise à jour.");
-      setNewCommande({
-        name: "",
-        affaireId: "",
-      });
-    } catch (error) {
-      console.log("erreur update commande", error);
-      toast.error("Erreur à la mise à jour de la commande.");
-    }
-    handleShowCommandeModal();
-  };
-
   // TEMPLATE
   return (
     <>
@@ -125,7 +105,7 @@ const CommandeModal = ({ article, commande }) => {
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form onSubmit={edit ? handleUpdate : handleCreate}>
+          <Form onSubmit={edit ? handleCreate : handleCreate}>
             <Form.Group className="mb-3">
               <Form.Label>Article</Form.Label>
               <div className="fw-bold fs-4">

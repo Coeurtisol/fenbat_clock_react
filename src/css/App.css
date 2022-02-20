@@ -280,6 +280,10 @@ div.table-responsive::-webkit-scrollbar {
 }
 
 /* COMMANDES */
+.onglet-commande {
+  cursor: pointer;
+}
 .command-active-item {
   background-color: #ffe2b4 !important;
+  cursor: default;
 }

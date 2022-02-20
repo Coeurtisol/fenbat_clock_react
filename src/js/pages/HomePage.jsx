@@ -28,7 +28,12 @@ const HomePage = () => {
         {/* <Link to="/">
           <h1>Ressources humaines</h1>
         </Link> */}
-        {permissionId != permissions.technicien.id && (
+        {permissionId <= permissions.respProd.id && (
+          <Link to="/gestion/commandes">
+            <h1>Validation commandes</h1>
+          </Link>
+        )}
+        {permissionId == permissions.chefEquipe.id && (
           <Link to="/commandes">
             <h1>Commandes</h1>
           </Link>

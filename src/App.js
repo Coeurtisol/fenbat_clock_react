@@ -32,6 +32,7 @@ import PublicRoute from "./js/components/PublicRoute";
 import LoginForm from "./js/pages/LoginForm";
 import AdminArticlesPage from "./js/pages/admin/AdminArticlesPage";
 import AdminFournisseursPage from "./js/pages/admin/AdminFournisseursPage";
+import GestionCommandePage from "./js/pages/GestionCommandePage";
 
 function App() {
   AUTH_API.setup();
@@ -103,6 +104,10 @@ function App() {
             <PrivateRoute
               path="/gestion/pointage/:year/:week"
               component={GestionPointagePage}
+            />
+            <PrivateRoute
+              path="/gestion/commandes"
+              component={GestionCommandePage}
             />
             <PrivateRoute
               path="/pointage/:year/:week"

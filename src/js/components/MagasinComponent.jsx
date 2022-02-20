@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import CATEGORIES_API from "../services/categoriesAPI";
 import ARTICLES_API from "../services/articlesAPI";
-import { ListGroup, Table } from "react-bootstrap";
+import { Form, ListGroup, Table } from "react-bootstrap";
 import CommandeModal from "../components/modals/CommandeModal";
 
 const Magasin = ({}) => {
@@ -49,19 +49,23 @@ const Magasin = ({}) => {
 
   return (
     <div className="row bg-light">
-      <div className="col-3 p-0 border-end border-5">
+      <div className="col-12 col-sm-3 p-0 border-end border-5">
         <div className="text-center"></div>
         <ListGroup>
           <ListGroup.Item
             onClick={() => setCurrentCategorie(null)}
-            className={currentCategorie == null ? "command-active-item" : null}
+            className={`onglet-commande ${
+              currentCategorie == null ? "command-active-item" : null
+            }`}
           >
             Tous les articles
           </ListGroup.Item>
         </ListGroup>
         {categories.map((c) => (
           <ListGroup.Item
-            className={currentCategorie == c.id ? "command-active-item" : null}
+            className={`onglet-commande ${
+              currentCategorie == c.id ? "command-active-item" : null
+            }`}
             key={c.id}
             onClick={() => setCurrentCategorie(c.id)}
           >
@@ -71,7 +75,7 @@ const Magasin = ({}) => {
       </div>
       <div className="col p-0">
         <div className="d-flex justify-content-evenly p-2 border-bottom border-5">
-          <input
+          <Form.Control
             type="search"
             placeholder="Rechercher un article"
             value={searchValue}
