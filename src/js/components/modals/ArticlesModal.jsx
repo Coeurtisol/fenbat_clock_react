@@ -3,17 +3,30 @@ import { Form, Modal, Button } from "react-bootstrap";
 import { toast } from "react-toastify";
 import ARTICLES_API from "../../services/articlesAPI";
 import CATEGORIES_API from "../../services/categoriesAPI";
+import FOURNISSEURS_API from "../../services/fournisseursAPI";
 
 const ArticlesModal = ({ fetchArticles, article }) => {
   const edit = article && true;
   const [showModal, setShowModal] = useState(false);
   const [categories, setCategories] = useState([]);
+  const [fournisseurs, setFournisseurs] = useState([]);
   const [newArticle, setNewArticle] = useState({
     name: "",
     categorieId: "",
+    fournisseurs: [],
   });
 
   // FETCH
+  const fetchFournisseurs = async () => {
+    try {
+      const data = await FOURNISSEURS_API.findAll();
+      console.log("success fetch fournisseur", data);
+      setFournisseurs(data);
+    } catch (error) {
+      console.log("erreur fetch fournisseur", error);
+    }
+  };
+
   const fetchCategories = async () => {
     try {
       const data = await CATEGORIES_API.findAll();
@@ -31,18 +44,28 @@ const ArticlesModal = ({ fetchArticles, article }) => {
         setNewArticle({
           name: article.name,
           categorieId: article.categorie?.id,
+          fournisseurs: article.fournisseurs.map((f) => f.fournisseur.id),
         });
       }
       fetchCategories();
+      fetchFournisseurs();
     } else {
       fetchArticles();
     }
   };
 
   // FUNCTIONS
-  const handlechange = ({ target }) => {
+  const handleChange = ({ target }) => {
     const { name, value } = target;
     setNewArticle({ ...newArticle, [name]: value });
+  };
+
+  const handleChangeFournisseurs = ({ target }) => {
+    const { selectedOptions } = target;
+    const selectedFournisseurs = [].slice
+      .call(selectedOptions)
+      .map((item) => item.value);
+    setNewArticle({ ...newArticle, fournisseurs: selectedFournisseurs });
   };
 
   // CREATE
@@ -55,6 +78,7 @@ const ArticlesModal = ({ fetchArticles, article }) => {
       setNewArticle({
         name: "",
         categorieId: "",
+        fournisseurs: [],
       });
     } catch (error) {
       console.log("erreur create article", error);
@@ -75,6 +99,7 @@ const ArticlesModal = ({ fetchArticles, article }) => {
       setNewArticle({
         name: "",
         categorieId: "",
+        fournisseurs: [],
       });
     } catch (error) {
       console.log("erreur update article", error);
@@ -130,7 +155,7 @@ const ArticlesModal = ({ fetchArticles, article }) => {
                 name="name"
                 placeholder="Nom de l'article"
                 value={newArticle.name}
-                onChange={handlechange}
+                onChange={handleChange}
                 required
               />
             </Form.Group>
@@ -138,13 +163,32 @@ const ArticlesModal = ({ fetchArticles, article }) => {
               <Form.Label>Catégorie</Form.Label>
               <Form.Select
                 name="categorieId"
-                onChange={handlechange}
+                onChange={handleChange}
                 value={newArticle.categorieId || ""}
               >
                 <option value="">Selectionner une catégorie</option>
                 {categories.map((c) => (
                   <option key={c.id} value={c.id}>
                     {c.name}
+                  </option>
+                ))}
+              </Form.Select>
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label>Fournisseurs</Form.Label>
+              <Form.Select
+                multiple
+                name="fournisseurs"
+                onChange={handleChangeFournisseurs}
+                value={newArticle.fournisseurs}
+              >
+                {fournisseurs.map((f) => (
+                  <option
+                    key={f.id}
+                    value={f.id}
+                    // selected={newArticle.fournisseurs?.includes(f)}
+                  >
+                    {f.name}
                   </option>
                 ))}
               </Form.Select>
