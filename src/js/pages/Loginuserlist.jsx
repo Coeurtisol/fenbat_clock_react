@@ -8,7 +8,7 @@ const Loginuserlist = () => {
 
   const fetchData = async () => {
     try {
-      const data = await USERS_API.findAll();
+      const data = await USERS_API.getAllActive();
       console.log("success fetch", data);
       setUsers(data);
     } catch (error) {

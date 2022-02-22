@@ -46,7 +46,7 @@ const ListeCommandes = ({}) => {
 
   // ORDER COMMANDS
   const order = [false, true];
-  commandes.sort((a, b)=> {
+  commandes.sort((a, b) => {
     return order.indexOf(a.etat) - order.indexOf(b.etat);
   });
 
@@ -69,7 +69,7 @@ const ListeCommandes = ({}) => {
               {resp && <th className="text-center">Chef d'équipe</th>}
               <th className="text-center">Affaire</th>
               <th className="text-center">État</th>
-              {resp && <td></td>}
+              <th>Validée le</th>
             </tr>
           </thead>
           <tbody>
@@ -87,16 +87,19 @@ const ListeCommandes = ({}) => {
                 <td className="text-center">
                   {c.etat ? "Confirmé" : "En attente"}
                 </td>
-                {resp && !c.etat && (
-                  <td>
+
+                <td>
+                  {resp && !c.etat ? (
                     <Button
                       variant="success"
                       onClick={() => handleValider(c.id)}
                     >
                       Valider
                     </Button>
-                  </td>
-                )}
+                  ) : (
+                    c.valideeLe && new Date(c.valideeLe).toLocaleString()
+                  )}
+                </td>
               </tr>
             ))}
           </tbody>
