@@ -19,6 +19,7 @@ const UserModal = ({ fetchUsers, user }) => {
     password: "",
     entiteId: null,
     roleId: 5,
+    status: "1",
   });
   let edit = false;
   if (user) edit = true;
@@ -60,6 +61,7 @@ const UserModal = ({ fetchUsers, user }) => {
           phoneNumber: user.phoneNumber,
           entiteId: user.entite && user.entite.id,
           roleId: user.role.id,
+          status: user.status ? "1" : "0",
         });
       }
       fetchEntites();
@@ -82,6 +84,7 @@ const UserModal = ({ fetchUsers, user }) => {
     }
     setNewUser({ ...newUser, [name]: value });
   };
+  // console.log(newUser);
 
   // CREATE
   const handleCreate = async (e) => {
@@ -100,6 +103,7 @@ const UserModal = ({ fetchUsers, user }) => {
         password: "",
         entiteId: 0,
         roleId: 5,
+        status: "1",
       });
     } catch (error) {
       console.log("erreur create user", error);
@@ -127,6 +131,7 @@ const UserModal = ({ fetchUsers, user }) => {
         password: "",
         entiteId: null,
         roleId: 5,
+        status: "1",
       });
     } catch (error) {
       console.log("erreur update user", error);
@@ -230,7 +235,7 @@ const UserModal = ({ fetchUsers, user }) => {
                 name="accessCode"
                 placeholder={`Code d'accès de l'utilisateur${
                   edit
-                    ? " (laisser vide pour ne pas modifier le code d'accès)"
+                    ? " (laisser vide pour ne pas modifier)"
                     : ""
                 }`}
                 value={newUser.accessCode}
@@ -243,7 +248,11 @@ const UserModal = ({ fetchUsers, user }) => {
               <Form.Control
                 type="password"
                 name="password"
-                placeholder="Laisser vide pour ne pas modifier le mot de passe"
+                placeholder={`Mot de passe de l'utilisateur${
+                  edit
+                    ? " (laisser vide pour ne pas modifier)"
+                    : ""
+                }`}
                 value={newUser.password}
                 onChange={handlechange}
                 minLength="4"
@@ -280,11 +289,30 @@ const UserModal = ({ fetchUsers, user }) => {
                   <option>Selectionnez le rôle de l'utilisateur</option>
                 )}
                 {roles.map((r) => (
-                  <option key={r.id} value={r.id} disabled={r.id == 1}>
-                    {r.name}
-                  </option>
+                  <React.Fragment key={r.id}>
+                    {r.id != 1 && <option value={r.id}>{r.name}</option>}
+                  </React.Fragment>
                 ))}
               </Form.Select>
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label>Actif</Form.Label>
+              <Form.Check
+                onChange={handlechange}
+                type="radio"
+                name="status"
+                label="Oui"
+                value={"1"}
+                checked={newUser.status == "1"}
+              />
+              <Form.Check
+                onChange={handlechange}
+                type="radio"
+                name="status"
+                label="Non"
+                value={"0"}
+                checked={newUser.status == "0"}
+              />
             </Form.Group>
             <div className="d-flex justify-content-between">
               <Button variant="primary" type="submit" disabled={lockedSubmit}>

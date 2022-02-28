@@ -30,14 +30,22 @@ const AdminUsersPage = () => {
       {users.length === 0 ? (
         <p>Aucun utilisateur n'est enregistré pour le moment</p>
       ) : (
-        <Table className="bt-0" variant="light" striped bordered hover responsive>
+        <Table
+          className="bt-0"
+          variant="light"
+          striped
+          bordered
+          hover
+          responsive
+        >
           <thead>
             <tr className="align-middle">
               <th className="text-center">Prénom Nom</th>
               <th className="text-center">Email</th>
-              <th className="text-center">N° téléphone</th>
+              <th className="text-center">Téléphone</th>
               <th className="text-center">Rôle</th>
               <th className="text-center">Entité</th>
+              <th className="text-center">Actif</th>
               <th></th>
             </tr>
           </thead>
@@ -51,6 +59,7 @@ const AdminUsersPage = () => {
                 <td>{u.phoneNumber}</td>
                 <td>{u.role.name}</td>
                 <td>{u.entite && u.entite.name}</td>
+                <td>{u.status ? "Oui" : "Non"}</td>
                 <td style={{ width: "1px" }} className="text-center">
                   <UserModal fetchUsers={fetchUsers} user={u} />
                 </td>
