@@ -13,6 +13,13 @@ async function findOne(year, week, userId) {
   return await axios.get(`${SEMAINES_API_URL}/${year}/${week}/${userId}`);
 }
 
+async function getNumberSemainesEnAttente(numeroSemaine) {
+  const response = await axios.get(
+    SEMAINES_API_URL + "/enattente/" + numeroSemaine
+  );
+  return response.data;
+}
+
 async function update(id, userId, semaine) {
   return await axios.put(SEMAINES_API_URL + "/" + id, { userId, semaine });
 }
@@ -38,6 +45,13 @@ async function getPDF(prenomNom, annee, semaine, version) {
     });
 }
 
-const SEMAINES_API = { create, update, findOne, getAllByWeek, getPDF };
+const SEMAINES_API = {
+  create,
+  update,
+  findOne,
+  getAllByWeek,
+  getPDF,
+  getNumberSemainesEnAttente,
+};
 
 export default SEMAINES_API;

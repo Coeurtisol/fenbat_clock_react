@@ -11,6 +11,11 @@ async function findAllByUser(id) {
   return response.data;
 }
 
+async function getNumberCommandesEnAttente() {
+  const response = await axios.get(COMMANDES_API_URL + "/enattente");
+  return response.data;
+}
+
 async function create(commande) {
   return await axios.post(COMMANDES_API_URL, commande);
 }
@@ -24,6 +29,13 @@ async function deleteOne(id) {
   return response.data;
 }
 
-const COMMANDES_API = { create, valider, deleteOne, findAll, findAllByUser };
+const COMMANDES_API = {
+  create,
+  valider,
+  deleteOne,
+  findAll,
+  findAllByUser,
+  getNumberCommandesEnAttente,
+};
 
 export default COMMANDES_API;
