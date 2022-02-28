@@ -48,7 +48,10 @@ const FournisseursModal = ({ fetchFournisseurs, fournisseur }) => {
     e.preventDefault();
     console.log("update fournisseur", newFournisseur);
     try {
-      const response = await FOURNISSEURS_API.update(fournisseur.id, newFournisseur);
+      const response = await FOURNISSEURS_API.update(
+        fournisseur.id,
+        newFournisseur
+      );
       console.log("success update fournisseur", response);
       toast.success("Fournisseur mit à jour.");
       setNewFournisseur({
@@ -75,6 +78,14 @@ const FournisseursModal = ({ fetchFournisseurs, fournisseur }) => {
     fetchFournisseurs();
     handleShowFournisseurModal();
   };
+
+  // FUNCTIONS
+  let fournisseurUtilise = false;
+  if (edit) {
+    if (fournisseur._count.commandes) {
+      fournisseurUtilise = true;
+    }
+  }
 
   // TEMPLATE
   return (
@@ -121,6 +132,7 @@ const FournisseursModal = ({ fetchFournisseurs, fournisseur }) => {
                   variant="danger"
                   type="button"
                   onClick={() => handleDelete(fournisseur.id)}
+                  disabled={fournisseurUtilise}
                 >
                   Supprimer
                 </Button>
