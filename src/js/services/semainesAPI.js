@@ -20,8 +20,8 @@ async function getNumberSemainesEnAttente(numeroSemaine) {
   return response.data;
 }
 
-async function update(id, userId, semaine) {
-  return await axios.put(SEMAINES_API_URL + "/" + id, { userId, semaine });
+async function update(semaine) {
+  return await axios.put(SEMAINES_API_URL + "/" + semaine.id, { semaine });
 }
 
 async function getPDF(prenomNom, annee, semaine, version) {

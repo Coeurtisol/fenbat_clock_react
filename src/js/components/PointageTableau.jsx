@@ -36,11 +36,7 @@ const PointageTableau = ({
     if (target.name == 4) updatedSemaine.commentaire = "";
     console.log("updated semaine", updatedSemaine);
     try {
-      const response = await SEMAINES_API.update(
-        updatedSemaine.id,
-        AUTH_API.getId(),
-        updatedSemaine
-      );
+      const response = await SEMAINES_API.update(updatedSemaine);
       console.log("success semaine update", response);
       toast.success("Enregistrement réussie.");
     } catch (error) {
@@ -261,7 +257,7 @@ const PointageTableau = ({
         // className={`container-fluid d-flex justify-content-${
         //   listView || cadreEdit ? "between" : "end"
         // } my-3`}
-        className={'container-fluid d-flex flex-wrap justify-content-end my-3'}
+        className={"container-fluid d-flex flex-wrap justify-content-end my-3"}
       >
         {cadreEdit && (
           <Link
@@ -287,66 +283,66 @@ const PointageTableau = ({
         )}
 
         {/* <div> */}
-          {semaine.PDFemploye && (
-            <Button
-              className="mb-3 mx-3"
-              variant="info"
-              onClick={handleGetPDF}
-              type="button"
-              data-version="0"
-            >
-              Télécharger le PDF (employé)
-            </Button>
+        {semaine.PDFemploye && (
+          <Button
+            className="mb-3 mx-3"
+            variant="info"
+            onClick={handleGetPDF}
+            type="button"
+            data-version="0"
+          >
+            Télécharger le PDF (employé)
+          </Button>
+        )}
+        {semaine.PDFresponsable && (
+          <Button
+            className="mb-3 mx-3"
+            variant="info"
+            onClick={handleGetPDF}
+            type="button"
+            data-version="1"
+          >
+            Télécharger le PDF (responsable)
+          </Button>
+        )}
+        {!listView &&
+          permissionId == permissions.respSite.id &&
+          semaine.etatSemaine?.id != 5 && (
+            <PointageCommentaireModal
+              semaine={semaine}
+              setSemaine={setSemaine}
+              handleSubmitSave={handleSubmitSave}
+              edit={true}
+            />
           )}
-          {semaine.PDFresponsable && (
-            <Button
-              className="mb-3 mx-3"
-              variant="info"
-              onClick={handleGetPDF}
-              type="button"
-              data-version="1"
-            >
-              Télécharger le PDF (responsable)
-            </Button>
-          )}
-          {!listView &&
-            permissionId == permissions.respSite.id &&
-            semaine.etatSemaine?.id != 5 && (
-              <PointageCommentaireModal
-                semaine={semaine}
-                setSemaine={setSemaine}
-                handleSubmitSave={handleSubmitSave}
-                edit={true}
-              />
-            )}
-          {!listView && (
-            <Button
-              className="mb-3 mx-3"
-              variant="primary"
-              onClick={handleSubmitSave}
-              type="button"
-              disabled={!submittable}
-            >
-              Sauvegarder
-            </Button>
-          )}
+        {!listView && (
+          <Button
+            className="mb-3 mx-3"
+            variant="primary"
+            onClick={handleSubmitSave}
+            type="button"
+            disabled={!submittable}
+          >
+            Sauvegarder
+          </Button>
+        )}
 
-          {AUTH_API.peutValider(semaine.etatSemaine?.id) && (
-            <Button
-              className="mb-3 mx-3"
-              variant="success"
-              name={AUTH_API.getValidationLevel()}
-              onClick={handleSubmitSave}
-              type="button"
-              disabled={!submittable}
-            >
-              {permissionId == permissions.respSite.id && "Valider (resp site)"}
-              {permissionId == permissions.respProd.id && "Valider (resp prod)"}
-              {permissionId >= permissions.chefEquipe.id &&
-                "Envoyer pour validation"}
-            </Button>
-          )}
-        </div>
+        {AUTH_API.peutValider(semaine.etatSemaine?.id) && (
+          <Button
+            className="mb-3 mx-3"
+            variant="success"
+            name={AUTH_API.getValidationLevel()}
+            onClick={handleSubmitSave}
+            type="button"
+            disabled={!submittable}
+          >
+            {permissionId == permissions.respSite.id && "Valider (resp site)"}
+            {permissionId == permissions.respProd.id && "Valider (resp prod)"}
+            {permissionId >= permissions.chefEquipe.id &&
+              "Envoyer pour validation"}
+          </Button>
+        )}
+      </div>
       {/* </div> */}
     </>
   );
