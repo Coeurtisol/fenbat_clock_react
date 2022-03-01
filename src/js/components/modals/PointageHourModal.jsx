@@ -5,7 +5,6 @@ const PointageAffaireModal = ({
   semaine,
   setSemaine,
   index,
-  name,
   handleSetErrors,
   errors,
   motifsAbsence,
@@ -36,13 +35,13 @@ const PointageAffaireModal = ({
     setNewValue({ ...newValue, [name]: Number(value) });
   };
 
-  const handleSubmit = (e) => {
+  const handleValider = (e) => {
     e.preventDefault();
     const formattedValue = newValue.hours + newValue.minutes;
 
     let copyPointages = [...semaine.pointages];
     let copyPointage = { ...copyPointages[index] };
-    copyPointage[name] = formattedValue;
+    copyPointage.valeur = formattedValue;
     handleSetErrors(index, { valeur: newValue });
 
     copyPointages[index] = copyPointage;
@@ -57,7 +56,7 @@ const PointageAffaireModal = ({
         onClick={!listView ? handleShowModal : null}
         className={`
           text-center btn-cell ${
-            errors && errors[index] ? "error-cell-pointage" : null
+            errors?.[index] ? "error-cell-pointage" : null
           } 
           `}
       >
@@ -74,7 +73,7 @@ const PointageAffaireModal = ({
           <Modal.Title>Nombre d'heure</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form onSubmit={handleSubmit}>
+          <Form onSubmit={handleValider}>
             <Form.Group className="mb-3">
               <Form.Label><h4 className="color-text">heures</h4></Form.Label>
               <div className="pointage-hour-modal-keynumber">

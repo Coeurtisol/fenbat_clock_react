@@ -20,8 +20,7 @@ const PointageTableau = ({
   entites,
   affaires,
   motifsAbsence,
-  search,
-  week,
+  currentEntite,
   errors,
   handleSetErrors,
 }) => {
@@ -105,7 +104,6 @@ const PointageTableau = ({
           semaine={semaine}
           setSemaine={setSemaine}
           index={i}
-          name="valeur"
           handleSetErrors={handleSetErrors}
           motifsAbsence={motifsAbsence}
           errors={errors}
@@ -123,10 +121,9 @@ const PointageTableau = ({
           affaires={affaires}
           semaine={semaine}
           setSemaine={setSemaine}
-          entite={search?.entite || ""}
+          entite={currentEntite || ""}
           entites={entites}
           index={i}
-          name="affaireId"
           handleSetErrors={handleSetErrors}
           motifsAbsence={motifsAbsence}
           errors={errors}
@@ -176,7 +173,6 @@ const PointageTableau = ({
           semaine={semaine}
           setSemaine={setSemaine}
           index={i}
-          name="motifAbsenceId"
           handleSetErrors={handleSetErrors}
           errors={errors}
           listView={listView}
@@ -191,7 +187,7 @@ const PointageTableau = ({
       <div className="container-fluid color-text">
         <h4 className="text-center mb-2">
           {listView && `${semaine.user?.firstname} ${semaine.user?.lastname} `}
-          {`(S ${week}) : ${semaine.etatSemaine?.name}`}
+          {`(S ${semaine.numero}) : ${semaine.etatSemaine?.name}`}
           <PointageCommentaireModal
             semaine={semaine}
             setSemaine={setSemaine}

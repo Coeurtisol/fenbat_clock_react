@@ -8,7 +8,6 @@ const PointageAffaireModal = ({
   entite,
   entites,
   index,
-  name,
   handleSetErrors,
   errors,
   motifsAbsence,
@@ -27,11 +26,11 @@ const PointageAffaireModal = ({
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleValider = (e) => {
     e.preventDefault();
     let copyPointages = [...semaine.pointages];
     let copyPointage = { ...copyPointages[index] };
-    copyPointage[name] = affaireChoice;
+    copyPointage.affaireId = affaireChoice;
 
     // let motifBloquant;
     // if (copyPointage.motifAbsenceId > 0) {
@@ -62,7 +61,7 @@ const PointageAffaireModal = ({
         onClick={!listView ? handleShowModal : null}
         className={`
             text-center ${
-              errors && errors[index] ? "error-cell-pointage" : null
+              errors?.[index] ? "error-cell-pointage" : null
             }
           `}
       >
@@ -83,7 +82,7 @@ const PointageAffaireModal = ({
           <Modal.Title>Affaire</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form onSubmit={handleSubmit}>
+          <Form onSubmit={handleValider}>
             <div className="d-flex flex-wrap justify-content-between">
               <Form.Group className="mb-3 col-xl-5 col-12">
                 <Form.Label>Entités</Form.Label>
@@ -109,6 +108,7 @@ const PointageAffaireModal = ({
                   <Form.Check
                     onChange={(e) => setEntiteChoice(e.target.value)}
                     type="radio"
+                    id={`radio-${e.id}`}
                     name="entiteId"
                     key={e.id}
                     label={e.name}

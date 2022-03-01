@@ -234,9 +234,7 @@ const UserModal = ({ fetchUsers, user }) => {
                 type="number"
                 name="accessCode"
                 placeholder={`Code d'accès de l'utilisateur${
-                  edit
-                    ? " (laisser vide pour ne pas modifier)"
-                    : ""
+                  edit ? " (laisser vide pour ne pas modifier)" : ""
                 }`}
                 value={newUser.accessCode}
                 onChange={handlechange}
@@ -249,9 +247,7 @@ const UserModal = ({ fetchUsers, user }) => {
                 type="password"
                 name="password"
                 placeholder={`Mot de passe de l'utilisateur${
-                  edit
-                    ? " (laisser vide pour ne pas modifier)"
-                    : ""
+                  edit ? " (laisser vide pour ne pas modifier)" : ""
                 }`}
                 value={newUser.password}
                 onChange={handlechange}
@@ -265,11 +261,12 @@ const UserModal = ({ fetchUsers, user }) => {
                 name="entiteId"
                 onChange={handlechange}
                 value={newUser.entiteId || ""}
-                required
               >
-                <option value="0">
-                  -- Ne pas assigner d'entité à l'utilisateur --
-                </option>
+                {!newUser.entiteId && (
+                  <option value="">
+                    Selectionnez l'entité par défaut de l'utilisateur
+                  </option>
+                )}
                 {entites.map((e) => (
                   <option key={e.id} value={e.id}>
                     {e.name}
@@ -300,14 +297,16 @@ const UserModal = ({ fetchUsers, user }) => {
               <Form.Check
                 onChange={handlechange}
                 type="radio"
+                id="radio-actif-oui"
                 name="status"
                 label="Oui"
                 value={"1"}
                 checked={newUser.status == "1"}
-              />
+                />
               <Form.Check
                 onChange={handlechange}
                 type="radio"
+                id="radio-actif-non"
                 name="status"
                 label="Non"
                 value={"0"}

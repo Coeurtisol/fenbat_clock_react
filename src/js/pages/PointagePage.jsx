@@ -18,9 +18,9 @@ const PointagePage = ({ history, match }) => {
   const [defaultAffaire, setDefaultAffaire] = useState("");
   const [entites, setEntites] = useState([]);
   const [errors, setErrors] = useState(new Array(14).fill(false));
-  const [search, setSearch] = useState({
-    entite: AUTH_API.getEntite() || "",
-  });
+  const [currentEntite, setCurrentEntite] = useState(
+    AUTH_API.getEntite() || ""
+  );
 
   // ######################################### FETCH FUNCTIONS
   const fetchSemaine = async () => {
@@ -83,10 +83,6 @@ const PointagePage = ({ history, match }) => {
   }, [year, week]);
 
   // ######################################### HANDLE FUNCTIONS
-  const handleChangeSearch = ({ target }) => {
-    const { name, value } = target;
-    setSearch({ ...search, [name]: value });
-  };
 
   const handleChangeDefault = ({ name, value }) => {
     let copyPointages = [...semaine.pointages];
@@ -101,7 +97,6 @@ const PointagePage = ({ history, match }) => {
       }
     });
     setSemaine({ ...semaine, pointages: copyPointages });
-    // test({ [name]: value });
   };
 
   // ######################################## VERIF POINTAGES
@@ -110,15 +105,10 @@ const PointagePage = ({ history, match }) => {
     { motifAbsenceId, affaireId, valeur },
     multi
   ) => {
-    if (motifAbsenceId == undefined) {
-      motifAbsenceId = semaine.pointages[index].motifAbsenceId;
-    }
-    if (affaireId == undefined) {
-      affaireId = semaine.pointages[index].affaireId;
-    }
-    if (valeur == undefined) {
-      valeur = semaine.pointages[index].valeur;
-    }
+    motifAbsenceId ?? (motifAbsenceId = semaine.pointages[index].motifAbsenceId);
+    affaireId ?? (affaireId = semaine.pointages[index].affaireId);
+    valeur ?? (valeur = semaine.pointages[index].valeur);
+
     let motifBloquant;
     if (motifAbsenceId > 0) {
       motifBloquant = motifsAbsence.find(
@@ -130,6 +120,7 @@ const PointagePage = ({ history, match }) => {
     if (motifBloquant && (valeur > 0 || affaireId > 0)) bool = true;
     else bool = false;
 
+    // WTF ???
     if (multi) {
       setErrors([...errors, (errors[index] = bool)]);
     } else {
@@ -141,7 +132,7 @@ const PointagePage = ({ history, match }) => {
 
   // ######################################### FILTRAGE AFFAIRES
   const filteredAffaires = affaires.filter(
-    (a) => a.etat == "En cours" && a.entite.name == search.entite
+    (a) => a.etat == "En cours" && a.entite.name == currentEntite
   );
 
   // ######################################### GESTION SEMAINES
@@ -179,12 +170,15 @@ const PointagePage = ({ history, match }) => {
         </h2>
         <div>
           {/* <div className="container d-flex flex-wrap justify-content-evenly"> */}
-          <div id="SEARCH" className="my-2">
+          <div className="my-2">
             <Form className="col-11 col-md-8 col-lg-6 mx-auto">
               {!userId && (
                 <Form.Group className="d-flex flex-column flex-sm-row mb-3">
-                  <Form.Label column className="text-start text-sm-end pe-2 col-12 col-sm-5">
-                    Semaine : 
+                  <Form.Label
+                    column
+                    className="text-start text-sm-end pe-2 col-12 col-sm-5"
+                  >
+                    Semaine :
                   </Form.Label>
                   <Col className="col-12 col-sm-7">
                     <Form.Select
@@ -201,25 +195,28 @@ const PointagePage = ({ history, match }) => {
                 </Form.Group>
               )}
               <Form.Group className="d-flex flex-column flex-sm-row mb-3">
-                <Form.Label column className="text-start text-sm-end pe-2 col-12 col-sm-5">
-                  Entité : 
+                <Form.Label
+                  column
+                  className="text-start text-sm-end pe-2 col-12 col-sm-5"
+                >
+                  Entité :
                 </Form.Label>
                 <Col className="col-12 col-sm-7">
                   <Form.Select
                     name="entite"
                     onChange={(e) => {
-                      handleChangeSearch(e);
+                      setCurrentEntite(e.target.value);
                       setDefaultAffaire("");
                     }}
-                    value={search.entite}
+                    value={currentEntite}
                   >
-                    {!search.entite && <option>Selectionnez l'entité</option>}
+                    {!currentEntite && <option>Selectionnez l'entité</option>}
                     {entites.map((e) => (
                       <option
                         key={e.id}
                         value={e.name}
                         className={
-                          e.name == search.entite ? "selected-option" : null
+                          e.name == currentEntite ? "selected-option" : null
                         }
                       >
                         {e.name}
@@ -229,8 +226,11 @@ const PointagePage = ({ history, match }) => {
                 </Col>
               </Form.Group>
               <Form.Group className="d-flex flex-column flex-sm-row mb-3">
-                <Form.Label column className="text-start text-sm-end pe-2 col-12 col-sm-5">
-                  Affaire par défaut : 
+                <Form.Label
+                  column
+                  className="text-start text-sm-end pe-2 col-12 col-sm-5"
+                >
+                  Affaire par défaut :
                 </Form.Label>
                 <Col className="col-12 col-sm-7">
                   <Form.Select
@@ -253,8 +253,11 @@ const PointagePage = ({ history, match }) => {
                 </Col>
               </Form.Group>
               <Form.Group className="d-flex flex-column flex-sm-row mb-3">
-                <Form.Label column className="text-start text-sm-end pe-2 col-12 col-sm-5">
-                  Autre par défaut : 
+                <Form.Label
+                  column
+                  className="text-start text-sm-end pe-2 col-12 col-sm-5"
+                >
+                  Autre par défaut :
                 </Form.Label>
                 <Col className="col-12 col-sm-7">
                   <Form.Select
@@ -290,8 +293,7 @@ const PointagePage = ({ history, match }) => {
         entites={entites}
         affaires={affaires}
         motifsAbsence={motifsAbsence}
-        search={search}
-        week={week}
+        currentEntite={currentEntite}
         errors={errors}
         setErrors={setErrors}
         handleSetErrors={handleSetErrors}

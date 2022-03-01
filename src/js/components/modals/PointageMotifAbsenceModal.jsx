@@ -6,7 +6,6 @@ const PointageMotifAbsenceModal = ({
   semaine,
   setSemaine,
   index,
-  name,
   handleSetErrors,
   errors,
   listView
@@ -22,11 +21,11 @@ const PointageMotifAbsenceModal = ({
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleValider = (e) => {
     e.preventDefault();
     let copyPointages = [...semaine.pointages];
     let copyPointage = { ...copyPointages[index] };
-    copyPointage[name] = motifChoice;
+    copyPointage.motifAbsenceId = motifChoice;
 
     // let motifBloquant;
     // if (motifChoice > 0) {
@@ -51,7 +50,7 @@ const PointageMotifAbsenceModal = ({
         onClick={!listView ? handleShowModal : null}
         className={`
             text-center ${
-              errors && errors[index] ? "error-cell-pointage" : null
+              errors?.[index] ? "error-cell-pointage" : null
             }
           `}
       >
@@ -73,7 +72,7 @@ const PointageMotifAbsenceModal = ({
           <Modal.Title>Autre</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form onSubmit={handleSubmit}>
+          <Form onSubmit={handleValider}>
             <Form.Group className="mb-3">
               <Form.Label>Motifs d'absences</Form.Label>
               <Form.Select

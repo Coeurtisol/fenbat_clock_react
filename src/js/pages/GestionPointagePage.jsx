@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Col, Form, Row } from "react-bootstrap";
+import { Col, Form } from "react-bootstrap";
 import ENTITES_API from "../services/entitesAPI";
 import AUTH_API from "../services/authAPI";
 import DATE_API from "../services/datesAPI";
@@ -249,7 +249,6 @@ const GestionPointagePage = ({ history, match }) => {
               affaires={affaires}
               motifsAbsence={motifsAbsence}
               filter={filter}
-              week={week}
             />
           ))}
         </>
