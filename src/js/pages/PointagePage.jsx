@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Col, Form, Row } from "react-bootstrap";
+import { Col, Form } from "react-bootstrap";
 import ENTITES_API from "../services/entitesAPI";
 import AUTH_API from "../services/authAPI";
 import DATE_API from "../services/datesAPI";
@@ -105,9 +105,9 @@ const PointagePage = ({ history, match }) => {
     { motifAbsenceId, affaireId, valeur },
     multi
   ) => {
-    motifAbsenceId ?? (motifAbsenceId = semaine.pointages[index].motifAbsenceId);
-    affaireId ?? (affaireId = semaine.pointages[index].affaireId);
-    valeur ?? (valeur = semaine.pointages[index].valeur);
+    motifAbsenceId ??= semaine.pointages[index].motifAbsenceId;
+    affaireId ??= semaine.pointages[index].affaireId;
+    valeur ??= semaine.pointages[index].valeur;
 
     let motifBloquant;
     if (motifAbsenceId > 0) {
