@@ -3,15 +3,17 @@ import AuthContext from "../../js/contexts/AuthContext";
 import { Navbar, Container, Nav, NavDropdown } from "react-bootstrap";
 import AUTH_API from "../services/authAPI";
 import permissions from "../configs/permissions.js";
+import { useHistory } from "react-router-dom";
 
-const NavbarComponent = ({ props }) => {
+const NavbarComponent = () => {
+  const history = useHistory();
   const permissionId = AUTH_API.getPermissionId();
   const { setIsAuthenticated } = useContext(AuthContext);
 
   const logout = () => {
     setIsAuthenticated(false);
     AUTH_API.logout();
-    props.history.push("/loginuserlist");
+    history.push("/");
   };
 
   return (

@@ -9,10 +9,10 @@ import PointageAffaireModal from "./modals/PointageAffaireModal";
 import PointageHourModal from "./modals/PointageHourModal";
 import PointageMotifAbsenceModal from "./modals/PointageMotifAbsenceModal";
 import PointageCommentaireModal from "./modals/PointageCommentaireModal";
+import { useHistory } from "react-router-dom";
 
 const PointageTableau = ({
   cadreEdit,
-  history,
   listView,
   semaine,
   setSemaine,
@@ -24,6 +24,7 @@ const PointageTableau = ({
   errors,
   handleSetErrors,
 }) => {
+  const history = useHistory();
   const permissionId = AUTH_API.getPermissionId();
   // ######################################## HANDLE FUNCTIONS
   const handleSubmitSave = async ({ target }) => {

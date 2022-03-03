@@ -2,10 +2,14 @@ import React, { useContext } from "react";
 import AuthContext from "../contexts/AuthContext";
 import { Route } from "react-router-dom";
 
-const PublicRoute = ({ path, component }) => {
+const PublicRoute = ({ component: Component, ...rest }) => {
   const { isAuthenticated } = useContext(AuthContext);
 
-  return !isAuthenticated && <Route path={path} component={component} />;
+  return (
+    !isAuthenticated && (
+      <Route render={(props) => <Component {...props} {...rest} />} />
+    )
+  );
 };
 
 export default PublicRoute;

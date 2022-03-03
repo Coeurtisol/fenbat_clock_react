@@ -46,7 +46,6 @@ function App() {
   //   handleIsSecure();
   // }, []);
 
-
   const [isAuthenticated, setIsAuthenticated] = useState(
     AUTH_API.isAuthenticated()
   );
@@ -61,11 +60,17 @@ function App() {
         <Router>
           <HeaderComponentWithRouter />
           <Switch>
-            {!isSecure && (
-              <PublicRoute path="/loginpage" component={LoginForm} />
-            )}
+            <PublicRoute
+              path="/loginpage"
+              component={LoginForm}
+              isSecure={isSecure}
+            />
             {isSecure && (
-              <PublicRoute path="/loginuserlist" component={Loginuserlist} />
+              <PublicRoute
+                path="/loginuserlist"
+                component={Loginuserlist}
+                isSecure={isSecure}
+              />
             )}
             <PublicRoute path="/loginkeypad" component={Loginkeypad} />
             {!isAuthenticated && (

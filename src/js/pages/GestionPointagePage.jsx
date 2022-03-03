@@ -240,7 +240,6 @@ const GestionPointagePage = ({ history, match }) => {
         <>
           {semainesFiltreesParEtatValidation.map((s, k) => (
             <PointageTableau
-              history={history}
               listView={true}
               key={k}
               semaine={s}

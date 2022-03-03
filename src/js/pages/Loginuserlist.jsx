@@ -3,8 +3,9 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import USERS_API from "../services/usersAPI";
 
-const Loginuserlist = () => {
+const Loginuserlist = ({ isSecure }) => {
   const [users, setUsers] = useState([]);
+  console.log(isSecure);
 
   const fetchData = async () => {
     try {
@@ -21,27 +22,34 @@ const Loginuserlist = () => {
   }, []);
 
   return (
-    <main className="d-flex flex-wrap justify-content-evenly user-container">
-      {users
-        .sort((a, b) => {
-          return a.firstname.localeCompare(b.firstname);
-        })
-        .map((user) => (
-          <Link
-            key={user.id}
-            className="user"
-            to={{
-              pathname: "/loginkeypad",
-              state: user.id,
-            }}
-          >
-            <div>
-              {user.firstname} {user.lastname}
-              <br />({user.role.name})
-            </div>
-          </Link>
-        ))}
-    </main>
+    <>
+      {isSecure && (
+        <Link to={`/loginpage`} className="btn btn-primary m-3">
+          Connexion classique
+        </Link>
+      )}
+      <main className="d-flex flex-wrap justify-content-evenly user-container">
+        {users
+          .sort((a, b) => {
+            return a.firstname.localeCompare(b.firstname);
+          })
+          .map((user) => (
+            <Link
+              key={user.id}
+              className="user"
+              to={{
+                pathname: "/loginkeypad",
+                state: user.id,
+              }}
+            >
+              <div>
+                {user.firstname} {user.lastname}
+                <br />({user.role.name})
+              </div>
+            </Link>
+          ))}
+      </main>
+    </>
   );
 };
 

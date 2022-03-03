@@ -4,7 +4,7 @@ import HorlogeComponent from "./HorlogeComponent";
 import NavbarComponent from "./NavbarComponent";
 import AuthContext from "../../js/contexts/AuthContext";
 
-const HeaderComponent = (props) => {
+const HeaderComponent = () => {
   const { isAuthenticated } = useContext(AuthContext);
   return (
     <header>
@@ -12,7 +12,7 @@ const HeaderComponent = (props) => {
         className="company-logo m-1"
         src="../images/logo-fenbat-transparent.png"
       />
-      {isAuthenticated && <NavbarComponent props={props} />}
+      {isAuthenticated && <NavbarComponent />}
       <HorlogeComponent />
     </header>
   );
