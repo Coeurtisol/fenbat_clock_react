@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Col, Form } from "react-bootstrap";
+import { Button, Col, Form } from "react-bootstrap";
 import ENTITES_API from "../services/entitesAPI";
 import AUTH_API from "../services/authAPI";
 import DATE_API from "../services/datesAPI";
@@ -9,7 +9,7 @@ import SEMAINES_API from "../services/semainesAPI";
 import PointageTableau from "../components/PointageTableau";
 import { toast } from "react-toastify";
 
-const PointagePage = ({ history, match }) => {
+const PointagePage = ({ history, match, location }) => {
   const { year, week, userId } = match.params;
   const [semaine, setSemaine] = useState({ pointages: [] });
   const [affaires, setAffaires] = useState([]);
@@ -162,6 +162,11 @@ const PointagePage = ({ history, match }) => {
   // ######################################### TEMPLATE
   return (
     <>
+      {location.state?.comefrom && (
+        <Button onClick={() => history.goBack()} variant="info" className="m-2">
+          Retour à {location.state?.comefrom}
+        </Button>
+      )}
       <div className="container-fluid color-text">
         <h2 className="text-center mt-2 mb-4">
           {userId

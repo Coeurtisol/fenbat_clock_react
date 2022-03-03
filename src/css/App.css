@@ -303,3 +303,11 @@ div.table-responsive::-webkit-scrollbar {
   background-color: #ffe2b4 !important;
   cursor: default;
 }
+
+/* OVERVIEW CELLS */
+.valid-cell{
+  background-color: #ffb743 !important;
+}
+.invalid-cell{
+  background-color: #515860 !important;
+}

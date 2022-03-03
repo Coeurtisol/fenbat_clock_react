@@ -33,6 +33,7 @@ import LoginForm from "./js/pages/LoginForm";
 import AdminArticlesPage from "./js/pages/admin/AdminArticlesPage";
 import AdminFournisseursPage from "./js/pages/admin/AdminFournisseursPage";
 import GestionCommandePage from "./js/pages/GestionCommandePage";
+import OverviewPage from "./js/pages/OverviewPage";
 
 function App() {
   AUTH_API.setup();
@@ -79,6 +80,7 @@ function App() {
               </Route>
             )}
 
+            <PrivateRoute path="/overview" component={OverviewPage} />
             <PrivateRoute path="/admin/roles" component={AdminRolesPage} />
             <PrivateRoute path="/admin/users" component={AdminUsersPage} />
             <PrivateRoute path="/admin/entites" component={AdminEntitesPage} />

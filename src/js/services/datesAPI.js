@@ -26,9 +26,7 @@ function getWeekDays(week) {
     firstDayOfFirstWeek.getDate() - firstDayOfFirstWeek.getDay() + 1
   );
   const manipulatedDate = new Date(firstDayOfFirstWeek);
-  manipulatedDate.setDate(
-    manipulatedDate.getDate() + (week - 1) * 7
-  );
+  manipulatedDate.setDate(manipulatedDate.getDate() + (week - 1) * 7);
   const weekDays = [];
   manipulatedDate.setDate(
     manipulatedDate.getDate() - manipulatedDate.getDay() + 1
@@ -40,6 +38,19 @@ function getWeekDays(week) {
   return weekDays;
 }
 
-const datesApi = { getWeekNumber, getWeekDays };
+function getDaysSinceDate(date) {
+  const copyDate = new Date(date);
+  const dateDiff = Math.trunc(
+    (Date.now() - copyDate.getTime()) / (1000 * 60 * 60 * 24)
+  );
+  const listOfDate = [];
+  for (var i = 0; i <= dateDiff; i++) {
+    listOfDate.push(new Date(copyDate));
+    copyDate.setDate(copyDate.getDate() + 1);
+  }
+  return listOfDate;
+}
+
+const datesApi = { getWeekNumber, getWeekDays, getDaysSinceDate };
 
 export default datesApi;
