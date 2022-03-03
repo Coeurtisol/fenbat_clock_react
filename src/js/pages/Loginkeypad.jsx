@@ -17,15 +17,15 @@ const Loginkeypad = ({ location, history }) => {
   });
 
   //  PAVE FIXE
-  // const [numbers, setNumbers] = useState([]);
-  // useEffect(() => {
-  //   setNumbers([0, 1, 2, 3, 4, 5, 6, 7, 8, 9].sort(() => Math.random() - 0.5));
-  // }, []);
+  const [numbers, setNumbers] = useState([]);
+  useEffect(() => {
+    setNumbers([0, 1, 2, 3, 4, 5, 6, 7, 8, 9].sort(() => Math.random() - 0.5));
+  }, []);
 
   // PAVE DYNAMIQUE
-  const numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].sort(
-    () => Math.random() - 0.5
-  );
+  // const numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].sort(
+  //   () => Math.random() - 0.5
+  // );
 
   // CONNEXION CLAVIER
   document.onkeyup = (e) => handleKeyboard(e);
