@@ -3,8 +3,10 @@ import ARTICLES_API from "../../services/articlesAPI";
 import { Table } from "react-bootstrap";
 import { toast } from "react-toastify";
 import ArticlesModal from "../../components/modals/ArticlesModal";
+import AdminFournisseurCommandeComponent from "../../components/admin/AdminFournisseurCommandeComponent";
+import AdminCategorieCommandeComponent from "../../components/admin/AdminCategorieCommandeComponent";
 
-const AdminArticlesPage = () => {
+const AdminCommandesPage = () => {
   const [articles, setArticles] = useState([]);
 
   // FETCH
@@ -68,8 +70,12 @@ const AdminArticlesPage = () => {
         </Table>
       )}
       <ArticlesModal fetchArticles={fetchArticles} />
+      <div className="d-flex flex-wrap justify-content-evenly">
+        <AdminFournisseurCommandeComponent fetchArticles={fetchArticles} />
+        <AdminCategorieCommandeComponent fetchArticles={fetchArticles} />
+      </div>
     </main>
   );
 };
 
-export default AdminArticlesPage;
+export default AdminCommandesPage;

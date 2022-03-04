@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 import CATEGORIES_API from "../../services/categoriesAPI";
 import { Table } from "react-bootstrap";
 import { toast } from "react-toastify";
-import CategoriesModal from "../../components/modals/CategoriesModal";
+import CategoriesModal from "../modals/CategoriesModal";
 
-const AdminCategoriesPage = () => {
+const AdminCategorieCommandeComponent = ({ fetchArticles }) => {
   const [categories, setCategories] = useState([]);
 
   // FETCH
@@ -25,12 +25,19 @@ const AdminCategoriesPage = () => {
 
   // TEMPLATE
   return (
-    <main className="color-text admin">
+    <div className="color-text col-xl-5 col-12">
       <h1 className="text-center">Catégories</h1>
       {categories.length === 0 ? (
         <p>Aucune Catégorie n'est enregistrée pour le moment</p>
       ) : (
-        <Table className="bt-0" variant="light" striped bordered hover responsive>
+        <Table
+          className="bt-0"
+          variant="light"
+          striped
+          bordered
+          hover
+          responsive
+        >
           <thead>
             <tr className="align-middle">
               <th className="text-center">Nom de la catégorie</th>
@@ -42,16 +49,23 @@ const AdminCategoriesPage = () => {
               <tr key={c.id}>
                 <td>{c.name}</td>
                 <td style={{ width: "1px" }} className="text-center">
-                  <CategoriesModal fetchCategories={fetchCategories} categorie={c} />
+                  <CategoriesModal
+                    fetchCategories={fetchCategories}
+                    categorie={c}
+                    fetchArticles={fetchArticles}
+                  />
                 </td>
               </tr>
             ))}
           </tbody>
         </Table>
       )}
-      <CategoriesModal fetchCategories={fetchCategories} />
-    </main>
+      <CategoriesModal
+        fetchCategories={fetchCategories}
+        fetchArticles={fetchArticles}
+      />
+    </div>
   );
 };
 
-export default AdminCategoriesPage;
+export default AdminCategorieCommandeComponent;

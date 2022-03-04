@@ -19,7 +19,6 @@ import AdminUsersPage from "./js/pages/admin/AdminUsersPage";
 import AdminEntitesPage from "./js/pages/admin/AdminEntitesPage";
 import AdminMotifsAbsencePage from "./js/pages/admin/AdminMotifsAbsencePage";
 import AdminAffairesPage from "./js/pages/admin/AdminAffairesPage";
-import AdminCategoriesPage from "./js/pages/admin/AdminCategoriesPage";
 import HeaderComponent from "./js/components/HeaderComponent";
 import PointagePage from "./js/pages/PointagePage";
 import GestionPointagePage from "./js/pages/GestionPointagePage";
@@ -31,7 +30,6 @@ import PrivateRoute from "./js/components/PrivateRoute";
 import PublicRoute from "./js/components/PublicRoute";
 import LoginForm from "./js/pages/LoginForm";
 import AdminArticlesPage from "./js/pages/admin/AdminArticlesPage";
-import AdminFournisseursPage from "./js/pages/admin/AdminFournisseursPage";
 import GestionCommandePage from "./js/pages/GestionCommandePage";
 import OverviewPage from "./js/pages/OverviewPage";
 
@@ -93,16 +91,8 @@ function App() {
               component={AdminMotifsAbsencePage}
             />
             <PrivateRoute
-              path="/admin/categories"
-              component={AdminCategoriesPage}
-            />
-            <PrivateRoute
               path="/admin/articles"
               component={AdminArticlesPage}
-            />
-            <PrivateRoute
-              path="/admin/fournisseurs"
-              component={AdminFournisseursPage}
             />
             <PrivateRoute
               path="/gestion/pointage/:year/:week/:userId"

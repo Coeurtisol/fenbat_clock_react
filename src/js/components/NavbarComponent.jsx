@@ -61,12 +61,6 @@ const NavbarComponent = () => {
                   <NavDropdown.Item href="#/admin/articles">
                     Articles
                   </NavDropdown.Item>
-                  <NavDropdown.Item href="#/admin/categories">
-                    Catégories
-                  </NavDropdown.Item>
-                  <NavDropdown.Item href="#/admin/fournisseurs">
-                    Fournisseurs
-                  </NavDropdown.Item>
                   <NavDropdown.Divider />
                 </>
               )}

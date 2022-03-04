@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 import FOURNISSEURS_API from "../../services/fournisseursAPI";
 import { Table } from "react-bootstrap";
 import { toast } from "react-toastify";
-import FournisseursModal from "../../components/modals/FournisseursModal";
+import FournisseursModal from "../modals/FournisseursModal";
 
-const AdminFournisseursPage = () => {
+const AdminFournisseurCommandeComponent = ({ fetchArticles }) => {
   const [fournisseurs, setFournisseurs] = useState([]);
 
   // FETCH
@@ -25,7 +25,7 @@ const AdminFournisseursPage = () => {
 
   // TEMPLATE
   return (
-    <main className="color-text admin">
+    <div className="color-text col-xl-5 col-12">
       <h1 className="text-center">Fournisseurs</h1>
       {fournisseurs.length === 0 ? (
         <p>Aucun fournisseur n'est enregistré pour le moment</p>
@@ -52,6 +52,7 @@ const AdminFournisseursPage = () => {
                   <FournisseursModal
                     fetchFournisseurs={fetchFournisseurs}
                     fournisseur={f}
+                    fetchArticles={fetchArticles}
                   />
                 </td>
               </tr>
@@ -60,8 +61,8 @@ const AdminFournisseursPage = () => {
         </Table>
       )}
       <FournisseursModal fetchFournisseurs={fetchFournisseurs} />
-    </main>
+    </div>
   );
 };
 
-export default AdminFournisseursPage;
+export default AdminFournisseurCommandeComponent;

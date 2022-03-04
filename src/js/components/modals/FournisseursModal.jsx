@@ -3,7 +3,11 @@ import { Form, Modal, Button } from "react-bootstrap";
 import { toast } from "react-toastify";
 import FOURNISSEURS_API from "../../services/fournisseursAPI";
 
-const FournisseursModal = ({ fetchFournisseurs, fournisseur }) => {
+const FournisseursModal = ({
+  fetchFournisseurs,
+  fournisseur,
+  fetchArticles,
+}) => {
   const edit = fournisseur && true;
   const [showModal, setShowModal] = useState(false);
   const [newFournisseur, setNewFournisseur] = useState({ name: "" });
@@ -14,8 +18,6 @@ const FournisseursModal = ({ fetchFournisseurs, fournisseur }) => {
       if (edit) {
         setNewFournisseur({ ...newFournisseur, name: fournisseur.name });
       }
-    } else {
-      fetchFournisseurs();
     }
   };
 
@@ -61,6 +63,7 @@ const FournisseursModal = ({ fetchFournisseurs, fournisseur }) => {
       console.log("erreur update fournisseur", error);
       toast.error("Erreur à la mise à jour du fournisseur.");
     }
+    fetchArticles();
     fetchFournisseurs();
     handleShowFournisseurModal();
   };
@@ -75,6 +78,7 @@ const FournisseursModal = ({ fetchFournisseurs, fournisseur }) => {
       console.log("erreur delete fournisseur", error);
       toast.error("Erreur à la suppression du fournisseur.");
     }
+    fetchArticles();
     fetchFournisseurs();
     handleShowFournisseurModal();
   };

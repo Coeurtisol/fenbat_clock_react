@@ -3,7 +3,7 @@ import { Form, Modal, Button } from "react-bootstrap";
 import { toast } from "react-toastify";
 import CATEGORIES_API from "../../services/categoriesAPI";
 
-const CategoriesModal = ({ fetchCategories, categorie }) => {
+const CategoriesModal = ({ fetchCategories, categorie, fetchArticles }) => {
   const edit = categorie && true;
   const [showModal, setShowModal] = useState(false);
   const [newCategorie, setNewCategorie] = useState({ name: "" });
@@ -14,8 +14,6 @@ const CategoriesModal = ({ fetchCategories, categorie }) => {
       if (edit) {
         setNewCategorie({ ...newCategorie, name: categorie.name });
       }
-    } else {
-      fetchCategories();
     }
   };
 
@@ -58,6 +56,7 @@ const CategoriesModal = ({ fetchCategories, categorie }) => {
       console.log("erreur update categorie", error);
       toast.error("Erreur à la mise à jour de la catégorie.");
     }
+    fetchArticles();
     fetchCategories();
     handleShowCategorieModal();
   };
@@ -72,6 +71,7 @@ const CategoriesModal = ({ fetchCategories, categorie }) => {
       console.log("erreur delete categorie", error);
       toast.error("Erreur à la suppression de la catégorie.");
     }
+    fetchArticles();
     fetchCategories();
     handleShowCategorieModal();
   };

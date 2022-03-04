@@ -123,6 +123,14 @@ const ArticlesModal = ({ fetchArticles, article }) => {
     handleShowArticleModal();
   };
 
+  // FUNCTIONS
+  let articleUtilise = false;
+  if (edit) {
+    if (article._count.commandes) {
+      articleUtilise = true;
+    }
+  }
+
   // TEMPLATE
   return (
     <>
@@ -202,6 +210,7 @@ const ArticlesModal = ({ fetchArticles, article }) => {
                   variant="danger"
                   type="button"
                   onClick={() => handleDelete(article.id)}
+                  disabled={articleUtilise}
                 >
                   Supprimer
                 </Button>
