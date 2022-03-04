@@ -81,9 +81,15 @@ const CommandeModal = ({ article, commande }) => {
   // TEMPLATE
   return (
     <>
-      <Button variant="primary" type="button" onClick={handleShowCommandeModal}>
-        +
-      </Button>
+      {article.fournisseurs.length > 0 && (
+        <Button
+          variant="primary"
+          type="button"
+          onClick={handleShowCommandeModal}
+        >
+          +
+        </Button>
+      )}
       {/* <Button
         className="text-nowrap"
         variant={edit ? "primary" : "success"}
@@ -109,7 +115,7 @@ const CommandeModal = ({ article, commande }) => {
             <Form.Group className="mb-3">
               <Form.Label>Article</Form.Label>
               <div className="fw-bold fs-4">
-                {article.name} ({article.categorie.name})
+                {article.name} ({article.categorie?.name || "non catégorisé"})
               </div>
             </Form.Group>
             {/* <Form.Group className="mb-3">
