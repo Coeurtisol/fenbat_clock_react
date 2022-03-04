@@ -15,6 +15,24 @@ html {
   /* padding-bottom: 3em; */
 }
 
+/* LOADER */
+.loading-icon {
+  width: 100px;
+  height: 100px;
+  margin: 16px auto;
+  border: 8px solid #515860;
+  border-top: 8px solid #ffb743;
+  border-radius: 50%;
+  animation: rotate 1s linear infinite;
+}
+
+@keyframes rotate
+{
+    from { transform: rotate(0deg);   opacity: 0; }
+    50%  { transform: rotate(180deg); opacity: 1.0; }
+    to   { transform: rotate(360deg); opacity: 0; }
+}
+
 /* BACKGROUND */
 
 /* .background {
@@ -138,7 +156,7 @@ main.admin {
   color: white;
 }
 
-.menu-container .notification{
+.menu-container .notification {
   position: absolute;
   top: -10px;
   left: -10px;
@@ -266,11 +284,6 @@ main.admin {
   border: 2px solid red !important;
 }
 
-div.table-responsive::-webkit-scrollbar {
-  /* display: none; */
-  /* transform: translateY(20px) */
-}
-
 .pointage-hour-modal-keynumber {
   display: flex;
   flex-wrap: wrap;
@@ -305,9 +318,9 @@ div.table-responsive::-webkit-scrollbar {
 }
 
 /* OVERVIEW CELLS */
-.valid-cell{
+.valid-cell {
   background-color: #ffb743 !important;
 }
-.invalid-cell{
+.invalid-cell {
   background-color: #515860 !important;
 }

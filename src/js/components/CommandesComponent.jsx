@@ -3,8 +3,10 @@ import AUTH_API from "../services/authAPI";
 import COMMANDES_API from "../services/commandesAPI";
 import { Button, Table } from "react-bootstrap";
 import { toast } from "react-toastify";
+import LoadingIcon from "../components/loadingIcon";
 
 const ListeCommandes = ({}) => {
+  const [loading, setLoading] = useState(true);
   const [commandes, setCommandes] = useState([]);
   const role = AUTH_API.getRole();
   let resp = true;
@@ -21,6 +23,7 @@ const ListeCommandes = ({}) => {
       }
       console.log("success fetch commandes", data);
       setCommandes(data);
+      setLoading(false);
     } catch (error) {
       console.log("erreur fetch commandes", error);
       toast.error("Erreur au chargement de commandes.");
@@ -51,65 +54,72 @@ const ListeCommandes = ({}) => {
   });
 
   return (
-    <div className="row bg-light">
-      {commandes.length ? (
-        <Table
-          className="mb-0"
-          variant="light"
-          // striped
-          // bordered
-          // hover
-          responsive
-        >
-          <thead>
-            <tr className="align-middle">
-              <th className="text-center">Article</th>
-              <th className="text-center">Fournisseur</th>
-              <th className="text-center">Quantité</th>
-              {resp && <th className="text-center">Chef d'équipe</th>}
-              <th className="text-center">Affaire</th>
-              <th className="text-center">État</th>
-              <th>Validée le</th>
-            </tr>
-          </thead>
-          <tbody>
-            {commandes.map((c) => (
-              <tr key={c.id}>
-                <td className="text-center">{c.article.name}</td>
-                <td className="text-center">{c.fournisseur.name}</td>
-                <td className="text-center">{c.quantite}</td>
-                {resp && (
-                  <td className="text-center">
-                    {c.user.firstname} {c.user.lastname}
-                  </td>
-                )}
-                <td className="text-center">{c.affaire?.name}</td>
-                <td className="text-center">
-                  {c.etat ? "Confirmé" : "En attente"}
-                </td>
+    <>
+      {!loading && (
+        <div className="row bg-light">
+          {commandes.length ? (
+            <Table
+              className="mb-0"
+              variant="light"
+              // striped
+              // bordered
+              // hover
+              responsive
+            >
+              <thead>
+                <tr className="align-middle">
+                  <th className="text-center">Article</th>
+                  <th className="text-center">Fournisseur</th>
+                  <th className="text-center">Quantité</th>
+                  {resp && <th className="text-center">Chef d'équipe</th>}
+                  <th className="text-center">Affaire</th>
+                  <th className="text-center">État</th>
+                  <th>Validée le</th>
+                </tr>
+              </thead>
+              <tbody>
+                {commandes.map((c) => (
+                  <tr key={c.id}>
+                    <td className="text-center">{c.article.name}</td>
+                    <td className="text-center">{c.fournisseur.name}</td>
+                    <td className="text-center">{c.quantite}</td>
+                    {resp && (
+                      <td className="text-center">
+                        {c.user.firstname} {c.user.lastname}
+                      </td>
+                    )}
+                    <td className="text-center">{c.affaire?.name}</td>
+                    <td className="text-center">
+                      {c.etat ? "Confirmé" : "En attente"}
+                    </td>
 
-                <td>
-                  {resp && !c.etat ? (
-                    <Button
-                      variant="success"
-                      onClick={() => handleValider(c.id)}
-                    >
-                      Valider
-                    </Button>
-                  ) : (
-                    c.valideeLe && new Date(c.valideeLe).toLocaleString()
-                  )}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </Table>
-      ) : (
-        <h5 className="text-center mt-2">
-          Vous n'avez effecté aucune commande
-        </h5>
+                    <td>
+                      {resp && !c.etat ? (
+                        <Button
+                          variant="success"
+                          onClick={() => handleValider(c.id)}
+                        >
+                          Valider
+                        </Button>
+                      ) : (
+                        c.valideeLe && new Date(c.valideeLe).toLocaleString()
+                      )}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </Table>
+          ) : (
+            <h5 className="text-center mt-2">
+              {resp
+                ? "Aucune commande en attente ou validée"
+                : "Vous n'avez effecté aucune commande"}
+            </h5>
+          )}
+        </div>
       )}
-    </div>
+      {loading && <LoadingIcon />}
+    </>
   );
 };
 

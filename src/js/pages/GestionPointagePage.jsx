@@ -9,9 +9,11 @@ import SEMAINES_API from "../services/semainesAPI";
 import ETATSSEMAINE_API from "../services/etatsSemaineAPI";
 import PointageTableau from "../components/PointageTableau";
 import { toast } from "react-toastify";
+import LoadingIcon from "../components/loadingIcon";
 
 const GestionPointagePage = ({ history, match }) => {
   const { year, week } = match.params;
+  const [loading, setLoading] = useState(true);
   const [semaines, setSemaines] = useState([]);
   const [etatsSemaine, setEtatsSemaine] = useState([]);
   const [affaires, setAffaires] = useState([]);
@@ -31,6 +33,7 @@ const GestionPointagePage = ({ history, match }) => {
       const data = response.data;
       console.log("success fetch semaines", data);
       setSemaines(data);
+      setLoading(false);
     } catch (error) {
       console.log("erreur fetch semaines", error);
       toast.error("Erreur au chargement des semaines.");
@@ -95,6 +98,7 @@ const GestionPointagePage = ({ history, match }) => {
   };
 
   useEffect(() => {
+    setLoading(true);
     fetchSemaines();
     fetchEtatsSemaine();
     fetchEntites();
@@ -232,26 +236,31 @@ const GestionPointagePage = ({ history, match }) => {
           </div>
         </div>
       </div>
-      {semainesFiltreesParEtatValidation.length == 0 ? (
-        <h4 className="text-center">
-          Aucune semaine de pointage ne correspond à ce filtrage.
-        </h4>
-      ) : (
+      {!loading && (
         <>
-          {semainesFiltreesParEtatValidation.map((s, k) => (
-            <PointageTableau
-              listView={true}
-              key={k}
-              semaine={s}
-              fetchRefresh={fetchSemaines}
-              entites={entites}
-              affaires={affaires}
-              motifsAbsence={motifsAbsence}
-              filter={filter}
-            />
-          ))}
+          {semainesFiltreesParEtatValidation.length == 0 ? (
+            <h4 className="text-center">
+              Aucune semaine de pointage ne correspond à ce filtrage.
+            </h4>
+          ) : (
+            <>
+              {semainesFiltreesParEtatValidation.map((s, k) => (
+                <PointageTableau
+                  listView={true}
+                  key={k}
+                  semaine={s}
+                  fetchRefresh={fetchSemaines}
+                  entites={entites}
+                  affaires={affaires}
+                  motifsAbsence={motifsAbsence}
+                  filter={filter}
+                />
+              ))}
+            </>
+          )}
         </>
       )}
+      {loading && <LoadingIcon />}
     </>
   );
 };

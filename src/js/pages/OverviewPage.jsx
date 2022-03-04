@@ -5,8 +5,10 @@ import { Form, Table } from "react-bootstrap";
 import { toast } from "react-toastify";
 import datesApi from "../services/datesAPI";
 import POINTAGES_API from "../services/pointagesAPI";
+import LoadingIcon from "../components/loadingIcon";
 
 const OverviewPage = ({ history }) => {
+  const [loading, setLoading] = useState(true);
   const today = new Date();
 
   const formatDate_yyyymmdd = (date) => {
@@ -28,6 +30,7 @@ const OverviewPage = ({ history }) => {
       const data = await POINTAGES_API.overview(date);
       console.log("usersPointages", data);
       setUsersPointages(data);
+      setLoading(false);
     } catch (error) {
       console.log(error);
       toast.error("Erreur au chargement des données");
@@ -48,6 +51,7 @@ const OverviewPage = ({ history }) => {
   };
 
   useEffect(() => {
+    setLoading(true);
     fetchPointages();
   }, [selectedDate]);
 
@@ -125,33 +129,36 @@ const OverviewPage = ({ history }) => {
           </Form.Group>
         </Form>
       </main>
-      <div className="container-fluid">
-        <Table className="my-5" variant="light" bordered responsive>
-          <thead>
-            <tr className="align-middle">
-              <th className="text-center col-2">Prénom Nom</th>
-              {listOfFormattedDate.map((d, i) => (
-                <th key={i} className="text-center">
-                  {d}
-                </th>
-              ))}
-              <th className="text-center col-2">Prénom Nom</th>
-            </tr>
-          </thead>
-          <tbody>
-            {usersPointages.map((u, i) => (
-              <tr key={u.id}>
-                <td>
-                  {u.firstname} {u.lastname}
-                </td>
-                {formattedPointages[i]}
-                <td>
-                  {u.firstname} {u.lastname}
-                </td>
+      <div className="my-5 container-fluid">
+        {!loading && (
+          <Table variant="light" bordered responsive>
+            <thead>
+              <tr className="align-middle">
+                <th className="text-center col-2">Prénom Nom</th>
+                {listOfFormattedDate.map((d, i) => (
+                  <th key={i} className="text-center">
+                    {d}
+                  </th>
+                ))}
+                <th className="text-center col-2">Prénom Nom</th>
               </tr>
-            ))}
-          </tbody>
-        </Table>
+            </thead>
+            <tbody>
+              {usersPointages.map((u, i) => (
+                <tr key={u.id}>
+                  <td>
+                    {u.firstname} {u.lastname}
+                  </td>
+                  {formattedPointages[i]}
+                  <td>
+                    {u.firstname} {u.lastname}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+        )}
+        {loading && <LoadingIcon />}
       </div>
     </>
   );

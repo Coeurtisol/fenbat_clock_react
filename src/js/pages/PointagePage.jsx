@@ -8,9 +8,11 @@ import MOTIFSABSENCE_API from "../services/motifsAbsenceAPI";
 import SEMAINES_API from "../services/semainesAPI";
 import PointageTableau from "../components/PointageTableau";
 import { toast } from "react-toastify";
+import LoadingIcon from "../components/loadingIcon";
 
 const PointagePage = ({ history, match, location }) => {
   const { year, week, userId } = match.params;
+  const [loading, setLoading] = useState(true);
   const [semaine, setSemaine] = useState({ pointages: [] });
   const [affaires, setAffaires] = useState([]);
   const [motifsAbsence, setMotifsAbsence] = useState([]);
@@ -36,6 +38,7 @@ const PointagePage = ({ history, match, location }) => {
       const data = response.data;
       console.log("success fetch semaine", data);
       setSemaine(data);
+      setLoading(false);
     } catch (error) {
       console.log("erreur fetch semaine", error);
       toast.error("Erreur au chargement de la semaine.");
@@ -76,6 +79,7 @@ const PointagePage = ({ history, match, location }) => {
   };
 
   useEffect(() => {
+    setLoading(true);
     fetchSemaine();
     fetchEntites();
     fetchAffaires();
@@ -290,19 +294,22 @@ const PointagePage = ({ history, match, location }) => {
           </div>
         </div>
       </div>
-      <PointageTableau
-        cadreEdit={userId}
-        semaine={semaine}
-        setSemaine={setSemaine}
-        fetchRefresh={fetchSemaine}
-        entites={entites}
-        affaires={affaires}
-        motifsAbsence={motifsAbsence}
-        currentEntite={currentEntite}
-        errors={errors}
-        setErrors={setErrors}
-        handleSetErrors={handleSetErrors}
-      />
+      {!loading && (
+        <PointageTableau
+          cadreEdit={userId}
+          semaine={semaine}
+          setSemaine={setSemaine}
+          fetchRefresh={fetchSemaine}
+          entites={entites}
+          affaires={affaires}
+          motifsAbsence={motifsAbsence}
+          currentEntite={currentEntite}
+          errors={errors}
+          setErrors={setErrors}
+          handleSetErrors={handleSetErrors}
+        />
+      )}
+      {loading && <LoadingIcon />}
     </>
   );
 };
