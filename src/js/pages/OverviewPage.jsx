@@ -111,6 +111,8 @@ const OverviewPage = ({ history }) => {
     formattedPointages.push(temp);
   }
 
+  const dateMax = new Date(today).setDate(today.getDate() - 7);
+
   return (
     <>
       <main className="container color-text mt-2">
@@ -124,7 +126,7 @@ const OverviewPage = ({ history }) => {
               id="startTo"
               value={selectedDate}
               min="2022-01-01"
-              max={formatDate_yyyymmdd(today)}
+              max={formatDate_yyyymmdd(new Date(dateMax))}
             />
           </Form.Group>
         </Form>

@@ -79,7 +79,7 @@ const HomePage = () => {
         )}
         {permissionId <= permissions.respProd.id && (
           <Link to="/overview">
-            <h1>Overview</h1>
+            <h1>Overview (WIP)</h1>
           </Link>
         )}
       </div>
