@@ -189,6 +189,7 @@ const ArticlesModal = ({ fetchArticles, article }) => {
                 name="fournisseurs"
                 onChange={handleChangeFournisseurs}
                 value={newArticle.fournisseurs}
+                required
               >
                 {fournisseurs.map((f) => (
                   <option
