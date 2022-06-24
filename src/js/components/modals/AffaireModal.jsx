@@ -24,6 +24,7 @@ const UserModal = ({ fetchAffaires, affaire }) => {
     donneurAffaireId: "",
     etat: "En cours",
     entiteId: "",
+    ville: "",
   });
   let edit = false;
   if (affaire) edit = true;
@@ -98,6 +99,7 @@ const UserModal = ({ fetchAffaires, affaire }) => {
           donneurAffaireId: affaire.donneurAffaire.id,
           etat: affaire.etat,
           entiteId: affaire.entite.id,
+          ville: affaire.ville || "",
         });
       }
       fetchEntites();
@@ -122,6 +124,7 @@ const UserModal = ({ fetchAffaires, affaire }) => {
     try {
       const response = await AFFAIRES_API.create(newAffaire);
       console.log("success create", response);
+      toast.success("Affaire créée");
       setNewAffaire({
         name: "",
         secteurAffaireId: "",
@@ -130,9 +133,11 @@ const UserModal = ({ fetchAffaires, affaire }) => {
         donneurAffaireId: "",
         etat: "En cours",
         entiteId: "",
+        ville: "",
       });
     } catch (error) {
       console.log("erreur create", error);
+      toast.error("Erreur à la création de l'affaire");
     }
     handleShowUserModal();
   };
@@ -144,6 +149,7 @@ const UserModal = ({ fetchAffaires, affaire }) => {
     try {
       const response = await AFFAIRES_API.update(affaire.id, newAffaire);
       console.log("success update", response);
+      toast.success("Affaire mise à jour");
       setNewAffaire({
         name: "",
         secteurAffaireId: "",
@@ -152,9 +158,11 @@ const UserModal = ({ fetchAffaires, affaire }) => {
         donneurAffaireId: "",
         etat: "En cours",
         entiteId: "",
+        ville: "",
       });
     } catch (error) {
       console.log("erreur update", error);
+      toast.error("Erreur à la mise à jour de l'affaire");
     }
     handleShowUserModal();
   };
@@ -164,8 +172,10 @@ const UserModal = ({ fetchAffaires, affaire }) => {
     try {
       const response = await AFFAIRES_API.deleteOne(id);
       console.log("success delete", response);
+      toast.success("Affaire surrpimée");
     } catch (error) {
       console.log("erreur delete", error);
+      toast.error("Erreur à la suppression de l'affaire");
     }
     handleShowUserModal();
   };
@@ -291,6 +301,17 @@ const UserModal = ({ fetchAffaires, affaire }) => {
                   </option>
                 ))}
               </Form.Select>
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label>Ville</Form.Label>
+              <Form.Control
+                type="text"
+                name="ville"
+                placeholder="Ville de l'affaire"
+                value={newAffaire.ville}
+                onChange={handlechange}
+                required
+              />
             </Form.Group>
             <Form.Group className="mb-3">
               <Form.Label>Secteur</Form.Label>

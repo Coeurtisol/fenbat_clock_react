@@ -35,13 +35,20 @@ const AdminAffairesPage = () => {
         <p>Aucune affaire n'est enregistrée pour le moment</p>
       ) : (
         <>
-          <Table className="bt-0" variant="light" striped bordered hover responsive>
+          <Table
+            className="bt-0"
+            variant="light"
+            striped
+            bordered
+            hover
+            responsive
+          >
             <thead>
               <tr className="align-middle">
                 <th className="text-center">Affaire</th>
                 <th className="text-center">Donneur d'ordre</th>
                 <th className="text-center">Client</th>
-                <th className="text-center">Secteur</th>
+                <th className="text-center">Localisation</th>
                 <th className="text-center">Corps d'état</th>
                 <th className="text-center">Entité</th>
                 <th className="text-center">Etat</th>
@@ -54,7 +61,11 @@ const AdminAffairesPage = () => {
                   <td>{a.name}</td>
                   <td>{a.donneurAffaire.name}</td>
                   <td>{a.clientAffaire.name}</td>
-                  <td>{a.secteurAffaire.name}</td>
+                  <td>
+                    {a.secteurAffaire.name}
+                    <br />
+                    {a.ville ? `(${a.ville})` : ""}
+                  </td>
                   <td>{a.typeAffaire.name}</td>
                   <td>{a.entite.name}</td>
                   <td>{a.etat}</td>
