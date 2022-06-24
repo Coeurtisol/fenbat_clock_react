@@ -91,7 +91,7 @@ const PointageTableau = ({
     momentDayLine.push(
       <React.Fragment key={i}>
         <td className="text-center">
-          {semaine.pointages[i].moment ? "P.M" : "A.M"}
+          {semaine.pointages[i].moment ? "Après-midi" : "Matin"}
         </td>
       </React.Fragment>
     );
