@@ -35,11 +35,11 @@ const ListeCommandes = ({}) => {
   }, []);
 
   // UPDATE
-  const handleValider = async (commandeId) => {
+  const handleChangerEtat = async (commandeId, etat) => {
     try {
-      const response = await COMMANDES_API.valider(commandeId);
+      const response = await COMMANDES_API.changerEtat(commandeId, etat);
       console.log("success update commande", response);
-      toast.success("Commande validée.");
+      toast.success(`Commande ${etat}.`);
     } catch (error) {
       console.log("erreur update commande", error);
       toast.error("Erreur à la validation de la commande.");
@@ -48,7 +48,7 @@ const ListeCommandes = ({}) => {
   };
 
   // ORDER COMMANDS
-  const order = [false, true];
+  const order = ["En attente", "Validée", "Refusée"];
   commandes.sort((a, b) => {
     return order.indexOf(a.etat) - order.indexOf(b.etat);
   });
@@ -73,8 +73,9 @@ const ListeCommandes = ({}) => {
                   <th className="text-center">Quantité</th>
                   {resp && <th className="text-center">Chef d'équipe</th>}
                   <th className="text-center">Affaire</th>
-                  <th className="text-center">État</th>
-                  <th>Validée le</th>
+                  <th className="text-center" colSpan={2}>
+                    État
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -89,20 +90,37 @@ const ListeCommandes = ({}) => {
                       </td>
                     )}
                     <td className="text-center">{c.affaire?.name}</td>
-                    <td className="text-center">
-                      {c.etat ? "Confirmé" : "En attente"}
-                    </td>
+                    <td className="text-center">{c.etat}</td>
 
                     <td>
-                      {resp && !c.etat ? (
-                        <Button
-                          variant="success"
-                          onClick={() => handleValider(c.id)}
-                        >
-                          Valider
-                        </Button>
+                      {resp && c.etat == "En attente" ? (
+                        <>
+                          <Button
+                            className="m-1"
+                            variant="success"
+                            onClick={() => handleChangerEtat(c.id, "Validée")}
+                          >
+                            Valider
+                          </Button>
+                          <Button
+                            className="m-1"
+                            variant="danger"
+                            onClick={() => handleChangerEtat(c.id, "Refusée")}
+                          >
+                            Refuser
+                          </Button>
+                        </>
                       ) : (
-                        c.valideeLe && new Date(c.valideeLe).toLocaleString()
+                        c.etat != "En attente" && (
+                          <>
+                            {`le ${
+                              c.valideeLe &&
+                              new Date(c.valideeLe).toLocaleString()
+                            }`}
+                            <br />
+                            {`par ${c.valideePar}`}
+                          </>
+                        )
                       )}
                     </td>
                   </tr>
@@ -110,11 +128,7 @@ const ListeCommandes = ({}) => {
               </tbody>
             </Table>
           ) : (
-            <h5 className="text-center mt-2">
-              {resp
-                ? "Aucune commande en attente ou validée"
-                : "Vous n'avez effecté aucune commande"}
-            </h5>
+            <h5 className="text-center mt-2">"Aucune commande"</h5>
           )}
         </div>
       )}

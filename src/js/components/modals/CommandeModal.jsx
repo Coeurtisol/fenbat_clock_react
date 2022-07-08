@@ -9,7 +9,6 @@ const CommandeModal = ({ article, commande }) => {
   const [affaires, setAffaires] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [newCommande, setNewCommande] = useState({
-    etat: false,
     articleId: "",
     fournisseurId: "",
     quantite: 1,
@@ -37,7 +36,6 @@ const CommandeModal = ({ article, commande }) => {
       // if (edit) {
       setNewCommande({
         ...setNewCommande,
-        etat: false,
         articleId: article.id,
         fournisseurId: "",
         quantite: 1,
@@ -65,7 +63,6 @@ const CommandeModal = ({ article, commande }) => {
       console.log("success create commande", response);
       toast.success("Commande créée.");
       setNewCommande({
-        etat: false,
         articleId: "",
         fournisseurId: "",
         quantite: 1,
@@ -129,6 +126,7 @@ const CommandeModal = ({ article, commande }) => {
                 name="quantite"
                 value={newCommande.quantite}
                 onChange={handlechange}
+                min={1}
                 required
               />
             </Form.Group>

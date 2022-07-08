@@ -20,8 +20,8 @@ async function create(commande) {
   return await axios.post(COMMANDES_API_URL, commande);
 }
 
-async function valider(id) {
-  return await axios.put(COMMANDES_API_URL + "/" + id);
+async function changerEtat(id, etat) {
+  return await axios.put(COMMANDES_API_URL + "/" + id, { etat });
 }
 
 async function deleteOne(id) {
@@ -31,7 +31,7 @@ async function deleteOne(id) {
 
 const COMMANDES_API = {
   create,
-  valider,
+  changerEtat,
   deleteOne,
   findAll,
   findAllByUser,
