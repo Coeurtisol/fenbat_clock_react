@@ -1,4 +1,4 @@
-const searchForAutocomplete = async (adresse) => {
+async function searchForAutocomplete(adresse) {
   const url =
     "https://api-adresse.data.gouv.fr/search?" +
     new URLSearchParams({
@@ -11,6 +11,9 @@ const searchForAutocomplete = async (adresse) => {
     coordonnees: e.geometry.coordinates,
   }));
   return adresses;
-};
+}
 
-export default { searchForAutocomplete };
+const adresseAPI = {
+  searchForAutocomplete,
+};
+export default adresseAPI;

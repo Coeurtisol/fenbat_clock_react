@@ -9,7 +9,7 @@ async function isSecure() {
 async function login(credentials) {
   const response = await axios.post(AUTH_API_URL + "/login", credentials);
   const token = response.data;
-  if (typeof token == "string") {
+  if (typeof token === "string") {
     window.localStorage.setItem("authToken", token);
     setAxiosToken(token);
   }
@@ -22,7 +22,7 @@ async function externalLogin(credentials) {
     credentials
   );
   const token = response.data;
-  if (typeof token == "string") {
+  if (typeof token === "string") {
     window.localStorage.setItem("authToken", token);
     setAxiosToken(token);
   }
@@ -88,7 +88,7 @@ function getPermissionId() {
   if (isAuthenticated()) {
     const token = getToken();
     const jwtData = parseJwt(token);
-    return jwtData.role.permissionId;
+    return Number(jwtData.role.permissionId);
   }
 }
 
@@ -119,16 +119,16 @@ function getFullName() {
 function getValidationLevel() {
   const permissionId = getPermissionId();
   // resp site => valid resp site
-  if (permissionId == 1) return 4;
+  if (permissionId === 1) return 4;
   // resp prod => valid resp prod
-  else if (permissionId == 2) return 3;
+  else if (permissionId === 2) return 3;
   // chef equipe ou => attente de validation
   else return 2;
 }
 
 function peutValider(semaineEtatId) {
   const validationLevel = getValidationLevel();
-  if (semaineEtatId == 1 || semaineEtatId == 5) return true;
+  if (semaineEtatId === 1 || semaineEtatId === 5) return true;
   else if (semaineEtatId < validationLevel) return true;
   else return false;
 }

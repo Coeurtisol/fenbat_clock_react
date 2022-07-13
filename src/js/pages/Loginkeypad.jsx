@@ -30,7 +30,7 @@ const Loginkeypad = ({ location, history }) => {
   // CONNEXION CLAVIER
   document.onkeyup = (e) => handleKeyboard(e);
   const handleKeyboard = ({ key }) => {
-    if (window.location.hash.split("/"[1] == "loginkeypad") && !isNaN(key)) {
+    if (window.location.hash.split("/"[1] === "loginkeypad") && !isNaN(key)) {
       handleClickAdd(key);
     }
   };
