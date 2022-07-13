@@ -7,7 +7,7 @@ import DONNEURSAFFAIRE_API from "../../services/donneursAffaireAPI";
 import AFFAIRES_API from "../../services/affairesAPI";
 import { Form, Button, Modal } from "react-bootstrap";
 import { toast } from "react-toastify";
-import adresseAPI from "../../services/adresseAPI";
+import InputAdresse from "../InputAdresseComponent";
 
 const UserModal = ({ fetchAffaires, affaire }) => {
   const [showModal, setShowModal] = useState(false);
@@ -26,8 +26,10 @@ const UserModal = ({ fetchAffaires, affaire }) => {
     etat: "En cours",
     entiteId: "",
     adresse: "",
+    coordonnees: "",
   });
-  const [adresses, setAdresses] = useState([]);
+  // TODO: revoir gestion des coordonnees
+  const [tempCoordonnees, setTempCoordonnees] = useState("");
   const edit = affaire ? true : false;
 
   // FETCH FUNCTIONS
@@ -101,7 +103,9 @@ const UserModal = ({ fetchAffaires, affaire }) => {
           etat: affaire.etat,
           entiteId: affaire.entite.id,
           adresse: affaire.adresse,
+          coordonnees: affaire.coordonnees,
         });
+        setTempCoordonnees(affaire.coordonnees);
       }
       fetchEntites();
       fetchTypesAffaire();
@@ -116,27 +120,16 @@ const UserModal = ({ fetchAffaires, affaire }) => {
   // FUNCTIONS
   const handlechange = async ({ target }) => {
     const { name, value } = target;
-    setNewAffaire({ ...newAffaire, [name]: value.trimStart() });
-    if (name == "adresse" && value != "") {
-      await searchForAdresseAutocomplete(value);
-    }
-  };
-
-  const searchForAdresseAutocomplete = async (adresse) => {
-    try {
-      const listeAdresse = await adresseAPI.searchForAutocomplete(adresse);
-      setAdresses(listeAdresse);
-    } catch (error) {
-      console.log(error);
-    }
+    setNewAffaire({ ...newAffaire, [name]: value });
   };
 
   // CREATE
   const handleCreate = async (e) => {
     e.preventDefault();
     console.log("create affaire", newAffaire);
+    const affaire = { ...newAffaire, coordonnees: tempCoordonnees };
     try {
-      const response = await AFFAIRES_API.create(newAffaire);
+      const response = await AFFAIRES_API.create(affaire);
       console.log("success create", response);
       toast.success("Affaire créée");
       setNewAffaire({
@@ -148,7 +141,9 @@ const UserModal = ({ fetchAffaires, affaire }) => {
         etat: "En cours",
         entiteId: "",
         adresse: "",
+        coordonnees: "",
       });
+      setTempCoordonnees("");
     } catch (error) {
       console.log("erreur create", error);
       toast.error("Erreur à la création de l'affaire");
@@ -160,8 +155,9 @@ const UserModal = ({ fetchAffaires, affaire }) => {
   const handleUpdate = async (e) => {
     e.preventDefault();
     console.log("update affaire", newAffaire);
+    const updatedAffaire = { ...newAffaire, coordonnees: tempCoordonnees };
     try {
-      const response = await AFFAIRES_API.update(affaire.id, newAffaire);
+      const response = await AFFAIRES_API.update(affaire.id, updatedAffaire);
       console.log("success update", response);
       toast.success("Affaire mise à jour");
     } catch (error) {
@@ -191,12 +187,6 @@ const UserModal = ({ fetchAffaires, affaire }) => {
       affaireUtilisee = true;
     }
   }
-
-  console.log(adresses);
-  const matchingAdresse =
-    adresses.find((a) => a.label == newAffaire.adresse)?.coordonnees || [];
-  const [longitude, latitude] = matchingAdresse;
-  console.log(matchingAdresse, latitude, longitude);
 
   // TEMPLATE
   return (
@@ -312,40 +302,12 @@ const UserModal = ({ fetchAffaires, affaire }) => {
                 ))}
               </Form.Select>
             </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label>
-                Adresse
-                {matchingAdresse.length ? (
-                  <>
-                    {` (Coordonnées: `}
-                    <span className="text-success">
-                      {latitude},{longitude}
-                    </span>
-                    {`)`}
-                  </>
-                ) : (
-                  <>
-                    {` (Coordonnées: `}
-                    <span className="text-danger">non trouvées</span>
-                    {`)`}
-                  </>
-                )}
-              </Form.Label>
-              <Form.Control
-                type="text"
-                name="adresse"
-                placeholder="Adresse de l'affaire"
-                value={newAffaire.adresse}
-                onChange={handlechange}
-                required
-                list="adresses"
-              />
-              <datalist id="adresses">
-                {adresses.map((a, k) => (
-                  <option key={k} value={a.label}></option>
-                ))}
-              </datalist>
-            </Form.Group>
+            <InputAdresse
+              parentObject={newAffaire}
+              setParentObject={setNewAffaire}
+              tempCoordonnees={tempCoordonnees}
+              setTempCoordonnees={setTempCoordonnees}
+            />
             <Form.Group className="mb-3">
               <Form.Label>Secteur</Form.Label>
               <Form.Select
