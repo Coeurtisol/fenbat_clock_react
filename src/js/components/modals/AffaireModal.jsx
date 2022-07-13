@@ -7,6 +7,7 @@ import DONNEURSAFFAIRE_API from "../../services/donneursAffaireAPI";
 import AFFAIRES_API from "../../services/affairesAPI";
 import { Form, Button, Modal } from "react-bootstrap";
 import { toast } from "react-toastify";
+import adresseAPI from "../../services/adresseAPI";
 
 const UserModal = ({ fetchAffaires, affaire }) => {
   const [showModal, setShowModal] = useState(false);
@@ -24,10 +25,10 @@ const UserModal = ({ fetchAffaires, affaire }) => {
     donneurAffaireId: "",
     etat: "En cours",
     entiteId: "",
-    ville: "",
+    adresse: "",
   });
-  let edit = false;
-  if (affaire) edit = true;
+  const [adresses, setAdresses] = useState([]);
+  const edit = affaire ? true : false;
 
   // FETCH FUNCTIONS
   const fetchEntites = async () => {
@@ -99,7 +100,7 @@ const UserModal = ({ fetchAffaires, affaire }) => {
           donneurAffaireId: affaire.donneurAffaire.id,
           etat: affaire.etat,
           entiteId: affaire.entite.id,
-          ville: affaire.ville || "",
+          adresse: affaire.adresse,
         });
       }
       fetchEntites();
@@ -112,9 +113,22 @@ const UserModal = ({ fetchAffaires, affaire }) => {
     }
   };
 
-  const handlechange = ({ target }) => {
+  // FUNCTIONS
+  const handlechange = async ({ target }) => {
     const { name, value } = target;
-    setNewAffaire({ ...newAffaire, [name]: value });
+    setNewAffaire({ ...newAffaire, [name]: value.trimStart() });
+    if (name == "adresse" && value != "") {
+      await searchForAdresseAutocomplete(value);
+    }
+  };
+
+  const searchForAdresseAutocomplete = async (adresse) => {
+    try {
+      const listeAdresse = await adresseAPI.searchForAutocomplete(adresse);
+      setAdresses(listeAdresse);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   // CREATE
@@ -133,7 +147,7 @@ const UserModal = ({ fetchAffaires, affaire }) => {
         donneurAffaireId: "",
         etat: "En cours",
         entiteId: "",
-        ville: "",
+        adresse: "",
       });
     } catch (error) {
       console.log("erreur create", error);
@@ -150,16 +164,6 @@ const UserModal = ({ fetchAffaires, affaire }) => {
       const response = await AFFAIRES_API.update(affaire.id, newAffaire);
       console.log("success update", response);
       toast.success("Affaire mise à jour");
-      setNewAffaire({
-        name: "",
-        secteurAffaireId: "",
-        typeAffaireId: "",
-        clientAffaireId: "",
-        donneurAffaireId: "",
-        etat: "En cours",
-        entiteId: "",
-        ville: "",
-      });
     } catch (error) {
       console.log("erreur update", error);
       toast.error("Erreur à la mise à jour de l'affaire");
@@ -187,6 +191,12 @@ const UserModal = ({ fetchAffaires, affaire }) => {
       affaireUtilisee = true;
     }
   }
+
+  console.log(adresses);
+  const matchingAdresse =
+    adresses.find((a) => a.label == newAffaire.adresse)?.coordonnees || [];
+  const [longitude, latitude] = matchingAdresse;
+  console.log(matchingAdresse, latitude, longitude);
 
   // TEMPLATE
   return (
@@ -303,15 +313,38 @@ const UserModal = ({ fetchAffaires, affaire }) => {
               </Form.Select>
             </Form.Group>
             <Form.Group className="mb-3">
-              <Form.Label>Ville</Form.Label>
+              <Form.Label>
+                Adresse
+                {matchingAdresse.length ? (
+                  <>
+                    {` (Coordonnées: `}
+                    <span className="text-success">
+                      {latitude},{longitude}
+                    </span>
+                    {`)`}
+                  </>
+                ) : (
+                  <>
+                    {` (Coordonnées: `}
+                    <span className="text-danger">non trouvées</span>
+                    {`)`}
+                  </>
+                )}
+              </Form.Label>
               <Form.Control
                 type="text"
-                name="ville"
-                placeholder="Ville de l'affaire"
-                value={newAffaire.ville}
+                name="adresse"
+                placeholder="Adresse de l'affaire"
+                value={newAffaire.adresse}
                 onChange={handlechange}
                 required
+                list="adresses"
               />
+              <datalist id="adresses">
+                {adresses.map((a, k) => (
+                  <option key={k} value={a.label}></option>
+                ))}
+              </datalist>
             </Form.Group>
             <Form.Group className="mb-3">
               <Form.Label>Secteur</Form.Label>

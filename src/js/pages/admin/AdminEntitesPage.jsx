@@ -30,17 +30,26 @@ const AdminEntitesPage = () => {
       {entites.length === 0 ? (
         <p>Aucune entité n'est enregistrée pour le moment</p>
       ) : (
-        <Table className="bt-0" variant="light" striped bordered hover responsive>
+        <Table
+          className="bt-0"
+          variant="light"
+          striped
+          bordered
+          hover
+          responsive
+        >
           <thead>
             <tr className="align-middle">
-              <th className="text-center">Nom de l'entité</th>
+              <th className="text-center">Raison sociale</th>
+              <th className="text-center">Adresse du siège</th>
               <th></th>
             </tr>
           </thead>
           <tbody>
             {entites.map((e) => (
-              <tr key={e.id}>
+              <tr className="align-middle" key={e.id}>
                 <td>{e.name}</td>
+                <td>{e.adresse}</td>
                 <td style={{ width: "1px" }} className="text-center">
                   <EntiteModal fetchEntites={fetchEntites} entite={e} />
                 </td>

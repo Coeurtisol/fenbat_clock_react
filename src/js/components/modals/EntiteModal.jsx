@@ -2,20 +2,27 @@ import React, { useState } from "react";
 import ENTITES_API from "../../services/entitesAPI";
 import { Form, Button, Modal } from "react-bootstrap";
 import { toast } from "react-toastify";
+import adresseAPI from "../../services/adresseAPI";
 
 const EntiteModal = ({ fetchEntites, entite }) => {
   const [showModal, setShowModal] = useState(false);
   const [newEntite, setNewEntite] = useState({
     name: "",
+    adresse: "",
   });
-  let edit = false;
-  if (entite) edit = true;
+  const [adresses, setAdresses] = useState([]);
+  const edit = entite ? true : false;
 
-  const handleShowEntiteModal = () => {
+  const handleShowEntiteModal = async () => {
     setShowModal(!showModal);
     if (!showModal) {
       if (edit) {
-        setNewEntite({ ...setNewEntite, name: entite.name });
+        setNewEntite({
+          ...setNewEntite,
+          name: entite.name,
+          adresse: entite.adresse,
+        });
+        await searchForAdresseAutocomplete(entite.adresse);
       }
     } else {
       fetchEntites();
@@ -23,9 +30,21 @@ const EntiteModal = ({ fetchEntites, entite }) => {
   };
 
   // FUNCTIONS
-  const handlechange = ({ target }) => {
+  const handlechange = async ({ target }) => {
     const { name, value } = target;
-    setNewEntite({ ...newEntite, [name]: value });
+    setNewEntite({ ...newEntite, [name]: value.trimStart() });
+    if (name == "adresse" && value != "") {
+      await searchForAdresseAutocomplete(value);
+    }
+  };
+
+  const searchForAdresseAutocomplete = async (adresse) => {
+    try {
+      const listeAdresse = await adresseAPI.searchForAutocomplete(adresse);
+      setAdresses(listeAdresse);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   // CREATE
@@ -38,6 +57,7 @@ const EntiteModal = ({ fetchEntites, entite }) => {
       toast.success("Entité créée.");
       setNewEntite({
         name: "",
+        adresse: "",
       });
     } catch (error) {
       console.log("erreur create entite", error);
@@ -55,9 +75,6 @@ const EntiteModal = ({ fetchEntites, entite }) => {
       const response = await ENTITES_API.update(entite.id, newEntite);
       console.log("success update entite", response);
       toast.success("Entité mise à jour.");
-      setNewEntite({
-        name: "",
-      });
     } catch (error) {
       console.log("erreur update entite", error);
       toast.error("Erreur à la mise à jour de l'entité.");
@@ -89,6 +106,12 @@ const EntiteModal = ({ fetchEntites, entite }) => {
       entiteUtilisee = true;
     }
   }
+
+  console.log(adresses);
+  const matchingAdresse =
+    adresses.find((a) => a.label == newEntite.adresse)?.coordonnees || [];
+  const [longitude, latitude] = matchingAdresse;
+  console.log(matchingAdresse, latitude, longitude);
 
   // TEMPLATE
   return (
@@ -128,6 +151,41 @@ const EntiteModal = ({ fetchEntites, entite }) => {
                 required
               />
             </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label>
+                Adresse
+                {matchingAdresse.length ? (
+                  <>
+                    {` (Coordonnées: `}
+                    <span className="text-success">
+                      {latitude},{longitude}
+                    </span>
+                    {`)`}
+                  </>
+                ) : (
+                  <>
+                    {` (Coordonnées: `}
+                    <span className="text-danger">non trouvées</span>
+                    {`)`}
+                  </>
+                )}
+              </Form.Label>
+              <Form.Control
+                type="text"
+                name="adresse"
+                placeholder="Rechercher une adresse"
+                value={newEntite.adresse}
+                onChange={handlechange}
+                required
+                list="adresses"
+              />
+              <datalist id="adresses">
+                {adresses.map((a, k) => (
+                  <option key={k} value={a.label}></option>
+                ))}
+              </datalist>
+            </Form.Group>
+            {/* <p>{latitude + "," + longitude}</p> */}
             <div className="d-flex justify-content-between">
               <Button variant="primary" type="submit">
                 Envoyer

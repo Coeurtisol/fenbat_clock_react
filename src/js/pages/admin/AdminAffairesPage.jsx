@@ -64,7 +64,7 @@ const AdminAffairesPage = () => {
                   <td>
                     {a.secteurAffaire.name}
                     <br />
-                    {a.ville ? `(${a.ville})` : ""}
+                    {a.adresse}
                   </td>
                   <td>{a.typeAffaire.name}</td>
                   <td>{a.entite.name}</td>
