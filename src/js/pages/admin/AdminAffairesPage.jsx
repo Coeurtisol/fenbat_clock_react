@@ -62,9 +62,11 @@ const AdminAffairesPage = () => {
                   <td>{a.donneurAffaire.name}</td>
                   <td>{a.clientAffaire.name}</td>
                   <td>
-                    {a.secteurAffaire.name}
+                    {`Secteur : ${a.secteurAffaire.name}`}
                     <br />
-                    {a.adresse}
+                    {`Adresse : ${a.adresse}`}
+                    <br />
+                    {`Indemnité trajet : ${a.zone?.label || "non calculée"}`}
                   </td>
                   <td>{a.typeAffaire.name}</td>
                   <td>{a.entite.name}</td>

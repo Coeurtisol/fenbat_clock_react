@@ -133,6 +133,39 @@ const PointageTableau = ({
       </React.Fragment>
     );
   }
+  // ligne des zones
+  let zoneLine = [];
+  // for (let i = 0; i < semaine.pointages.length; i++) {
+  //   const zone = affaires.find((a) => a.id == semaine.pointages[i].affaireId)
+  //     ?.zone?.label;
+  //   zoneLine.push(
+  //     <React.Fragment key={i}>
+  //       <td className="text-center">
+  //         {semaine.pointages[i].affaireId && (zone || "non calculée")}
+  //       </td>
+  //     </React.Fragment>
+  //   );
+  // }
+  for (let i = 0; i < semaine.pointages.length; i += 2) {
+    const affaireAM = affaires.find(
+      (a) => a.id == semaine.pointages[i].affaireId
+    )
+    const affairePM = affaires.find(
+      (a) => a.id == semaine.pointages[i+1].affaireId
+    )
+    const zoneAM = affaireAM?.zone;
+    const zonePM = affairePM?.zone;
+    let zone = zoneAM?.label;
+    if ((zoneAM?.id || 0) < (zonePM?.id || 0)) {
+      zone = zonePM?.label;
+    }
+    const showZone = affaireAM || affairePM ? true : false;
+    zoneLine.push(
+      <td colSpan={2} key={i} className="text-center">
+        {showZone && (zone || "non calculée")}
+      </td>
+    );
+  }
   // ligne des montants totaux
   let totalWeekValue = 0;
   let valueTotalLine = [];
@@ -226,6 +259,15 @@ const PointageTableau = ({
             <tr className="align-middle">
               <th>Affaire</th>
               {affaireLine}
+              <td></td>
+            </tr>
+            <tr className="align-middle">
+              <th>
+                Indemnité
+                <br />
+                trajet
+              </th>
+              {zoneLine}
               <td></td>
             </tr>
             <tr className="align-middle">
