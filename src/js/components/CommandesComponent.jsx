@@ -4,13 +4,14 @@ import COMMANDES_API from "../services/commandesAPI";
 import { Button, Table } from "react-bootstrap";
 import { toast } from "react-toastify";
 import LoadingIcon from "../components/loadingIcon";
+import permissions from "../configs/permissions";
 
 const ListeCommandes = ({}) => {
   const [loading, setLoading] = useState(true);
   const [commandes, setCommandes] = useState([]);
-  const role = AUTH_API.getRole();
+  const permissionId = AUTH_API.getPermissionId();
   let resp = true;
-  if (role == "chef d'équipe") resp = false;
+  if (permissionId == permissions.chefEquipe.id) resp = false;
 
   // FETCH
   const fetchCommandes = async () => {
