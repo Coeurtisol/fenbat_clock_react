@@ -9,6 +9,7 @@ import permissions from "../configs/permissions";
 const ListeCommandes = ({}) => {
   const [loading, setLoading] = useState(true);
   const [commandes, setCommandes] = useState([]);
+  const [sortBy, setSortBy] = useState({ value: "etat", desc: false });
   const permissionId = AUTH_API.getPermissionId();
   let resp = true;
   if (permissionId == permissions.chefEquipe.id) resp = false;
@@ -48,11 +49,58 @@ const ListeCommandes = ({}) => {
     fetchCommandes();
   };
 
-  // ORDER COMMANDS
-  const order = ["En attente", "Validée", "Refusée"];
-  commandes.sort((a, b) => {
-    return order.indexOf(a.etat) - order.indexOf(b.etat);
-  });
+  // SORT COMMANDES
+  const handleChangeSort = ({ target }) => {
+    const value = target.dataset.sort;
+    if (value == sortBy.value) {
+      setSortBy({ ...sortBy, desc: !sortBy.desc });
+      return;
+    }
+    setSortBy({ ...sortBy, value, desc: false });
+  };
+  const sortedCommandes = [...commandes];
+  switch (sortBy.value) {
+    case "article":
+      sortedCommandes.sort((a, b) => {
+        return sortBy.desc
+          ? b.article.name.localeCompare(a.article.name)
+          : a.article.name.localeCompare(b.article.name);
+      });
+      break;
+
+    case "fournisseur":
+      sortedCommandes.sort((a, b) => {
+        return sortBy.desc
+          ? b.fournisseur.name.localeCompare(a.fournisseur.name)
+          : a.fournisseur.name.localeCompare(b.fournisseur.name);
+      });
+      break;
+
+    case "chef d'équipe":
+      sortedCommandes.sort((a, b) => {
+        return sortBy.desc
+          ? b.user.firstname.localeCompare(a.user.firstname)
+          : a.user.firstname.localeCompare(b.user.firstname);
+      });
+      break;
+
+    case "affaire":
+      sortedCommandes.sort((a, b) => {
+        return sortBy.desc
+          ? b.affaire?.name.localeCompare(a.affaire?.name)
+          : a.affaire?.name.localeCompare(b.affaire?.name);
+      });
+      break;
+
+    case "etat":
+      sortedCommandes.sort((a, b) => {
+        const order = ["En attente", "Validée", "Refusée"];
+        return sortBy.desc
+          ? order.indexOf(b.etat) - order.indexOf(a.etat)
+          : order.indexOf(a.etat) - order.indexOf(b.etat);
+      });
+      break;
+  }
 
   return (
     <>
@@ -62,25 +110,86 @@ const ListeCommandes = ({}) => {
             <Table
               className="mb-0"
               variant="light"
-              // striped
+              striped
               // bordered
               // hover
               responsive
             >
               <thead>
                 <tr className="align-middle">
-                  <th className="text-center">Article</th>
-                  <th className="text-center">Fournisseur</th>
+                  <th
+                    className={`text-center ${
+                      sortBy.value == "article" ? "sorted" : null
+                    } ${
+                      sortBy.value == "article" && sortBy.desc
+                        ? "sorted-desc"
+                        : null
+                    }`}
+                    data-sort="article"
+                    onClick={handleChangeSort}
+                  >
+                    Article
+                  </th>
+                  <th
+                    className={`text-center ${
+                      sortBy.value == "fournisseur" ? "sorted" : null
+                    } ${
+                      sortBy.value == "fournisseur" && sortBy.desc
+                        ? "sorted-desc"
+                        : null
+                    }`}
+                    data-sort="fournisseur"
+                    onClick={handleChangeSort}
+                  >
+                    Fournisseur
+                  </th>
                   <th className="text-center">Quantité</th>
-                  {resp && <th className="text-center">Chef d'équipe</th>}
-                  <th className="text-center">Affaire</th>
-                  <th className="text-center" colSpan={2}>
+                  {resp && (
+                    <th
+                      className={`text-center ${
+                        sortBy.value == "chef d'équipe" ? "sorted" : null
+                      } ${
+                        sortBy.value == "chef d'équipe" && sortBy.desc
+                          ? "sorted-desc"
+                          : null
+                      }`}
+                      data-sort="chef d'équipe"
+                      onClick={handleChangeSort}
+                    >
+                      Chef d'équipe
+                    </th>
+                  )}
+                  <th
+                    className={`text-center ${
+                      sortBy.value == "affaire" ? "sorted" : null
+                    } ${
+                      sortBy.value == "affaire" && sortBy.desc
+                        ? "sorted-desc"
+                        : null
+                    }`}
+                    data-sort="affaire"
+                    onClick={handleChangeSort}
+                  >
+                    Affaire
+                  </th>
+                  <th
+                    className={`text-center ${
+                      sortBy.value == "etat" ? "sorted" : null
+                    } ${
+                      sortBy.value == "etat" && sortBy.desc
+                        ? "sorted-desc"
+                        : null
+                    }`}
+                    colSpan={2}
+                    data-sort="etat"
+                    onClick={handleChangeSort}
+                  >
                     État
                   </th>
                 </tr>
               </thead>
               <tbody>
-                {commandes.map((c) => (
+                {sortedCommandes.map((c) => (
                   <tr key={c.id}>
                     <td className="text-center">{c.article.name}</td>
                     <td className="text-center">{c.fournisseur.name}</td>

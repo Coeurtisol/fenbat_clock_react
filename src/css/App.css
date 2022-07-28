@@ -316,6 +316,14 @@ main.admin {
   background-color: #ffe2b4 !important;
   cursor: default;
 }
+.sorted::before{
+  content: '\25b2';
+  padding-right: 4px;
+}
+.sorted-desc::before{
+  content: '\25bc';
+  padding-right: 4px;
+}
 
 /* OVERVIEW CELLS */
 .valid-cell {
