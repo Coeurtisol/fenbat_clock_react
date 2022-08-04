@@ -54,8 +54,8 @@ const AdminCommandesPage = () => {
                 <td>{c.name}</td>
                 <td>
                   {c.fournisseurs.map((f) => (
-                    <React.Fragment key={f.fournisseur.id}>
-                      {f.fournisseur.name}
+                    <React.Fragment key={f.id}>
+                      {f.name}
                       <br />
                     </React.Fragment>
                   ))}

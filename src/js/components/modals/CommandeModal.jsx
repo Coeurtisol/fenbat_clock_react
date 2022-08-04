@@ -142,8 +142,8 @@ const CommandeModal = ({ article, commande }) => {
                   <option value="">Selectionnez un fournisseur</option>
                 )}
                 {article.fournisseurs.map((f) => (
-                  <option key={f.fournisseur.id} value={f.fournisseur.id}>
-                    {f.fournisseur.name}
+                  <option key={f.id} value={f.id}>
+                    {f.name}
                   </option>
                 ))}
               </Form.Select>

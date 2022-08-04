@@ -1,9 +1,9 @@
 import axios from "axios";
 import { SEMAINES_API_URL } from "../configs/api_links";
 
-async function create(semaine) {
-  return await axios.post(SEMAINES_API_URL, semaine);
-}
+// async function create(semaine) {
+//   return await axios.post(SEMAINES_API_URL, semaine);
+// }
 
 async function getAllByWeek(year, week) {
   return await axios.get(`${SEMAINES_API_URL}/gestion/${year}/${week}`);
@@ -46,7 +46,7 @@ async function getPDF(prenomNom, annee, semaine, version) {
 }
 
 const SEMAINES_API = {
-  create,
+  // create,
   update,
   findOne,
   getAllByWeek,

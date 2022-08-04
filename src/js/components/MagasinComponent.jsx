@@ -115,8 +115,8 @@ const Magasin = ({}) => {
                       <td>{a.name}</td>
                       <td className="text-center">
                         {a.fournisseurs.map((f) => (
-                          <React.Fragment key={f.fournisseur.id}>
-                            {f.fournisseur.name}
+                          <React.Fragment key={f.id}>
+                            {f.name}
                             <br />
                           </React.Fragment>
                         ))}

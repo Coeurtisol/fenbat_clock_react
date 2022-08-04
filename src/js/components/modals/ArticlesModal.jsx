@@ -13,7 +13,7 @@ const ArticlesModal = ({ fetchArticles, article }) => {
   const [newArticle, setNewArticle] = useState({
     name: "",
     categorieId: "",
-    fournisseurs: [],
+    fournisseursId: [],
   });
 
   // FETCH
@@ -37,6 +37,7 @@ const ArticlesModal = ({ fetchArticles, article }) => {
     }
   };
 
+  // MODAL GESTION
   const handleShowArticleModal = () => {
     setShowModal(!showModal);
     if (!showModal) {
@@ -44,7 +45,7 @@ const ArticlesModal = ({ fetchArticles, article }) => {
         setNewArticle({
           name: article.name,
           categorieId: article.categorie?.id,
-          fournisseurs: article.fournisseurs.map((f) => f.fournisseur.id),
+          fournisseursId: article.fournisseurs.map((f) => f.id),
         });
       }
       fetchCategories();
@@ -54,7 +55,7 @@ const ArticlesModal = ({ fetchArticles, article }) => {
     }
   };
 
-  // FUNCTIONS
+  // HANDLE CHANGE FUNCTIONS
   const handleChange = ({ target }) => {
     const { name, value } = target;
     setNewArticle({ ...newArticle, [name]: value });
@@ -62,10 +63,10 @@ const ArticlesModal = ({ fetchArticles, article }) => {
 
   const handleChangeFournisseurs = ({ target }) => {
     const { selectedOptions } = target;
-    const selectedFournisseurs = [].slice
-      .call(selectedOptions)
-      .map((item) => item.value);
-    setNewArticle({ ...newArticle, fournisseurs: selectedFournisseurs });
+    const selectedFournisseursId = [...selectedOptions].map(
+      (item) => item.value
+    );
+    setNewArticle({ ...newArticle, fournisseursId: selectedFournisseursId });
   };
 
   // CREATE
@@ -78,7 +79,7 @@ const ArticlesModal = ({ fetchArticles, article }) => {
       setNewArticle({
         name: "",
         categorieId: "",
-        fournisseurs: [],
+        fournisseursId: [],
       });
     } catch (error) {
       console.log("erreur create article", error);
@@ -99,7 +100,7 @@ const ArticlesModal = ({ fetchArticles, article }) => {
       setNewArticle({
         name: "",
         categorieId: "",
-        fournisseurs: [],
+        fournisseursId: [],
       });
     } catch (error) {
       console.log("erreur update article", error);
@@ -122,14 +123,6 @@ const ArticlesModal = ({ fetchArticles, article }) => {
     fetchArticles();
     handleShowArticleModal();
   };
-
-  // FUNCTIONS
-  let articleUtilise = false;
-  if (edit) {
-    if (article._count.commandes) {
-      articleUtilise = true;
-    }
-  }
 
   // TEMPLATE
   return (
@@ -188,7 +181,7 @@ const ArticlesModal = ({ fetchArticles, article }) => {
                 multiple
                 name="fournisseurs"
                 onChange={handleChangeFournisseurs}
-                value={newArticle.fournisseurs}
+                value={newArticle.fournisseursId}
                 required
               >
                 {fournisseurs.map((f) => (
@@ -211,7 +204,7 @@ const ArticlesModal = ({ fetchArticles, article }) => {
                   variant="danger"
                   type="button"
                   onClick={() => handleDelete(article.id)}
-                  disabled={articleUtilise}
+                  disabled={edit && article._count.commandes}
                 >
                   Supprimer
                 </Button>

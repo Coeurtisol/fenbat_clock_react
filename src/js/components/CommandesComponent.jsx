@@ -105,7 +105,7 @@ const ListeCommandes = ({}) => {
   return (
     <>
       {!loading && (
-        <div className="row bg-light">
+        <div className="row bg-light mb-3">
           {commandes.length ? (
             <Table
               className="mb-0"
