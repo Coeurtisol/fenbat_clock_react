@@ -5,6 +5,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import {
   HashRouter as Router,
+  // Router,
   Switch,
   Route,
   withRouter,
@@ -54,8 +55,6 @@ function App() {
     <AuthContext.Provider value={{ isAuthenticated, setIsAuthenticated }}>
       <div className="app">
         <div className="background bg-gris" />
-        {/* <div className="background bg-orange" /> */}
-        {/* <div className="container"> */}
         <Router>
           <HeaderComponentWithRouter />
           <Switch>
@@ -77,7 +76,6 @@ function App() {
                 <Redirect to={isSecure ? "/loginuserlist" : "/loginpage"} />
               </Route>
             )}
-
             <PrivateRoute path="/overview" component={OverviewPage} />
             <PrivateRoute path="/admin/roles" component={AdminRolesPage} />
             <PrivateRoute path="/admin/users" component={AdminUsersPage} />
@@ -113,11 +111,9 @@ function App() {
             <PrivateRoute path="/commandes" component={CommandePage} />
             <PrivateRoute path="/moncompte" component={MonComptePage} />
             <PrivateRoute exact path="/" component={HomePage} />
-
             <Route component={NotFoundPage} />
           </Switch>
         </Router>
-        {/* </div> */}
         <ToastContainer position="bottom-left" autoClose={2500} />
       </div>
     </AuthContext.Provider>

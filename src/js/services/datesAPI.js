@@ -1,13 +1,18 @@
+/**
+ * If date is passed, returns the week number of the date, else returns weeks number in the year
+ * (the week number of the last day of the year)
+ * @param {string|Date} date
+ * @returns number
+ */
 function getWeekNumber(date) {
-  let manipulatedDate;
-  manipulatedDate = date
+  const manipulatedDate = date
     ? new Date(date)
     : new Date(new Date().getFullYear(), 11, 31);
   manipulatedDate.setHours(0, 0, 0, 0);
   manipulatedDate.setDate(
     manipulatedDate.getDate() + 3 - ((manipulatedDate.getDay() + 6) % 7)
   );
-  var week1 = new Date(manipulatedDate.getFullYear(), 0, 4);
+  const week1 = new Date(manipulatedDate.getFullYear(), 0, 4);
   return (
     1 +
     Math.round(

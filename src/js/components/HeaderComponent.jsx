@@ -9,6 +9,8 @@ const HeaderComponent = () => {
   return (
     <header>
       <ImgComponent
+        alt="logo fenbat"
+        dataTestId="app-logo"
         className="company-logo m-1"
         src="../images/logo-fenbat-transparent.png"
       />

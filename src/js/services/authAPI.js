@@ -58,7 +58,10 @@ function parseJwt(token) {
 function isTokenValid(token) {
   if (token) {
     const jwtData = parseJwt(token);
-    return jwtData.exp * 1000 > new Date().getTime();
+    if (jwtData.exp * 1000 > new Date().getTime()) {
+      return true;
+    }
+    logout();
   }
   return false;
 }

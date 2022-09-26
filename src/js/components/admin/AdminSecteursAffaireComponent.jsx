@@ -25,7 +25,7 @@ const AdminSecteursAffaireComponent = () => {
 
   // TEMPLATE
   return (
-    <div className="color-text col-xl-5 col-12">
+    <div className="color-text col-12 col-xl-5">
       <h1 className="text-center">Secteurs</h1>
       {secteursAffaire.length === 0 ? (
         <p>Aucun secteur n'est enregistré pour le moment</p>
