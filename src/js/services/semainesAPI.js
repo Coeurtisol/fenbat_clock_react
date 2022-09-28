@@ -24,33 +24,33 @@ async function update(semaine) {
   return await axios.put(SEMAINES_API_URL + "/" + semaine.id, { semaine });
 }
 
-async function getPDF(prenomNom, annee, semaine, version) {
-  axios
-    .get(
-      `${SEMAINES_API_URL}/pdf/${prenomNom}/${annee}/${semaine}/${version}`,
-      {
-        responseType: "blob",
-      }
-    )
-    .then((response) => {
-      const url = window.URL.createObjectURL(new Blob([response.data]));
-      const link = document.createElement("a");
-      link.href = url;
-      link.setAttribute(
-        "download",
-        `pointage-${prenomNom}-${annee}-${semaine}-${version}.pdf`
-      );
-      document.body.appendChild(link);
-      link.click();
-    });
-}
+// async function getPDF(prenomNom, annee, semaine, version) {
+//   axios
+//     .get(
+//       `${SEMAINES_API_URL}/pdf/${prenomNom}/${annee}/${semaine}/${version}`,
+//       {
+//         responseType: "blob",
+//       }
+//     )
+//     .then((response) => {
+//       const url = window.URL.createObjectURL(new Blob([response.data]));
+//       const link = document.createElement("a");
+//       link.href = url;
+//       link.setAttribute(
+//         "download",
+//         `pointage-${prenomNom}-${annee}-${semaine}-${version}.pdf`
+//       );
+//       document.body.appendChild(link);
+//       link.click();
+//     });
+// }
 
 const SEMAINES_API = {
   // create,
   update,
   findOne,
   getAllByWeek,
-  getPDF,
+  // getPDF,
   getNumberSemainesEnAttente,
 };
 

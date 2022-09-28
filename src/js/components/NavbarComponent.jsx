@@ -2,12 +2,10 @@ import React, { useContext } from "react";
 import AuthContext from "../../js/contexts/AuthContext";
 import { Navbar, Container, Nav, NavDropdown } from "react-bootstrap";
 import AUTH_API from "../services/authAPI";
-import permissions from "../configs/permissions.js";
 import { useHistory } from "react-router-dom";
 
 const NavbarComponent = () => {
   const history = useHistory();
-  const permissionId = AUTH_API.getPermissionId();
   const { setIsAuthenticated } = useContext(AuthContext);
 
   const logout = () => {
@@ -27,15 +25,15 @@ const NavbarComponent = () => {
               title={`${AUTH_API.getFullName()} (${AUTH_API.getRole()})`}
               id="basic-nav-dropdown"
             >
-              {permissionId <= permissions.respProd.id && (
+              {AUTH_API.estResp() && (
                 <NavDropdown.Item href="#/admin/users">
                   Utilisateurs
                 </NavDropdown.Item>
               )}
-              {permissionId == permissions.respSite.id && (
+              {AUTH_API.estRespSite() && (
                 <NavDropdown.Item href="#/admin/roles">Rôles</NavDropdown.Item>
               )}
-              {permissionId <= permissions.respProd.id && (
+              {AUTH_API.estResp() && (
                 <>
                   <NavDropdown.Divider />
                   <NavDropdown.Item href="#/admin/affaires">
@@ -44,7 +42,7 @@ const NavbarComponent = () => {
                   <NavDropdown.Divider />
                 </>
               )}
-              {permissionId == permissions.respSite.id && (
+              {AUTH_API.estRespSite() && (
                 <>
                   <NavDropdown.Item href="#/admin/motifsAbsence">
                     Motifs d'absence
@@ -56,7 +54,7 @@ const NavbarComponent = () => {
                   <NavDropdown.Divider />
                 </>
               )}
-              {permissionId <= permissions.respProd.id && (
+              {AUTH_API.estResp() && (
                 <>
                   <NavDropdown.Item href="#/admin/articles">
                     Articles

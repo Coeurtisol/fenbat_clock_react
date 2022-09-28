@@ -1,5 +1,7 @@
 import axios from "axios";
 import { AUTH_API_URL } from "../configs/api_links";
+import etatsSemaine from "../configs/etatsSemaine";
+import permissions from "../configs/permissions";
 
 async function isSecure() {
   const res = await axios.get(AUTH_API_URL + "/issecure");
@@ -120,20 +122,39 @@ function getFullName() {
 }
 
 function getValidationLevel() {
-  const permissionId = getPermissionId();
-  // resp site => valid resp site
-  if (permissionId === 1) return 4;
-  // resp prod => valid resp prod
-  else if (permissionId === 2) return 3;
-  // chef equipe ou => attente de validation
-  else return 2;
+  if (estRespSite()) {
+    return etatsSemaine.valideeParRespSite.id;
+  } else if (estRespProd()) {
+    return etatsSemaine.valideeParRespProd.id;
+  }
+  return etatsSemaine.enAttenteValidation.id;
 }
 
 function peutValider(semaineEtatId) {
   const validationLevel = getValidationLevel();
-  if (semaineEtatId === 1 || semaineEtatId === 5) return true;
+  if (
+    semaineEtatId === etatsSemaine.enSaisie.id ||
+    semaineEtatId === etatsSemaine.refusee.id
+  )
+    return true;
   else if (semaineEtatId < validationLevel) return true;
   else return false;
+}
+
+function estChefEquipe() {
+  return getPermissionId() == permissions.chefEquipe.id;
+}
+
+function estRespProd() {
+  return getPermissionId() == permissions.respProd.id;
+}
+
+function estRespSite() {
+  return getPermissionId() == permissions.respSite.id;
+}
+
+function estResp() {
+  return estRespSite() || estRespProd();
 }
 
 const AUTH_API = {
@@ -151,6 +172,10 @@ const AUTH_API = {
   getValidationLevel,
   peutValider,
   isSecure,
+  estChefEquipe,
+  estRespProd,
+  estRespSite,
+  estResp,
 };
 
 export default AUTH_API;

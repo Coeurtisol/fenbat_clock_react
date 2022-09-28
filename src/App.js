@@ -27,12 +27,15 @@ import Loginuserlist from "./js/pages/Loginuserlist";
 import Loginkeypad from "./js/pages/Loginkeypad";
 import CommandePage from "./js/pages/CommandePage";
 import NotFoundPage from "./js/pages/NotFoundPage";
-import PrivateRoute from "./js/components/PrivateRoute";
-import PublicRoute from "./js/components/PublicRoute";
 import LoginForm from "./js/pages/LoginForm";
 import AdminArticlesPage from "./js/pages/admin/AdminArticlesPage";
 import GestionCommandePage from "./js/pages/GestionCommandePage";
 import OverviewPage from "./js/pages/OverviewPage";
+import PrivateRoute from "./js/components/route/PrivateRoute";
+import PublicRoute from "./js/components/route/PublicRoute";
+import ChefEquipeRoute from "./js/components/route/ChefEquipeRoute";
+import RespRoute from "./js/components/route/RespRoute";
+import RespSiteRoute from "./js/components/route/RespSiteRoute";
 
 function App() {
   AUTH_API.setup();
@@ -58,6 +61,7 @@ function App() {
         <Router>
           <HeaderComponentWithRouter />
           <Switch>
+            {/* DECONNECTES */}
             <PublicRoute
               path="/loginpage"
               component={LoginForm}
@@ -76,40 +80,44 @@ function App() {
                 <Redirect to={isSecure ? "/loginuserlist" : "/loginpage"} />
               </Route>
             )}
-            <PrivateRoute path="/overview" component={OverviewPage} />
-            <PrivateRoute path="/admin/roles" component={AdminRolesPage} />
-            <PrivateRoute path="/admin/users" component={AdminUsersPage} />
-            <PrivateRoute path="/admin/entites" component={AdminEntitesPage} />
-            <PrivateRoute
-              path="/admin/affaires"
-              component={AdminAffairesPage}
-            />
-            <PrivateRoute
-              path="/admin/motifsAbsence"
-              component={AdminMotifsAbsencePage}
-            />
-            <PrivateRoute
-              path="/admin/articles"
-              component={AdminArticlesPage}
-            />
-            <PrivateRoute
-              path="/gestion/pointage/:year/:week/:userId"
-              component={PointagePage}
-            />
-            <PrivateRoute
-              path="/gestion/pointage/:year/:week"
-              component={GestionPointagePage}
-            />
-            <PrivateRoute
-              path="/gestion/commandes"
-              component={GestionCommandePage}
-            />
+
+            {/* CONNECTES */}
             <PrivateRoute
               path="/pointage/:year/:week"
               component={PointagePage}
             />
-            <PrivateRoute path="/commandes" component={CommandePage} />
             <PrivateRoute path="/moncompte" component={MonComptePage} />
+
+            {/* CHEFS D'EQUIPE */}
+            <ChefEquipeRoute path="/commandes" component={CommandePage} />
+
+            {/* RESPONSABLES */}
+            <RespRoute path="/overview" component={OverviewPage} />
+            <RespRoute path="/admin/users" component={AdminUsersPage} />
+            <RespRoute path="/admin/affaires" component={AdminAffairesPage} />
+            <RespRoute path="/admin/articles" component={AdminArticlesPage} />
+            <RespRoute
+              path="/gestion/pointage/:year/:week/:userId"
+              component={PointagePage}
+            />
+            <RespRoute
+              path="/gestion/pointage/:year/:week"
+              component={GestionPointagePage}
+            />
+            <RespRoute
+              path="/gestion/commandes"
+              component={GestionCommandePage}
+            />
+
+            {/* RESPONSABLES SITE */}
+            <RespSiteRoute path="/admin/roles" component={AdminRolesPage} />
+            <RespSiteRoute path="/admin/entites" component={AdminEntitesPage} />
+            <RespSiteRoute
+              path="/admin/motifsAbsence"
+              component={AdminMotifsAbsencePage}
+            />
+
+            {/* REDIRECTION */}
             <PrivateRoute exact path="/" component={HomePage} />
             <Route component={NotFoundPage} />
           </Switch>

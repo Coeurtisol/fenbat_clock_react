@@ -52,9 +52,9 @@ const GestionPointagePage = ({ history, match }) => {
         etatValidationFilter[ev.name] = false;
       });
       etatValidationFilter["En attente de validation"] =
-        AUTH_API.getPermissionId() == 2 && true;
+        AUTH_API.estRespProd() && true;
       etatValidationFilter["Validé par responsable de production"] =
-        AUTH_API.getPermissionId() == 1 && true;
+        AUTH_API.estRespSite() && true;
       setFilter({ ...filter, etatValidation: etatValidationFilter });
 
       setEtatsSemaine(data);

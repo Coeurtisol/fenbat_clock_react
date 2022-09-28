@@ -10,15 +10,13 @@ const ListeCommandes = ({}) => {
   const [loading, setLoading] = useState(true);
   const [commandes, setCommandes] = useState([]);
   const [sortBy, setSortBy] = useState({ value: "etat", desc: false });
-  const permissionId = AUTH_API.getPermissionId();
-  let resp = true;
-  if (permissionId == permissions.chefEquipe.id) resp = false;
+  const estResp = AUTH_API.estResp();
 
   // FETCH
   const fetchCommandes = async () => {
     try {
       let data;
-      if (resp) {
+      if (estResp) {
         data = await COMMANDES_API.findAll();
       } else {
         data = await COMMANDES_API.findAllByUser(AUTH_API.getId());
@@ -144,7 +142,7 @@ const ListeCommandes = ({}) => {
                     Fournisseur
                   </th>
                   <th className="text-center">Quantité</th>
-                  {resp && (
+                  {estResp && (
                     <th
                       className={`text-center ${
                         sortBy.value == "chef d'équipe" ? "sorted" : null
@@ -194,7 +192,7 @@ const ListeCommandes = ({}) => {
                     <td className="text-center">{c.article.name}</td>
                     <td className="text-center">{c.fournisseur.name}</td>
                     <td className="text-center">{c.quantite}</td>
-                    {resp && (
+                    {estResp && (
                       <td className="text-center">
                         {c.user.firstname} {c.user.lastname}
                       </td>
@@ -203,7 +201,7 @@ const ListeCommandes = ({}) => {
                     <td className="text-center">{c.etat}</td>
 
                     <td>
-                      {resp && c.etat == "En attente" ? (
+                      {estResp && c.etat == "En attente" ? (
                         <>
                           <Button
                             className="m-1"

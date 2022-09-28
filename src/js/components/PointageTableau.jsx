@@ -2,7 +2,6 @@ import React from "react";
 import { toast } from "react-toastify";
 import { Table, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import permissions from "../configs/permissions.js";
 import AUTH_API from "../services/authAPI.js";
 import SEMAINES_API from "../services/semainesAPI.js";
 import PointageAffaireModal from "./modals/PointageAffaireModal";
@@ -25,7 +24,6 @@ const PointageTableau = ({
   handleSetErrors,
 }) => {
   const history = useHistory();
-  const permissionId = AUTH_API.getPermissionId();
   // ######################################## HANDLE FUNCTIONS
   const handleSubmitSave = async ({ target }) => {
     const updatedSemaine = { ...semaine };
@@ -46,18 +44,18 @@ const PointageTableau = ({
     fetchRefresh();
   };
 
-  const handleGetPDF = async ({ target }) => {
-    const version = target.getAttribute("data-version");
-    console.log(
-      `Téléchargement du PDF (version : ${version}) ${semaine.user.firstname}${semaine.user.lastname}-${semaine.annee}-${semaine.numero}`
-    );
-    await SEMAINES_API.getPDF(
-      semaine.user.firstname + semaine.user.lastname,
-      semaine.annee,
-      semaine.numero,
-      version
-    );
-  };
+  // const handleGetPDF = async ({ target }) => {
+  //   const version = target.getAttribute("data-version");
+  //   console.log(
+  //     `Téléchargement du PDF (version : ${version}) ${semaine.user.firstname}${semaine.user.lastname}-${semaine.annee}-${semaine.numero}`
+  //   );
+  //   await SEMAINES_API.getPDF(
+  //     semaine.user.firstname + semaine.user.lastname,
+  //     semaine.annee,
+  //     semaine.numero,
+  //     version
+  //   );
+  // };
 
   let submittable = true;
   if (errors) {
@@ -149,10 +147,10 @@ const PointageTableau = ({
   for (let i = 0; i < semaine.pointages.length; i += 2) {
     const affaireAM = affaires.find(
       (a) => a.id == semaine.pointages[i].affaireId
-    )
+    );
     const affairePM = affaires.find(
-      (a) => a.id == semaine.pointages[i+1].affaireId
-    )
+      (a) => a.id == semaine.pointages[i + 1].affaireId
+    );
     const zoneAM = affaireAM?.zone;
     const zonePM = affairePM?.zone;
     let zone = zoneAM?.label;
@@ -321,8 +319,7 @@ const PointageTableau = ({
           </Button>
         )}
 
-        {/* <div> */}
-        {semaine.PDFemploye && (
+        {/* {semaine.PDFemploye && (
           <Button
             className="mb-3 mx-3"
             variant="info"
@@ -343,9 +340,9 @@ const PointageTableau = ({
           >
             Télécharger le PDF (responsable)
           </Button>
-        )}
+        )} */}
         {!listView &&
-          permissionId == permissions.respSite.id &&
+          AUTH_API.estRespSite() &&
           semaine.etatSemaine?.id != 5 && (
             <PointageCommentaireModal
               semaine={semaine}
@@ -375,14 +372,12 @@ const PointageTableau = ({
             type="button"
             disabled={!submittable}
           >
-            {permissionId == permissions.respSite.id && "Valider (resp site)"}
-            {permissionId == permissions.respProd.id && "Valider (resp prod)"}
-            {permissionId >= permissions.chefEquipe.id &&
-              "Envoyer pour validation"}
+            {AUTH_API.estRespSite() && "Valider (resp site)"}
+            {AUTH_API.estRespProd() && "Valider (resp prod)"}
+            {!AUTH_API.estResp() && "Envoyer pour validation"}
           </Button>
         )}
       </div>
-      {/* </div> */}
     </>
   );
 };

@@ -2,7 +2,6 @@ import React from "react";
 import { Link } from "react-router-dom";
 import DATE_API from "../services/datesAPI.js";
 import AUTH_API from "../services/authAPI";
-import permissions from "../configs/permissions.js";
 import { useEffect } from "react";
 import { useState } from "react";
 import COMMANDES_API from "../services/commandesAPI.js";
@@ -10,7 +9,6 @@ import SEMAINES_API from "../services/semainesAPI.js";
 import { toast } from "react-toastify";
 
 const HomePage = () => {
-  const permissionId = AUTH_API.getPermissionId();
   const [notifications, setNotifications] = useState({
     commandes: 0,
     semaines: 0,
@@ -30,7 +28,7 @@ const HomePage = () => {
   };
 
   useEffect(() => {
-    if (permissionId <= permissions.respProd.id) {
+    if (AUTH_API.estResp()) {
       fetchNotifications();
     }
   }, []);
@@ -45,7 +43,7 @@ const HomePage = () => {
         >
           <h1>Pointages</h1>
         </Link>
-        {permissionId <= permissions.respProd.id && (
+        {AUTH_API.estResp() && (
           <Link
             to={`/gestion/pointage/${new Date().getFullYear()}/${DATE_API.getWeekNumber(
               new Date()
@@ -62,7 +60,7 @@ const HomePage = () => {
         {/* <Link to="/">
           <h1>Ressources humaines</h1>
         </Link> */}
-        {permissionId <= permissions.respProd.id && (
+        {AUTH_API.estResp() && (
           <Link to="/gestion/commandes">
             {notifications.commandes > 0 && (
               <div className="notification">
@@ -72,12 +70,12 @@ const HomePage = () => {
             <h1>Validation commandes</h1>
           </Link>
         )}
-        {permissionId == permissions.chefEquipe.id && (
+        {AUTH_API.estChefEquipe() && (
           <Link to="/commandes">
             <h1>Commandes</h1>
           </Link>
         )}
-        {permissionId <= permissions.respProd.id && (
+        {AUTH_API.estResp() && (
           <Link to="/overview">
             <h1>Overview (WIP)</h1>
           </Link>
