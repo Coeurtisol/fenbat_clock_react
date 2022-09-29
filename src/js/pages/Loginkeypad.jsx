@@ -67,19 +67,19 @@ const Loginkeypad = ({ location, history }) => {
   const login = async (credentials) => {
     try {
       const res = await AUTH_API.login(credentials);
-      if (res.data.error) {
-        toast.error(res.data.error);
-        handleReset();
-        return;
-      }
       setIsAuthenticated(true);
-      toast.success("Connexion réussi");
+      toast.success("Connexion réussi.");
       console.log("success login", res);
       history.replace("/");
       document.onkeyup = null;
     } catch (error) {
-      console.log("erreur login", error);
+      if (error.response) {
+        handleReset();
+        return toast.error(error.response.data.error);
+      }
       handleReset();
+      console.log("erreur login", error);
+      toast.error("Erreur lors de la tentative de connexion.");
     }
   };
 

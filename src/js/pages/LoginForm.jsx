@@ -23,16 +23,16 @@ const LoginForm = ({ isSecure }) => {
     e.preventDefault();
     try {
       const res = await AUTH_API.externalLogin(credentials);
-      if (res.data.error) {
-        toast.error(res.data.error);
-        return;
-      }
       setIsAuthenticated(true);
-      toast.success("Connexion réussi");
+      toast.success("Connexion réussi.");
       console.log("success login", res);
       history.replace("/");
     } catch (error) {
+      if (error.response) {
+        return toast.error(error.response.data.error);
+      }
       console.log("erreur login", error);
+      toast.error("Erreur lors de la tentative de connexion.");
       setCredentials({
         ...credentials,
         password: "",
