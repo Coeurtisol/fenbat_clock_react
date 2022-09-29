@@ -109,7 +109,7 @@ function getEntite() {
   if (isAuthenticated()) {
     const token = getToken();
     const jwtData = parseJwt(token);
-    return jwtData.entite ? jwtData.entite.name : null;
+    return jwtData.entite ? jwtData.entite.id : null;
   }
 }
 

@@ -136,7 +136,7 @@ const PointagePage = ({ history, match, location }) => {
 
   // ######################################### FILTRAGE AFFAIRES
   const filteredAffaires = affaires.filter(
-    (a) => a.etat == "En cours" && a.entite.name == currentEntite
+    (a) => a.etat == "En cours" && a.entite.id == currentEntite
   );
 
   // ######################################### GESTION SEMAINES
@@ -225,7 +225,7 @@ const PointagePage = ({ history, match, location }) => {
                         key={e.id}
                         value={e.name}
                         className={
-                          e.name == currentEntite ? "selected-option" : null
+                          e.id == currentEntite ? "selected-option" : null
                         }
                       >
                         {e.name}

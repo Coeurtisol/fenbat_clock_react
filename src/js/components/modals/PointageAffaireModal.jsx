@@ -51,7 +51,7 @@ const PointageAffaireModal = ({
   };
 
   const filteredAffaires = affaires.filter(
-    (a) => a.etat == "En cours" && entiteChoice && a.entite.name == entiteChoice
+    (a) => a.etat == "En cours" && entiteChoice && a.entite.id == entiteChoice
   );
 
   // ############################################ TEMPLATE
@@ -60,9 +60,7 @@ const PointageAffaireModal = ({
       <td
         onClick={!listView ? handleShowModal : null}
         className={`
-            text-center ${
-              errors?.[index] ? "error-cell-pointage" : null
-            }
+            text-center ${errors?.[index] ? "error-cell-pointage" : null}
           `}
       >
         {semaine.pointages[index].affaireId > 0
@@ -113,7 +111,7 @@ const PointageAffaireModal = ({
                     key={e.id}
                     label={e.name}
                     value={e.name}
-                    checked={e.name == entiteChoice}
+                    checked={e.id == entiteChoice}
                   />
                 ))}
               </Form.Group>
