@@ -106,6 +106,9 @@ const UserModal = ({ fetchUsers, user }) => {
         status: "1",
       });
     } catch (error) {
+      if (error.response) {
+        return toast.error(error.response.data.message);
+      }
       console.log("erreur create user", error);
       toast.error("Erreur à la création de l'utilisateur.");
     }
@@ -115,8 +118,6 @@ const UserModal = ({ fetchUsers, user }) => {
   // UPDATE
   const handleUpdate = async (e) => {
     e.preventDefault();
-    !newUser.accessCode && delete newUser.accessCode;
-    !newUser.password && delete newUser.password;
     console.log("update user", newUser);
     try {
       const response = await USERS_API.update(user.id, newUser);
@@ -134,6 +135,9 @@ const UserModal = ({ fetchUsers, user }) => {
         status: "1",
       });
     } catch (error) {
+      if (error.response) {
+        return toast.error(error.response.data.message);
+      }
       console.log("erreur update user", error);
       toast.error("Erreur à la mise à jour de l'utilisateur.");
     }
@@ -147,6 +151,9 @@ const UserModal = ({ fetchUsers, user }) => {
       console.log("success delete user", response);
       toast.success("Utilisateur supprimé.");
     } catch (error) {
+      if (error.response) {
+        return toast.error(error.response.data.message);
+      }
       console.log("erreur delete user", error);
       toast.error("Erreur à la suppression de l'utilisateur.");
     }
@@ -302,7 +309,7 @@ const UserModal = ({ fetchUsers, user }) => {
                 label="Oui"
                 value={"1"}
                 checked={newUser.status == "1"}
-                />
+              />
               <Form.Check
                 onChange={handlechange}
                 type="radio"

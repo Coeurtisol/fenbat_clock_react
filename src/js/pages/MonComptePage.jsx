@@ -78,14 +78,15 @@ const MonComptePage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    !user.accessCode && delete user.accessCode;
-    !user.password && delete user.password;
     console.log("update user", user);
     try {
       const response = await USERS_API.update(id, user);
       console.log("success update user", response);
       toast.success("Informations misent à jour.");
     } catch (error) {
+      if (error.response) {
+        return toast.error(error.response.data.message);
+      }
       console.log("erreur update user", error);
       toast.error("Erreur à la mise à jour des informations.");
     }
