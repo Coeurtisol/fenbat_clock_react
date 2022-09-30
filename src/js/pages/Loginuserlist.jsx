@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import LoadingIcon from "../components/loadingIcon";
-import USERS_API from "../services/usersAPI";
+import AUTH_API from "../services/authAPI";
 
 const Loginuserlist = ({ isSecure }) => {
   const [loading, setLoading] = useState(true);
@@ -10,7 +10,7 @@ const Loginuserlist = ({ isSecure }) => {
 
   const fetchData = async () => {
     try {
-      const data = await USERS_API.getAllActive();
+      const data = await AUTH_API.getActiveUsers();
       console.log("success fetch", data);
       setUsers(data);
       setLoading(false);

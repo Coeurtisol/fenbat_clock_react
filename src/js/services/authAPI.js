@@ -8,6 +8,11 @@ async function isSecure() {
   return res.data.isSecure;
 }
 
+async function getActiveUsers() {
+  const response = await axios.get(AUTH_API_URL + "/usersList");
+  return response.data;
+}
+
 async function login(credentials) {
   const response = await axios.post(AUTH_API_URL + "/login", credentials);
   const token = response.data;
@@ -159,6 +164,7 @@ function estResp() {
 
 const AUTH_API = {
   setup,
+  getActiveUsers,
   login,
   externalLogin,
   logout,
