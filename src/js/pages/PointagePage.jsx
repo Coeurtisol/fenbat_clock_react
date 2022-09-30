@@ -214,7 +214,7 @@ const PointagePage = ({ history, match, location }) => {
                   <Form.Select
                     name="entite"
                     onChange={(e) => {
-                      setCurrentEntite(e.target.value);
+                      setCurrentEntite(Number(e.target.value));
                       setDefaultAffaire("");
                     }}
                     value={currentEntite}
@@ -223,7 +223,7 @@ const PointagePage = ({ history, match, location }) => {
                     {entites.map((e) => (
                       <option
                         key={e.id}
-                        value={e.name}
+                        value={e.id}
                         className={
                           e.id == currentEntite ? "selected-option" : null
                         }
