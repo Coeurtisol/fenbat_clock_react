@@ -28,9 +28,9 @@ html {
 
 @keyframes rotate
 {
-    from { transform: rotate(0deg);   opacity: 0; }
+    from { transform: rotate(0deg);   opacity: 0.1; }
     50%  { transform: rotate(180deg); opacity: 1.0; }
-    to   { transform: rotate(360deg); opacity: 0; }
+    to   { transform: rotate(360deg); opacity: 0.1; }
 }
 
 /* BACKGROUND */
