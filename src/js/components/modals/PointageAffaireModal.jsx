@@ -110,7 +110,7 @@ const PointageAffaireModal = ({
                     name="entiteId"
                     key={e.id}
                     label={e.name}
-                    value={e.name}
+                    value={e.id}
                     checked={e.id == entiteChoice}
                   />
                 ))}
