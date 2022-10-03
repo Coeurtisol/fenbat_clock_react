@@ -4,7 +4,6 @@ import COMMANDES_API from "../services/commandesAPI";
 import { Button, Table } from "react-bootstrap";
 import { toast } from "react-toastify";
 import LoadingIcon from "../components/loadingIcon";
-import permissions from "../configs/permissions";
 
 const ListeCommandes = ({}) => {
   const [loading, setLoading] = useState(true);
@@ -61,32 +60,32 @@ const ListeCommandes = ({}) => {
     case "article":
       sortedCommandes.sort((a, b) => {
         return sortBy.desc
-          ? b.article.name.localeCompare(a.article.name)
-          : a.article.name.localeCompare(b.article.name);
+          ? b.article.localeCompare(a.article)
+          : a.article.localeCompare(b.article);
       });
       break;
 
     case "fournisseur":
       sortedCommandes.sort((a, b) => {
         return sortBy.desc
-          ? b.fournisseur.name.localeCompare(a.fournisseur.name)
-          : a.fournisseur.name.localeCompare(b.fournisseur.name);
+          ? b.fournisseur.localeCompare(a.fournisseur)
+          : a.fournisseur.localeCompare(b.fournisseur);
       });
       break;
 
     case "chef d'équipe":
       sortedCommandes.sort((a, b) => {
         return sortBy.desc
-          ? b.user.firstname.localeCompare(a.user.firstname)
-          : a.user.firstname.localeCompare(b.user.firstname);
+          ? b.user.localeCompare(a.user)
+          : a.user.localeCompare(b.user);
       });
       break;
 
     case "affaire":
       sortedCommandes.sort((a, b) => {
         return sortBy.desc
-          ? b.affaire?.name.localeCompare(a.affaire?.name)
-          : a.affaire?.name.localeCompare(b.affaire?.name);
+          ? b.affaire?.localeCompare(a.affaire)
+          : a.affaire?.localeCompare(b.affaire);
       });
       break;
 
@@ -189,15 +188,11 @@ const ListeCommandes = ({}) => {
               <tbody>
                 {sortedCommandes.map((c) => (
                   <tr key={c.id}>
-                    <td className="text-center">{c.article.name}</td>
-                    <td className="text-center">{c.fournisseur.name}</td>
+                    <td className="text-center">{c.article}</td>
+                    <td className="text-center">{c.fournisseur}</td>
                     <td className="text-center">{c.quantite}</td>
-                    {estResp && (
-                      <td className="text-center">
-                        {c.user.firstname} {c.user.lastname}
-                      </td>
-                    )}
-                    <td className="text-center">{c.affaire?.name}</td>
+                    {estResp && <td className="text-center">{c.user}</td>}
+                    <td className="text-center">{c.affaire}</td>
                     <td className="text-center">{c.etat}</td>
 
                     <td>

@@ -3,9 +3,8 @@ import COMMANDES_API from "../../services/commandesAPI";
 import AFFAIRES_API from "../../services/affairesAPI";
 import { Form, Button, Modal } from "react-bootstrap";
 import { toast } from "react-toastify";
-import AUTH_API from "../../services/authAPI";
 
-const CommandeModal = ({ article, commande }) => {
+const CommandeModal = ({ article }) => {
   const [affaires, setAffaires] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [newCommande, setNewCommande] = useState({
@@ -14,8 +13,6 @@ const CommandeModal = ({ article, commande }) => {
     quantite: 1,
     affaireId: "",
   });
-  let edit = false;
-  if (commande) edit = true;
 
   // FETCH FUNCTIONS
   const fetchAffaires = async () => {
@@ -33,7 +30,6 @@ const CommandeModal = ({ article, commande }) => {
   const handleShowCommandeModal = () => {
     setShowModal(!showModal);
     if (!showModal) {
-      // if (edit) {
       setNewCommande({
         ...setNewCommande,
         articleId: article.id,
@@ -43,9 +39,6 @@ const CommandeModal = ({ article, commande }) => {
       });
       fetchAffaires();
     }
-    // } else {
-    //   fetchCommandes();
-    // }
   };
 
   const handlechange = ({ target }) => {
@@ -57,7 +50,6 @@ const CommandeModal = ({ article, commande }) => {
   const handleCreate = async (e) => {
     e.preventDefault();
     console.log("create commande", newCommande);
-    newCommande.userId = AUTH_API.getId();
     try {
       const response = await COMMANDES_API.create(newCommande);
       console.log("success create commande", response);
@@ -103,12 +95,10 @@ const CommandeModal = ({ article, commande }) => {
         onHide={handleShowCommandeModal}
       >
         <Modal.Header closeButton>
-          <Modal.Title>
-            {edit ? `Détails de la commande` : "Commander"}
-          </Modal.Title>
+          <Modal.Title>Commander</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form onSubmit={edit ? handleCreate : handleCreate}>
+          <Form onSubmit={handleCreate}>
             <Form.Group className="mb-3">
               <Form.Label>Article</Form.Label>
               <div className="fw-bold fs-4">

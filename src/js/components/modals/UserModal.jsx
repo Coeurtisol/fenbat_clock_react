@@ -163,7 +163,7 @@ const UserModal = ({ fetchUsers, user }) => {
   // FUNCTIONS
   let utilisateurActif = false;
   if (edit) {
-    if (user.pointages.length > 0 || user.commandes.length > 0) {
+    if (user.pointages.length > 0) {
       utilisateurActif = true;
     }
   }

@@ -183,7 +183,7 @@ const UserModal = ({ fetchAffaires, affaire }) => {
   // FUNCTIONS
   let affaireUtilisee = false;
   if (edit) {
-    if (affaire.pointages.length > 0 || affaire.commandes.length > 0) {
+    if (affaire.pointages.length > 0) {
       affaireUtilisee = true;
     }
   }
