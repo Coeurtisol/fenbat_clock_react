@@ -45,9 +45,9 @@ function App() {
     const isSecureResponse = await AUTH_API.isSecure();
     setIsSecure(isSecureResponse);
   }
-  // useEffect(() => {
-  //   handleIsSecure();
-  // }, []);
+  useEffect(() => {
+    handleIsSecure();
+  }, []);
 
   const [isAuthenticated, setIsAuthenticated] = useState(
     AUTH_API.isAuthenticated()
