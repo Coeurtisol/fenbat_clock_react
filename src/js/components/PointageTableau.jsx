@@ -9,6 +9,7 @@ import PointageHourModal from "./modals/PointageHourModal";
 import PointageMotifAbsenceModal from "./modals/PointageMotifAbsenceModal";
 import PointageCommentaireModal from "./modals/PointageCommentaireModal";
 import { useHistory } from "react-router-dom";
+import etatsSemaine from "../configs/etatsSemaine.js";
 
 const PointageTableau = ({
   cadreEdit,
@@ -191,7 +192,7 @@ const PointageTableau = ({
     totalWeekPanier += panierDay;
     panierLine.push(
       <td colSpan="2" key={i} className="text-center">
-        {panierDay == 1 && 1}
+        {panierDay === 1 && 1}
       </td>
     );
   }
@@ -296,14 +297,14 @@ const PointageTableau = ({
         // } my-3`}
         className={"container-fluid d-flex flex-wrap justify-content-end my-3"}
       >
-        {cadreEdit && (
+        {cadreEdit ? (
           <Link
             className="btn btn-primary mb-3 ms-3 me-auto"
             to={`/gestion/pointage/${semaine.annee}/${semaine.numero}`}
           >
             Retour à gestion des pointages
           </Link>
-        )}
+        ) : null}
         {listView && (
           <Button
             className="mb-3 ms-3 me-auto"
@@ -343,7 +344,7 @@ const PointageTableau = ({
         )} */}
         {!listView &&
           AUTH_API.estRespSite() &&
-          semaine.etatSemaine?.id != 5 && (
+          semaine.etatSemaine?.id !== etatsSemaine.refusee.id && (
             <PointageCommentaireModal
               semaine={semaine}
               setSemaine={setSemaine}

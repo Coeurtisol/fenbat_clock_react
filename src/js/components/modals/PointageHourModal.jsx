@@ -7,7 +7,6 @@ const PointageAffaireModal = ({
   index,
   handleSetErrors,
   errors,
-  motifsAbsence,
   listView,
 }) => {
   const [showModal, setShowModal] = useState(false);
@@ -75,9 +74,11 @@ const PointageAffaireModal = ({
         <Modal.Body>
           <Form onSubmit={handleValider}>
             <Form.Group className="mb-3">
-              <Form.Label><h4 className="color-text">heures</h4></Form.Label>
+              <Form.Label>
+                <h4 className="color-text">heures</h4>
+              </Form.Label>
               <div className="pointage-hour-modal-keynumber">
-                {["1", "2", "3", "4", "5", "6", "0"].map((n) => (
+                {[1, 2, 3, 4, 5, 6, 0].map((n) => (
                   <Form.Check
                     key={n}
                     onChange={handleChangeNewValue}
@@ -85,7 +86,7 @@ const PointageAffaireModal = ({
                     name="hours"
                     value={n}
                     label={n}
-                    checked={newValue.hours == n}
+                    checked={newValue.hours === n}
                     id={`cb-hours-${n}`}
                   />
                 ))}
@@ -101,8 +102,8 @@ const PointageAffaireModal = ({
                   type="radio"
                   name="minutes"
                   label=".25 (15 minutes)"
-                  value="0.25"
-                  checked={newValue.minutes == "0.25"}
+                  value={0.25}
+                  checked={newValue.minutes === 0.25}
                   id={`cb-minutes-0.25`}
                 />
                 <Form.Check
@@ -110,8 +111,8 @@ const PointageAffaireModal = ({
                   type="radio"
                   name="minutes"
                   label=".50 (30 minutes)"
-                  value="0.5"
-                  checked={newValue.minutes == "0.5"}
+                  value={0.5}
+                  checked={newValue.minutes === 0.5}
                   id={`cb-minutes-0.5`}
                 />
                 <Form.Check
@@ -119,8 +120,8 @@ const PointageAffaireModal = ({
                   type="radio"
                   name="minutes"
                   label=".75 (45 minutes)"
-                  value="0.75"
-                  checked={newValue.minutes == "0.75"}
+                  value={0.75}
+                  checked={newValue.minutes === 0.75}
                   id={`cb-minutes-0.75`}
                 />
               </div>
@@ -130,8 +131,8 @@ const PointageAffaireModal = ({
                   type="radio"
                   name="minutes"
                   label="0"
-                  value="0"
-                  checked={newValue.minutes == "0"}
+                  value={0}
+                  checked={newValue.minutes === 0}
                   id={`cb-minutes-0`}
                 />
               </div>

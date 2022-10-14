@@ -10,7 +10,7 @@ const UserModal = ({ fetchUsers, user }) => {
   const [lockedSubmit, setLockedSubmit] = useState(false);
   const [entites, setEntites] = useState([]);
   const [roles, setRoles] = useState([]);
-  const [newUser, setNewUser] = useState({
+  const userModel = {
     firstname: "",
     lastname: "",
     email: "",
@@ -19,10 +19,10 @@ const UserModal = ({ fetchUsers, user }) => {
     password: "",
     entiteId: null,
     roleId: 5,
-    status: "1",
-  });
-  let edit = false;
-  if (user) edit = true;
+    status: true,
+  };
+  const [newUser, setNewUser] = useState({ ...userModel });
+  const edit = user ? true : false;
 
   // FETCH
   const fetchRoles = async () => {
@@ -61,17 +61,22 @@ const UserModal = ({ fetchUsers, user }) => {
           phoneNumber: user.phoneNumber,
           entiteId: user.entite && user.entite.id,
           roleId: user.role.id,
-          status: user.status ? "1" : "0",
+          status: user.status,
         });
       }
       fetchEntites();
       fetchRoles();
     } else {
+      setNewUser({ ...userModel });
       fetchUsers();
     }
   };
+
   const handlechange = ({ target }) => {
-    const { name, value } = target;
+    let { name, value } = target;
+    if (name === "status") {
+      value = !!+value;
+    }
     if (name === "accessCode") {
       if (value.length > 0 && value.length < 4) {
         setLockedSubmit(true);
@@ -84,7 +89,6 @@ const UserModal = ({ fetchUsers, user }) => {
     }
     setNewUser({ ...newUser, [name]: value });
   };
-  // console.log(newUser);
 
   // CREATE
   const handleCreate = async (e) => {
@@ -94,17 +98,6 @@ const UserModal = ({ fetchUsers, user }) => {
       const response = await USERS_API.create(newUser);
       console.log("success create user", response);
       toast.success("Utilisateur créé.");
-      setNewUser({
-        firstname: "",
-        lastname: "",
-        email: "",
-        phoneNumber: "",
-        accessCode: "",
-        password: "",
-        entiteId: 0,
-        roleId: 5,
-        status: "1",
-      });
     } catch (error) {
       if (error.response) {
         return toast.error(error.response.data.message);
@@ -123,17 +116,6 @@ const UserModal = ({ fetchUsers, user }) => {
       const response = await USERS_API.update(user.id, newUser);
       console.log("success update user", response);
       toast.success("Utilisateur mit à jour.");
-      setNewUser({
-        firstname: "",
-        lastname: "",
-        email: "",
-        phoneNumber: "",
-        accessCode: "",
-        password: "",
-        entiteId: null,
-        roleId: 5,
-        status: "1",
-      });
     } catch (error) {
       if (error.response) {
         return toast.error(error.response.data.message);
@@ -294,7 +276,7 @@ const UserModal = ({ fetchUsers, user }) => {
                 )}
                 {roles.map((r) => (
                   <React.Fragment key={r.id}>
-                    {r.id != 1 && <option value={r.id}>{r.name}</option>}
+                    {r.id !== 1 && <option value={r.id}>{r.name}</option>}
                   </React.Fragment>
                 ))}
               </Form.Select>
@@ -307,8 +289,8 @@ const UserModal = ({ fetchUsers, user }) => {
                 id="radio-actif-oui"
                 name="status"
                 label="Oui"
-                value={"1"}
-                checked={newUser.status == "1"}
+                value={1}
+                checked={newUser.status}
               />
               <Form.Check
                 onChange={handlechange}
@@ -316,8 +298,8 @@ const UserModal = ({ fetchUsers, user }) => {
                 id="radio-actif-non"
                 name="status"
                 label="Non"
-                value={"0"}
-                checked={newUser.status == "0"}
+                value={0}
+                checked={!newUser.status}
               />
             </Form.Group>
             <div className="d-flex justify-content-between">

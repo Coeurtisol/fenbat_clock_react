@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Form, Modal, Button } from "react-bootstrap";
 import { toast } from "react-toastify";
 import ARTICLES_API from "../../services/articlesAPI";
@@ -10,11 +10,12 @@ const ArticlesModal = ({ fetchArticles, article }) => {
   const [showModal, setShowModal] = useState(false);
   const [categories, setCategories] = useState([]);
   const [fournisseurs, setFournisseurs] = useState([]);
-  const [newArticle, setNewArticle] = useState({
+  const articleModel = {
     name: "",
     categorieId: "",
     fournisseursId: [],
-  });
+  };
+  const [newArticle, setNewArticle] = useState({ ...articleModel });
 
   // FETCH
   const fetchFournisseurs = async () => {
@@ -76,11 +77,7 @@ const ArticlesModal = ({ fetchArticles, article }) => {
       const response = await ARTICLES_API.create(newArticle);
       console.log("success create article", response);
       toast.success("Article créé.");
-      setNewArticle({
-        name: "",
-        categorieId: "",
-        fournisseursId: [],
-      });
+      setNewArticle({ ...articleModel });
     } catch (error) {
       console.log("erreur create article", error);
       toast.error("Erreur à la création de l'article.");
@@ -97,11 +94,7 @@ const ArticlesModal = ({ fetchArticles, article }) => {
       const response = await ARTICLES_API.update(article.id, newArticle);
       console.log("success update article", response);
       toast.success("Article mit à jour.");
-      setNewArticle({
-        name: "",
-        categorieId: "",
-        fournisseursId: [],
-      });
+      setNewArticle({ ...articleModel });
     } catch (error) {
       console.log("erreur update article", error);
       toast.error("Erreur à la mise à jour de l'article.");

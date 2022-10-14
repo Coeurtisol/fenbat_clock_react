@@ -11,7 +11,11 @@ import { toast } from "react-toastify";
 import LoadingIcon from "../components/loadingIcon";
 
 const PointagePage = ({ history, match, location }) => {
-  const { year, week, userId } = match.params;
+  // let { year, week, userId } = match.params;
+  // [year , week , userId] = [year, week, userId].map(Number);
+  const year = +match.params.year;
+  const week = +match.params.week;
+  const userId = +match.params.userId;
   const [loading, setLoading] = useState(true);
   const [semaine, setSemaine] = useState({ pointages: [] });
   const [affaires, setAffaires] = useState([]);
@@ -136,7 +140,7 @@ const PointagePage = ({ history, match, location }) => {
 
   // ######################################### FILTRAGE AFFAIRES
   const filteredAffaires = affaires.filter(
-    (a) => a.etat == "En cours" && a.entite.id == currentEntite
+    (a) => a.etat === "En cours" && a.entite.id === currentEntite
   );
 
   // ######################################### GESTION SEMAINES
@@ -158,7 +162,7 @@ const PointagePage = ({ history, match, location }) => {
       <option
         key={i}
         value={i}
-        className={i == week ? "selected-option" : null}
+        className={i === week ? "selected-option" : null}
       >{`(S: ${i}) : ${firstDay} -> ${lastDay}`}</option>
     );
   }
@@ -225,7 +229,7 @@ const PointagePage = ({ history, match, location }) => {
                         key={e.id}
                         value={e.id}
                         className={
-                          e.id == currentEntite ? "selected-option" : null
+                          e.id === currentEntite ? "selected-option" : null
                         }
                       >
                         {e.name}

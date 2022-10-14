@@ -147,15 +147,15 @@ function peutValider(semaineEtatId) {
 }
 
 function estChefEquipe() {
-  return getPermissionId() == permissions.chefEquipe.id;
+  return getPermissionId() === permissions.chefEquipe.id;
 }
 
 function estRespProd() {
-  return getPermissionId() == permissions.respProd.id;
+  return getPermissionId() === permissions.respProd.id;
 }
 
 function estRespSite() {
-  return getPermissionId() == permissions.respSite.id;
+  return getPermissionId() === permissions.respSite.id;
 }
 
 function estResp() {

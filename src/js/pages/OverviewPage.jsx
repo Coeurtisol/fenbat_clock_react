@@ -24,19 +24,6 @@ const OverviewPage = ({ history }) => {
   const [selectedDate, setSelectedDate] = useState(defaultSelectedDate());
   const [usersPointages, setUsersPointages] = useState([]);
 
-  const fetchPointages = async () => {
-    const date = { date: new Date(selectedDate) };
-    try {
-      const data = await POINTAGES_API.overview(date);
-      console.log("usersPointages", data);
-      setUsersPointages(data);
-      setLoading(false);
-    } catch (error) {
-      console.log(error);
-      toast.error("Erreur au chargement des données");
-    }
-  };
-
   const handleChangeSelectedDate = ({ target }) => {
     const { value } = target;
     setSelectedDate(formatDate_yyyymmdd(new Date(value)));
@@ -52,6 +39,18 @@ const OverviewPage = ({ history }) => {
 
   useEffect(() => {
     setLoading(true);
+    const fetchPointages = async () => {
+      const date = { date: new Date(selectedDate) };
+      try {
+        const data = await POINTAGES_API.overview(date);
+        console.log("usersPointages", data);
+        setUsersPointages(data);
+        setLoading(false);
+      } catch (error) {
+        console.log(error);
+        toast.error("Erreur au chargement des données");
+      }
+    };
     fetchPointages();
   }, [selectedDate]);
 
@@ -73,9 +72,9 @@ const OverviewPage = ({ history }) => {
     const currPointages = usersPointages[i].pointages;
     for (let j = 0; j < listOfFormattedDate.length; j++) {
       const index = currPointages.findIndex(
-        (p) => FormatDateColumn(p.date) == listOfFormattedDate[j]
+        (p) => FormatDateColumn(p.date) === listOfFormattedDate[j]
       );
-      if (index == -1) {
+      if (index === -1) {
         temp.push(<td key={j} className=""></td>);
       } else {
         let valid = false;

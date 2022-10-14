@@ -5,12 +5,14 @@ import { toast } from "react-toastify";
 
 const MotifAbsenceModal = ({ fetchMotifsAbsence, motifAbsence }) => {
   const [showModal, setShowModal] = useState(false);
-  const [newMotifAbsence, setNewMotifAbsence] = useState({
+  const motifAbsenceModel = {
     name: "",
-    bloquant: "0",
+    bloquant: false,
+  };
+  const [newMotifAbsence, setNewMotifAbsence] = useState({
+    ...motifAbsenceModel,
   });
-  let edit = false;
-  if (motifAbsence) edit = true;
+  const edit = motifAbsence ? true : false;
 
   const handleShowMotifAbsenceModal = () => {
     setShowModal(!showModal);
@@ -29,7 +31,10 @@ const MotifAbsenceModal = ({ fetchMotifsAbsence, motifAbsence }) => {
 
   // FUNCTIONS
   const handlechange = ({ target }) => {
-    const { name, value } = target;
+    let { name, value } = target;
+    if (name === "bloquant") {
+      value = !!+value;
+    }
     setNewMotifAbsence({ ...newMotifAbsence, [name]: value });
   };
 
@@ -41,10 +46,7 @@ const MotifAbsenceModal = ({ fetchMotifsAbsence, motifAbsence }) => {
       const response = await MOTIFSABSENCE_API.create(newMotifAbsence);
       console.log("success create motifAbsence", response);
       toast.success("Motif d'absence créé.");
-      setNewMotifAbsence({
-        name: "",
-        bloquant: "0",
-      });
+      setNewMotifAbsence({ ...motifAbsenceModel });
     } catch (error) {
       console.log("erreur create motifAbsence", error);
       toast.error("Erreur à la création du motif d'absence.");
@@ -64,10 +66,7 @@ const MotifAbsenceModal = ({ fetchMotifsAbsence, motifAbsence }) => {
       );
       console.log("success update motifAbsence", response);
       toast.success("Motif d'absence mit à jour.");
-      setNewMotifAbsence({
-        name: "",
-        bloquant: "0",
-      });
+      setNewMotifAbsence({ ...motifAbsenceModel });
     } catch (error) {
       console.log("erreur update motifAbsence", error);
       toast.error("Erreur à la mise à jour du motif d'absence.");
@@ -130,26 +129,21 @@ const MotifAbsenceModal = ({ fetchMotifsAbsence, motifAbsence }) => {
               <Form.Label>Bloquant</Form.Label>
               <Form.Check
                 onChange={handlechange}
+                id="bloquant-non"
                 type="radio"
                 name="bloquant"
                 label="Non"
-                value={"0"}
-                checked={
-                  newMotifAbsence.bloquant == "0" ||
-                  newMotifAbsence.bloquant == false ||
-                  newMotifAbsence.bloquant == null
-                }
+                value={0}
+                checked={!newMotifAbsence.bloquant}
               />
               <Form.Check
                 onChange={handlechange}
+                id="bloquant-oui"
                 type="radio"
                 name="bloquant"
                 label="Oui"
-                value={"1"}
-                checked={
-                  newMotifAbsence.bloquant == "1" ||
-                  newMotifAbsence.bloquant == true
-                }
+                value={1}
+                checked={newMotifAbsence.bloquant}
               />
             </Form.Group>
             <div className="d-flex justify-content-between">

@@ -19,20 +19,15 @@ const InputAdresse = ({
     setParentObject({ ...parentObject, [name]: value });
   };
 
-  const handleChangeTempCoordonnees = async ({ target }) => {
-    let { value } = target;
-    setTempCoordonnees(value);
-  };
-
   const searchForAdresseAutocomplete = async (adresse) => {
-    if (adresse != "") {
+    if (adresse.length > 2) {
       try {
         const listeAdresse = await adresseAPI.searchForAutocomplete(adresse);
         // console.log("listeAdresse", listeAdresse);
         setAdresses(listeAdresse);
 
         const matchingAdresse = listeAdresse.find(
-          (a) => a.label.toLowerCase() == parentObject.adresse.toLowerCase()
+          (a) => a.label.toLowerCase() === parentObject.adresse.toLowerCase()
         );
         // console.log("matchingAdresse", matchingAdresse);
         if (matchingAdresse) {
@@ -53,7 +48,7 @@ const InputAdresse = ({
     }
   };
 
-  useEffect(async () => {
+  useEffect(() => {
     console.log("effect");
     setTempCoordonnees(parentObject.coordonnees);
     searchForAdresseAutocomplete(parentObject.adresse);
@@ -62,26 +57,7 @@ const InputAdresse = ({
   return (
     <>
       <Form.Group className="mb-3">
-        <Form.Label>
-          Adresse
-          {/* {parentObject.coordonnees?.length ? (
-            <>
-              {` (Coordonnées: `}
-              <span className="text-success">
-                {`${parentObject.coordonnees.split(",")[0]},${
-                  parentObject.coordonnees.split(",")[1]
-                }`}
-              </span>
-              {`)`}
-            </>
-          ) : (
-            <>
-              {` (Coordonnées: `}
-              <span className="text-danger">non trouvées</span>
-              {`)`}
-            </>
-          )} */}
-        </Form.Label>
+        <Form.Label>Adresse</Form.Label>
         <Form.Control
           type="text"
           name="adresse"
@@ -103,7 +79,6 @@ const InputAdresse = ({
           type="text"
           name="coordonnees"
           value={tempCoordonnees}
-          onChange={handleChangeTempCoordonnees}
           required
           disabled
         />

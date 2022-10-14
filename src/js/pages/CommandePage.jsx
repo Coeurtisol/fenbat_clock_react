@@ -15,7 +15,7 @@ const CommandePage = () => {
           <ListGroup horizontal className="d-flex justify-content-center">
             <ListGroup.Item
               className={`onglet-commande ${
-                onglet == "magasin" ? "command-active-item" : null
+                onglet === "magasin" ? "command-active-item" : null
               }`}
               onClick={() => setOnglet("magasin")}
             >
@@ -23,7 +23,7 @@ const CommandePage = () => {
             </ListGroup.Item>
             <ListGroup.Item
               className={`onglet-commande ${
-                onglet == "mesCommandes" ? "command-active-item" : null
+                onglet === "mesCommandes" ? "command-active-item" : null
               }`}
               onClick={() => setOnglet("mesCommandes")}
             >
@@ -31,7 +31,7 @@ const CommandePage = () => {
             </ListGroup.Item>
           </ListGroup>
         </div>
-        {onglet == "magasin" ? <Magasin /> : <ListeCommandes />}
+        {onglet === "magasin" ? <Magasin /> : <ListeCommandes />}
       </div>
     </main>
   );

@@ -5,7 +5,7 @@ import { Form, ListGroup, Table } from "react-bootstrap";
 import CommandeModal from "../components/modals/CommandeModal";
 import LoadingIcon from "../components/loadingIcon";
 
-const Magasin = ({}) => {
+const Magasin = () => {
   const [loading, setLoading] = useState(true);
   const [categories, setCategories] = useState([]);
   const [articles, setArticles] = useState([]);
@@ -33,23 +33,25 @@ const Magasin = ({}) => {
     }
   };
 
-  useEffect(async () => {
-    fetchCategories();
-    await fetchArticles();
-    setLoading(false);
+  useEffect(() => {
+    (async function () {
+      fetchCategories();
+      await fetchArticles();
+      setLoading(false);
+    })();
   }, []);
 
   // FILTRAGE ARTICLES
   const filteredArticlesByCategorie = articles.filter((a) =>
     currentCategorie == null
       ? a
-      : a.categorie != null && a.categorie.id == currentCategorie
+      : a.categorie != null && a.categorie.id === currentCategorie
   );
 
   const filteredArticlesBySearch = filteredArticlesByCategorie.filter(
     (a) => a.name.toLowerCase().includes(searchValue.toLowerCase())
     // || a.fournisseurs
-    //   .map((f) => f.fournisseur.name.toLowerCase())
+    //   .map((f) => f.fournisseur?.name.toLowerCase())
     //   .includes(searchValue.toLowerCase())
   );
 
@@ -72,7 +74,7 @@ const Magasin = ({}) => {
             {categories.map((c) => (
               <ListGroup.Item
                 className={`onglet-commande ${
-                  currentCategorie == c.id ? "command-active-item" : null
+                  currentCategorie === c.id ? "command-active-item" : null
                 }`}
                 key={c.id}
                 onClick={() => setCurrentCategorie(c.id)}

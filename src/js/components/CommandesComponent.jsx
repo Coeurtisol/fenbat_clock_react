@@ -5,7 +5,7 @@ import { Button, Table } from "react-bootstrap";
 import { toast } from "react-toastify";
 import LoadingIcon from "../components/loadingIcon";
 
-const ListeCommandes = ({}) => {
+const ListeCommandes = () => {
   const [loading, setLoading] = useState(true);
   const [commandes, setCommandes] = useState([]);
   const [sortBy, setSortBy] = useState({ value: "etat", desc: false });
@@ -49,7 +49,7 @@ const ListeCommandes = ({}) => {
   // SORT COMMANDES
   const handleChangeSort = ({ target }) => {
     const value = target.dataset.sort;
-    if (value == sortBy.value) {
+    if (value === sortBy.value) {
       setSortBy({ ...sortBy, desc: !sortBy.desc });
       return;
     }
@@ -97,6 +97,9 @@ const ListeCommandes = ({}) => {
           : order.indexOf(a.etat) - order.indexOf(b.etat);
       });
       break;
+
+    default:
+      break;
   }
 
   return (
@@ -116,9 +119,9 @@ const ListeCommandes = ({}) => {
                 <tr className="align-middle">
                   <th
                     className={`text-center ${
-                      sortBy.value == "article" ? "sorted" : null
+                      sortBy.value === "article" ? "sorted" : null
                     } ${
-                      sortBy.value == "article" && sortBy.desc
+                      sortBy.value === "article" && sortBy.desc
                         ? "sorted-desc"
                         : null
                     }`}
@@ -129,9 +132,9 @@ const ListeCommandes = ({}) => {
                   </th>
                   <th
                     className={`text-center ${
-                      sortBy.value == "fournisseur" ? "sorted" : null
+                      sortBy.value === "fournisseur" ? "sorted" : null
                     } ${
-                      sortBy.value == "fournisseur" && sortBy.desc
+                      sortBy.value === "fournisseur" && sortBy.desc
                         ? "sorted-desc"
                         : null
                     }`}
@@ -144,9 +147,9 @@ const ListeCommandes = ({}) => {
                   {estResp && (
                     <th
                       className={`text-center ${
-                        sortBy.value == "chef d'équipe" ? "sorted" : null
+                        sortBy.value === "chef d'équipe" ? "sorted" : null
                       } ${
-                        sortBy.value == "chef d'équipe" && sortBy.desc
+                        sortBy.value === "chef d'équipe" && sortBy.desc
                           ? "sorted-desc"
                           : null
                       }`}
@@ -158,9 +161,9 @@ const ListeCommandes = ({}) => {
                   )}
                   <th
                     className={`text-center ${
-                      sortBy.value == "affaire" ? "sorted" : null
+                      sortBy.value === "affaire" ? "sorted" : null
                     } ${
-                      sortBy.value == "affaire" && sortBy.desc
+                      sortBy.value === "affaire" && sortBy.desc
                         ? "sorted-desc"
                         : null
                     }`}
@@ -171,9 +174,9 @@ const ListeCommandes = ({}) => {
                   </th>
                   <th
                     className={`text-center ${
-                      sortBy.value == "etat" ? "sorted" : null
+                      sortBy.value === "etat" ? "sorted" : null
                     } ${
-                      sortBy.value == "etat" && sortBy.desc
+                      sortBy.value === "etat" && sortBy.desc
                         ? "sorted-desc"
                         : null
                     }`}
@@ -196,7 +199,7 @@ const ListeCommandes = ({}) => {
                     <td className="text-center">{c.etat}</td>
 
                     <td>
-                      {estResp && c.etat == "En attente" ? (
+                      {estResp && c.etat === "En attente" ? (
                         <>
                           <Button
                             className="m-1"
@@ -214,7 +217,7 @@ const ListeCommandes = ({}) => {
                           </Button>
                         </>
                       ) : (
-                        c.etat != "En attente" && (
+                        c.etat !== "En attente" && (
                           <>
                             {`le ${
                               c.valideeLe &&
