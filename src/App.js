@@ -40,7 +40,7 @@ import RespSiteRoute from "./js/components/route/RespSiteRoute";
 function App() {
   AUTH_API.setup();
 
-  const [isSecure, setIsSecure] = useState(true);
+  const [isSecure, setIsSecure] = useState(false);
   async function handleIsSecure() {
     const isSecureResponse = await AUTH_API.isSecure();
     setIsSecure(isSecureResponse);
